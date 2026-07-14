@@ -1,0 +1,16 @@
+# Founder docs
+*.pdf
+
+# Python/Flask
+.env
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# IDEs/OS
+.vscode/
+.idea/
+.DS_Store
