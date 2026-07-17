@@ -1,367 +1,742 @@
-// Navigation Switcher
-document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    
-    // Remove active from all links and sections
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
-    
-    // Add active to current link and section
-    const targetSectionId = link.getAttribute('data-section');
-    link.classList.add('active');
-    
-    const targetSection = document.getElementById(targetSectionId);
-    if (targetSection) {
-      targetSection.classList.add('active');
-    }
-  });
-});
-
-// Theme Switcher (Light / Dark Mode)
-const themeToggle = document.getElementById('theme-toggle');
-if (themeToggle) {
-  themeToggle.addEventListener('change', () => {
-    if (themeToggle.checked) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
-  });
-}
-
-// Clipboard Copy Helper for Color Cards
-document.querySelectorAll('.color-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const hex = card.getAttribute('data-color');
-    if (hex && navigator.clipboard) {
-      navigator.clipboard.writeText(hex).then(() => {
-        const hexEl = card.querySelector('.color-hex');
-        if (hexEl) {
-          const originalText = hexEl.textContent;
-          hexEl.textContent = 'Copied!';
-          hexEl.style.color = 'var(--success)';
-          setTimeout(() => {
-            hexEl.textContent = originalText;
-            hexEl.style.color = '';
-          }, 1200);
-        }
-      }).catch(err => console.error('Clipboard copy failed:', err));
-    }
-  });
-});
-
-// Clipboard Copy Helper for Code Snippets
-function copyCode(button) {
-  if (!button || !navigator.clipboard) return;
-  const container = button.nextElementSibling;
-  if (!container) return;
-  const codeBlock = container.querySelector('code');
-  if (!codeBlock) return;
-  
-  navigator.clipboard.writeText(codeBlock.textContent).then(() => {
-    const originalText = button.textContent;
-    button.textContent = 'Copied!';
-    setTimeout(() => {
-      button.textContent = originalText;
-    }, 1200);
-  }).catch(err => console.error('Clipboard copy failed:', err));
-}
-
-// Clipboard Copy Helper for Textareas (Developer Tokens)
-function copyTextarea(id) {
-  const textarea = document.getElementById(id);
-  if (!textarea) return;
-  textarea.select();
-  document.execCommand('copy');
-  
-  // Visual feedback on the button
-  const button = textarea.previousElementSibling;
-  if (button) {
-    const originalText = button.textContent;
-    button.textContent = 'Copied!';
-    setTimeout(() => {
-      button.textContent = originalText;
-    }, 1200);
-  }
-}
-
-// 1 & 2. Interactive Button State Controller
-function setBtnState(type, state) {
-  const btn = document.getElementById(`${type}-btn-preview`);
-  const card = document.getElementById(`comp-${type}-btn`);
-  if (!btn || !card) return;
-  
-  // Reset all state controls highlights
-  card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
-  
-  // Highlight clicked control button
-  const event = window.event;
-  if (event && event.target) {
-    event.target.classList.add('active');
-  }
-
-  // Remove existing mock state classes
-  btn.classList.remove('state-hover', 'state-pressed');
-  btn.removeAttribute('disabled');
-
-  // Apply new state
-  if (state === 'hover') {
-    btn.classList.add('state-hover');
-  } else if (state === 'pressed') {
-    btn.classList.add('state-pressed');
-  } else if (state === 'disabled') {
-    btn.setAttribute('disabled', 'true');
-  }
-}
-
-// 5. Interactive Content Card Progress Controller
-function setCardProgress(pct) {
-  const fill = document.getElementById('card-progress-fill');
-  const label = document.getElementById('card-pct-label');
-  const card = document.getElementById('comp-content-card');
-  if (!fill || !label || !card) return;
-
-  // Reset controls active state
-  card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
-  
-  // Highlight clicked control
-  if (window.event && window.event.target) {
-    window.event.target.classList.add('active');
-  } else {
-    // Fallback if triggered programmatically
-    const btn = document.getElementById(`btn-card-${pct}`);
-    if (btn) btn.classList.add('active');
-  }
-
-  // Update progress width and text label
-  fill.style.width = `${pct}%`;
-  label.textContent = `${pct}%`;
-}
-
-// 6. Interactive Bottom Nav Tab Switcher
-function switchNavTab(tabElement, screenName) {
-  if (!tabElement) return;
-  const nav = tabElement.closest('.bottom-nav');
-  if (!nav) return;
-  nav.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-  
-  tabElement.classList.add('active');
-  
-  const screenLabel = document.getElementById('nav-screen-label');
-  if (screenLabel) {
-    screenLabel.textContent = `${screenName} Screen`;
-  }
-}
-
-// 7. Interactive Input Field Variant Controller
-function setInputVariant(variant) {
-  const field = document.getElementById('input-field-preview');
-  const label = document.getElementById('input-preview-label');
-  const container = document.getElementById('input-container-preview');
-  const errorMsg = document.getElementById('input-error-msg');
-  const card = document.getElementById('comp-input-field');
-  if (!field || !label || !container || !errorMsg || !card) return;
-
-  // Reset controls
-  card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
-  if (window.event && window.event.target) {
-    window.event.target.classList.add('active');
-  }
-
-  // Clear all states
-  field.classList.remove('state-focus', 'state-filled', 'state-error', 'state-disabled');
-  field.removeAttribute('disabled');
-  container.classList.remove('error');
-  errorMsg.style.display = 'none';
-  label.style.color = '';
-
-  if (variant === 'default') {
-    field.value = '';
-    field.placeholder = 'Enter your name';
-  } else if (variant === 'focus') {
-    field.value = 'Gani';
-    field.classList.add('state-focus');
-    field.focus();
-  } else if (variant === 'filled') {
-    field.value = 'Ganesh Bobbala';
-    field.classList.add('state-filled');
-  } else if (variant === 'error') {
-    field.value = 'G@nesh123';
-    field.classList.add('state-error');
-    container.classList.add('error');
-    errorMsg.style.display = 'flex';
-  } else if (variant === 'disabled') {
-    field.value = 'Ganesh Bobbala';
-    field.setAttribute('disabled', 'true');
-    field.classList.add('state-disabled');
-  }
-}
-
-// 8. Interactive Progress Bar Controller
-function setProgressBarValue(pct) {
-  const fill = document.getElementById('overall-progress-fill');
-  const label = document.getElementById('overall-pct-label');
-  const card = document.getElementById('comp-progress-bar');
-  if (!fill || !label || !card) return;
-
-  // Reset controls
-  card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
-  if (window.event && window.event.target) {
-    window.event.target.classList.add('active');
-  } else {
-    const btn = document.getElementById(`btn-overall-${pct}`);
-    if (btn) btn.classList.add('active');
-  }
-
-  // Update fill width and color based on completion
-  fill.style.width = `${pct}%`;
-  label.textContent = `${pct}%`;
-
-  if (pct === 100) {
-    fill.classList.add('success');
-    label.style.color = 'var(--success)';
-  } else {
-    fill.classList.remove('success');
-    label.style.color = 'var(--primary)';
-  }
-}
-
 // ==========================================
-// MOBILE ONBOARDING SIMULATOR LOGIC
+// STARTUPSAGE CLIENT APP ROUTING & INTERACTIONS
 // ==========================================
 
-let simSelectedDomain = null;
-let simSelectedChallenge = null;
+// Global App State
+let appState = {
+  xp: 450,
+  coins: 150,
+  streak: 3,
+  currentLevel: 2,
+  unlockedStage: 0, // 0 to 6
+  selectedDomain: "",
+  selectedChallenge: "Smart Healthcare Assistant",
+  selectedIdea: "",
+  emotionCheckedIn: "",
+  canvasFilled: false,
+  mvpBudget: 100,
+  mvpImpactScore: 0, // 0 to 100
+  selectedFeaturesCount: 0,
+  currentOnboardingSlide: 1
+};
 
-// Navigate between simulator screens
-function simGoToFrame(frameNum) {
+// Elements Cache
+const elements = {
+  screens: {},
+  tabs: {},
+  navItems: {},
+  valStreak: null,
+  valCoins: null,
+  userCoinsBadges: [],
+  sparkMascot: null,
+  sparkBubble: null,
+  confettiCanvas: null
+};
+
+// Initialize App
+window.addEventListener('DOMContentLoaded', () => {
+  // Cache Screen and Tab DOM references
+  const screenList = ['splash', 'onboarding', 'login', 'stage0', 'stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'finalpitch'];
+  screenList.forEach(id => {
+    elements.screens[id] = document.getElementById(`scr-${id}`);
+  });
+
+  const tabList = ['dashboard', 'journey', 'leaderboard', 'profile', 'settings'];
+  tabList.forEach(id => {
+    elements.tabs[id] = document.getElementById(`tab-${id}`);
+    elements.navItems[id] = document.getElementById(`nav-${id}`);
+  });
+
+  elements.valStreak = document.getElementById('val-streak');
+  elements.valCoins = document.getElementById('val-coins');
+  elements.userCoinsBadges = document.querySelectorAll('.user-coins');
+  elements.sparkMascot = document.getElementById('spark-mascot');
+  elements.sparkBubble = document.getElementById('spark-bubble');
+  elements.confettiCanvas = document.getElementById('confetti-canvas');
+
+  // Load state and update indicators
+  updateStateIndicators();
+  triggerSparkMascot("Hi, I'm Spark! Let's start our startup journey! 🚀", 5000);
+});
+
+// ------------------------------------------
+// Navigation & Routing Engine
+// ------------------------------------------
+
+function goToScreen(screenId) {
   // Hide all screens
-  document.querySelectorAll('.sim-screen').forEach(screen => {
-    screen.classList.remove('active', 'slide-in');
+  Object.values(elements.screens).forEach(screen => {
+    if (screen) screen.classList.remove('active');
   });
-
-  // Show target screen
-  const targetScreen = document.getElementById(`sim-frame-${frameNum}`);
-  if (targetScreen) {
-    targetScreen.classList.add('active');
-    
-    // Add slide-in animation unless going back to splash
-    if (frameNum !== 1) {
-      targetScreen.classList.add('slide-in');
+  
+  // Hide main app views unless screenId is mainapp
+  const isMainApp = (screenId === 'mainapp');
+  const bottomNav = document.getElementById('sim-bottom-nav');
+  
+  if (isMainApp) {
+    if (bottomNav) bottomNav.style.display = 'flex';
+    // Switch to active tab
+    const activeTab = Object.keys(elements.tabs).find(key => elements.tabs[key] && elements.tabs[key].style.display === 'flex') || 'dashboard';
+    simSwitchTab(activeTab);
+  } else {
+    if (bottomNav) bottomNav.style.display = 'none';
+    // Show specific screen
+    if (elements.screens[screenId]) {
+      elements.screens[screenId].classList.add('active');
+      elements.screens[screenId].style.display = 'flex';
     }
+  }
+
+  // Handle Mascot prompts depending on screen
+  if (screenId === 'stage1') {
+    triggerSparkMascot("Compare these 3 generated ideas! Tap one to inspect user reactions. 😍", 6000);
+  } else if (screenId === 'stage2') {
+    triggerSparkMascot("Let's plan your business details! Tap the canvas toggle to see a filled example.", 6000);
+  } else if (screenId === 'stage3') {
+    triggerSparkMascot("Choose questions to survey your target users. Let's gather real proof!", 6000);
+  } else if (screenId === 'stage4') {
+    triggerSparkMascot("Select high-impact features under our 🪙 100 budget limit!", 6000);
+  } else if (screenId === 'stage5') {
+    triggerSparkMascot("Pre-flight checks passed! Tap the big rocket to launch your startup! 🚀", 5000);
+  } else if (screenId === 'finalpitch') {
+    triggerSparkMascot("Funding secured! You are officially an entrepreneur! 🎓🏆", 6000);
+    triggerConfetti();
   }
 }
 
-// Sparkle Particle Effect Generator (Duolingo Style)
-function triggerSparkles(event, card) {
-  if (!card || !event) return;
-  const rect = card.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
+function simSwitchTab(tabId) {
+  // Hide all tabs & screens
+  Object.values(elements.screens).forEach(screen => {
+    if (screen) screen.classList.remove('active');
+  });
+  Object.values(elements.tabs).forEach(tab => {
+    if (tab) tab.style.display = 'none';
+  });
+  Object.values(elements.navItems).forEach(item => {
+    if (item) item.classList.remove('active');
+  });
+
+  // Display selected tab inside screen context
+  if (elements.tabs[tabId]) {
+    elements.tabs[tabId].style.display = 'flex';
+  }
+  if (elements.navItems[tabId]) {
+    elements.navItems[tabId].classList.add('active');
+  }
+
+  // Show bottom navigation bar
+  const bottomNav = document.getElementById('sim-bottom-nav');
+  if (bottomNav) bottomNav.style.display = 'flex';
+
+  // Highlight Spark helper tips
+  if (tabId === 'dashboard') {
+    triggerSparkMascot("Welcome back! Finish today's Daily Mission to earn extra Coins! 🪙", 4000);
+  } else if (tabId === 'journey') {
+    triggerSparkMascot("Welcome to Adventure Map! Click on Island 0 to begin your quest path.", 5000);
+    renderJourneyMapLocks();
+  }
+}
+
+// Update Coins, XP, Level displays
+function updateStateIndicators() {
+  if (elements.valStreak) elements.valStreak.textContent = appState.streak;
+  if (elements.valCoins) elements.valCoins.textContent = appState.coins;
+  elements.userCoinsBadges.forEach(badge => {
+    badge.textContent = appState.coins;
+  });
+
+  // Dynamic status indicators
+  const pName = document.getElementById('cert-startup-name');
+  if (pName) pName.textContent = appState.selectedChallenge;
+}
+
+// ------------------------------------------
+// Spark Mascot Comments engine
+// ------------------------------------------
+
+function triggerSparkMascot(message, duration = 4000) {
+  if (!elements.sparkMascot || !elements.sparkBubble) return;
+
+  // Set message
+  elements.sparkBubble.innerHTML = message;
+
+  // Show Spark
+  elements.sparkMascot.classList.add('active');
+
+  // Hide after duration
+  setTimeout(() => {
+    elements.sparkMascot.classList.remove('active');
+  }, duration);
+}
+
+// ------------------------------------------
+// Pre-App Flow (Splash, Onboarding, Login)
+// ------------------------------------------
+
+function setSlide(slideNum) {
+  appState.currentOnboardingSlide = slideNum;
+  const slides = document.querySelectorAll('.onboarding-slide');
+  const dots = document.querySelectorAll('.onboarding-dot');
   
-  const colors = ['#FF7A00', '#22C55E', '#3B82F6', '#F59E0B', '#EF4444', '#EC4899', '#8B5CF6'];
-  const particleCount = 14;
+  slides.forEach((s, idx) => {
+    s.classList.toggle('active', idx === (slideNum - 1));
+  });
+  dots.forEach((d, idx) => {
+    d.classList.toggle('active', idx === (slideNum - 1));
+  });
+
+  const btnNext = document.getElementById('btn-onboarding-next');
+  if (btnNext) {
+    btnNext.textContent = slideNum === 3 ? "Let's Go! 🚀" : "Continue";
+  }
+}
+
+function nextSlide() {
+  if (appState.currentOnboardingSlide < 3) {
+    setSlide(appState.currentOnboardingSlide + 1);
+  } else {
+    goToScreen('login');
+  }
+}
+
+function completeLogin(type) {
+  appState.coins += 50; // Welcome reward
+  appState.xp += 100;
+  updateStateIndicators();
+  goToScreen('mainapp');
+  simSwitchTab('dashboard');
+  triggerSparkMascot(`Log in successful with ${type}! Claimed +50 Welcome Coins! 🪙`, 5000);
+  triggerSparklesAtCenter();
+}
+
+// ------------------------------------------
+// Stage 0: The Spark
+// ------------------------------------------
+
+function goStage0Page(pageNum) {
+  const pages = document.querySelectorAll('.stage0-subpage');
+  pages.forEach((p, idx) => {
+    p.classList.toggle('active', idx === (pageNum - 1));
+  });
+
+  const stepIndicator = document.getElementById('stage0-step-indicator');
+  if (stepIndicator) {
+    stepIndicator.textContent = `Step ${pageNum} of 3`;
+  }
+}
+
+function simSelectDomain(cardElement, domainName) {
+  // Clear previous domain selects
+  const cards = document.querySelectorAll('.sim-domain-card');
+  cards.forEach(c => c.classList.remove('selected'));
+
+  // Mark this card selected
+  cardElement.classList.add('selected');
+  appState.selectedDomain = domainName;
+
+  // Activate continue button
+  const btn = document.getElementById('sim-btn-domain-continue');
+  if (btn) btn.removeAttribute('disabled');
+
+  triggerSparkles(cardElement);
+  triggerSparkMascot(`Awesome chosen: ${domainName}! Let's select a startup challenge next.`, 4000);
+}
+
+function simSelectChallenge(cardElement, challengeName) {
+  const cards = document.querySelectorAll('.sim-challenge-card');
+  cards.forEach(c => c.classList.remove('selected'));
+
+  cardElement.classList.add('selected');
+  appState.selectedChallenge = challengeName;
+
+  const btn = document.getElementById('sim-btn-challenge-continue');
+  if (btn) btn.removeAttribute('disabled');
+
+  triggerSparkles(cardElement);
+  triggerSparkMascot(`You chose "${challengeName}"! Ready to solve?`, 4000);
+}
+
+function completeStage0() {
+  appState.xp += 100;
+  appState.unlockedStage = Math.max(appState.unlockedStage, 1);
+  updateStateIndicators();
+  triggerSparkMascot("Stage 0 Complete! Unlocked Stage 1: The Idea on Adventure Map! 💡", 5000);
   
-  for (let i = 0; i < particleCount; i++) {
+  goToScreen('mainapp');
+  simSwitchTab('journey');
+  triggerConfetti();
+}
+
+// ------------------------------------------
+// Stage 1: The Idea
+// ------------------------------------------
+
+function selectIdeaCard(cardElement, ideaName) {
+  const cards = document.querySelectorAll('.idea-card');
+  cards.forEach(c => c.classList.remove('expanded'));
+
+  cardElement.classList.add('expanded');
+  appState.selectedIdea = ideaName;
+
+  // Show decision panel & check-in
+  document.getElementById('stage1-decision-panel').style.display = 'block';
+  document.getElementById('stage1-emotional-checkin').style.display = 'block';
+
+  triggerSparkles(cardElement);
+  triggerSparkMascot(`Selected "${ideaName}". Do you want to build this or improve it?`, 4000);
+}
+
+function chooseStartupIdea() {
+  document.getElementById('stage1-complete-actions').style.display = 'block';
+  triggerSparkMascot("Great choice! Now complete the emotional check-in to proceed.", 4000);
+  triggerSparklesAtCenter();
+}
+
+function improveSelectedIdea() {
+  triggerSparkMascot("Spark AI: 'How about making the diagnostics offline and solar-powered?' Idea improved! +10 XP", 5000);
+  appState.xp += 10;
+  updateStateIndicators();
+}
+
+function checkinEmotion(emotion) {
+  appState.emotionCheckedIn = emotion;
+  const buttons = document.querySelectorAll('.emoji-option-btn');
+  buttons.forEach(btn => {
+    btn.classList.toggle('selected', btn.querySelector('.emoji-lbl').textContent === emotion.split(' ')[1]);
+  });
+  triggerSparkMascot(`Thanks for sharing! Feeling ${emotion} is a great step! Let's continue.`, 4000);
+}
+
+function completeStage1() {
+  appState.xp += 150;
+  appState.unlockedStage = Math.max(appState.unlockedStage, 2);
+  updateStateIndicators();
+  triggerSparkMascot("Stage 1 Complete! Unlocked Stage 2: The Plan! 📋", 5000);
+  
+  goToScreen('mainapp');
+  simSwitchTab('journey');
+  triggerConfetti();
+}
+
+// ------------------------------------------
+// Stage 2: The Plan (Business Model Canvas)
+// ------------------------------------------
+
+function toggleCanvasFilledState() {
+  appState.canvasFilled = !appState.canvasFilled;
+  const grid = document.getElementById('canvas-grid-box');
+  const toggleBtn = document.getElementById('btn-toggle-canvas');
+  
+  if (appState.canvasFilled) {
+    toggleBtn.textContent = "Toggle: Filled Canvas";
+    grid.innerHTML = `
+      <div class="canvas-block-card filled">
+        <h5>🏥 Problem</h5>
+        <div class="canvas-card-body">Rural health clinics lack diagnostics tools.</div>
+      </div>
+      <div class="canvas-block-card filled">
+        <h5>💡 Solution</h5>
+        <div class="canvas-card-body">Offline diagnostic assistant app.</div>
+      </div>
+      <div class="canvas-block-card filled">
+        <h5>🎯 Target Users</h5>
+        <div class="canvas-card-body">Village nurses & rural clinics.</div>
+      </div>
+      <div class="canvas-block-card filled">
+        <h5>🪙 Revenue Model</h5>
+        <div class="canvas-card-body">Subscription grants from government health bodies.</div>
+      </div>
+      <div class="canvas-block-card filled">
+        <h5>📉 Cost Structure</h5>
+        <div class="canvas-card-body">AI model host hosting, translation, database.</div>
+      </div>
+    `;
+    document.getElementById('ai-realitycheck-panel').style.display = 'block';
+    document.getElementById('stage2-complete-actions').style.display = 'block';
+    triggerSparkMascot("Great! The canvas is filled. Read Spark's AI Reality Check suggestion! 🤖", 5000);
+  } else {
+    toggleBtn.textContent = "Toggle: Empty Canvas";
+    grid.innerHTML = `
+      <div class="canvas-block-card">
+        <h5>🏥 Problem</h5>
+        <div class="canvas-card-body empty">Empty Card</div>
+      </div>
+      <div class="canvas-block-card">
+        <h5>💡 Solution</h5>
+        <div class="canvas-card-body empty">Empty Card</div>
+      </div>
+      <div class="canvas-block-card">
+        <h5>🎯 Target Users</h5>
+        <div class="canvas-card-body empty">Empty Card</div>
+      </div>
+      <div class="canvas-block-card">
+        <h5>🪙 Revenue Model</h5>
+        <div class="canvas-card-body empty">Empty Card</div>
+      </div>
+      <div class="canvas-block-card">
+        <h5>📉 Cost Structure</h5>
+        <div class="canvas-card-body empty">Empty Card</div>
+      </div>
+    `;
+    document.getElementById('ai-realitycheck-panel').style.display = 'none';
+    document.getElementById('stage2-complete-actions').style.display = 'none';
+  }
+}
+
+function canvasAskAI() {
+  const textMsg = document.getElementById('ai-realitycheck-text');
+  const loader = document.getElementById('ai-realitycheck-loader');
+  
+  textMsg.style.display = 'none';
+  loader.style.display = 'block';
+
+  setTimeout(() => {
+    loader.style.display = 'none';
+    textMsg.style.display = 'block';
+    textMsg.innerHTML = "💡 <strong>Spark:</strong> 'Rural clinics receive government grants. You can charge local health budgets rather than patients directly!'";
+    triggerSparklesAtCenter();
+  }, 2000);
+}
+
+function canvasImproveIdea() {
+  appState.coins += 20;
+  updateStateIndicators();
+  triggerSparkMascot("Idea improved! Claimed +20 Coins! 🪙", 4000);
+}
+
+function completeStage2() {
+  appState.xp += 200;
+  appState.unlockedStage = Math.max(appState.unlockedStage, 3);
+  updateStateIndicators();
+  triggerSparkMascot("Stage 2 Complete! Unlocked Stage 3: Validation! 📊", 5000);
+  
+  goToScreen('mainapp');
+  simSwitchTab('journey');
+  triggerConfetti();
+}
+
+// ------------------------------------------
+// Stage 3: The Validation
+// ------------------------------------------
+
+function toggleSurveyChip(chipElement) {
+  chipElement.classList.toggle('selected');
+  
+  // Count selected chips
+  const selectedChips = document.querySelectorAll('.survey-chip.selected');
+  const btn = document.getElementById('btn-trigger-survey');
+  
+  if (selectedChips.length > 0) {
+    btn.removeAttribute('disabled');
+    btn.textContent = `Send Survey with ${selectedChips.length} Question(s) 📊`;
+  } else {
+    btn.setAttribute('disabled', 'true');
+    btn.textContent = "Send Survey to 100 Students 📊";
+  }
+}
+
+function sendSurveyValidation() {
+  document.getElementById('survey-results-box').style.display = 'block';
+  triggerSparkMascot("Survey launched! Responses received. Virtual feedback generated! 📊", 4000);
+  triggerSparklesAtCenter();
+}
+
+function completeStage3() {
+  appState.xp += 150;
+  appState.unlockedStage = Math.max(appState.unlockedStage, 4);
+  updateStateIndicators();
+  triggerSparkMascot("Stage 3 Complete! Unlocked Stage 4: Build MVP! 🔨", 5000);
+  
+  goToScreen('mainapp');
+  simSwitchTab('journey');
+  triggerConfetti();
+}
+
+// ------------------------------------------
+// Stage 4: Build MVP
+// ------------------------------------------
+
+function toggleMVPFeature(itemElement, cost, impact) {
+  const isSelected = itemElement.classList.toggle('selected');
+  
+  if (isSelected) {
+    if (appState.mvpBudget >= cost) {
+      appState.mvpBudget -= cost;
+      appState.selectedFeaturesCount++;
+      if (impact === 'High') {
+        appState.mvpImpactScore += 40;
+      } else {
+        appState.mvpImpactScore += 10;
+      }
+    } else {
+      // Over budget
+      itemElement.classList.remove('selected');
+      triggerSparkMascot("Not enough budget! Try removing other features.", 3000);
+      return;
+    }
+  } else {
+    appState.mvpBudget += cost;
+    appState.selectedFeaturesCount--;
+    if (impact === 'High') {
+      appState.mvpImpactScore -= 40;
+    } else {
+      appState.mvpImpactScore -= 10;
+    }
+  }
+
+  // Update Displays
+  document.getElementById('mvp-budget-val').textContent = `🪙 ${appState.mvpBudget}`;
+  
+  const scoreLbl = document.getElementById('mvp-impact-val');
+  if (appState.mvpImpactScore >= 80) {
+    scoreLbl.textContent = "High 🔥";
+    scoreLbl.style.color = "var(--success)";
+  } else if (appState.mvpImpactScore >= 40) {
+    scoreLbl.textContent = "Medium ⚡";
+    scoreLbl.style.color = "var(--warning)";
+  } else {
+    scoreLbl.textContent = "Low ❄️";
+    scoreLbl.style.color = "var(--error)";
+  }
+
+  const buildBtn = document.getElementById('btn-build-mvp');
+  if (appState.selectedFeaturesCount > 0) {
+    buildBtn.removeAttribute('disabled');
+  } else {
+    buildBtn.setAttribute('disabled', 'true');
+  }
+
+  triggerSparkles(itemElement);
+}
+
+function completeStage4() {
+  appState.xp += 200;
+  appState.unlockedStage = Math.max(appState.unlockedStage, 5);
+  updateStateIndicators();
+  triggerSparkMascot("Stage 4 Complete! Unlocked Stage 5: The Launch! 🚀", 5000);
+  
+  goToScreen('mainapp');
+  simSwitchTab('journey');
+  triggerConfetti();
+}
+
+// ------------------------------------------
+// Stage 5: The Launch (Rocket Animation)
+// ------------------------------------------
+
+function triggerRocketPropulsion() {
+  const rocket = document.getElementById('launch-rocket-bezel');
+  const exhaust = document.getElementById('launch-exhaust-flame');
+  const btnLaunch = document.getElementById('btn-startup-launch');
+  const btnCont = document.getElementById('btn-launch-continue');
+
+  btnLaunch.setAttribute('disabled', 'true');
+  btnLaunch.textContent = "Ignition starting...";
+
+  // 1. Shaking rumble
+  rocket.classList.add('rumble-shake');
+  exhaust.style.display = 'block';
+  exhaust.style.height = '40px';
+  triggerSparkMascot("Spark: 'All engines running! 3... 2... 1...'", 2500);
+
+  // 2. Blastoff lift
+  setTimeout(() => {
+    rocket.classList.remove('rumble-shake');
+    rocket.classList.add('blast-off');
+    exhaust.style.height = '80px';
+    triggerSparkMascot("Blastoff! Your startup is launched! 🚀✨", 4000);
+    triggerConfetti();
+  }, 3000);
+
+  // 3. Reveal next steps
+  setTimeout(() => {
+    btnLaunch.style.display = 'none';
+    btnCont.style.display = 'block';
+  }, 5000);
+}
+
+function completeStage5() {
+  appState.xp += 250;
+  appState.unlockedStage = Math.max(appState.unlockedStage, 6);
+  updateStateIndicators();
+  goToScreen('finalpitch');
+}
+
+function finishFinalPitch() {
+  appState.xp += 300;
+  appState.coins += 100;
+  updateStateIndicators();
+  triggerSparkMascot("Wow! You finished the entire journey and earned your certificate! 🎓", 6000);
+  
+  // Unlock all nodes
+  goToScreen('mainapp');
+  simSwitchTab('journey');
+  triggerConfetti();
+}
+
+// ------------------------------------------
+// Journey Map lock rendering
+// ------------------------------------------
+
+function renderJourneyMapLocks() {
+  const stageList = [
+    { id: 'node-stage0', num: 0 },
+    { id: 'node-stage1', num: 1 },
+    { id: 'node-stage2', num: 2 },
+    { id: 'node-stage3', num: 3 },
+    { id: 'node-stage4', num: 4 },
+    { id: 'node-stage5', num: 5 },
+    { id: 'node-final-pitch', num: 6 }
+  ];
+
+  stageList.forEach(st => {
+    const el = document.getElementById(st.id);
+    if (!el) return;
+
+    if (appState.unlockedStage >= st.num) {
+      el.classList.remove('node-locked');
+      el.classList.add('node-unlocked');
+      const lockBadge = el.querySelector('.node-cloud-lock');
+      if (lockBadge) {
+        lockBadge.className = 'node-badge-status';
+        lockBadge.textContent = '⭐ Start';
+      }
+    } else {
+      el.classList.add('node-locked');
+      el.classList.remove('node-unlocked');
+      const statBadge = el.querySelector('.node-badge-status');
+      if (statBadge) {
+        statBadge.className = 'node-cloud-lock';
+        statBadge.textContent = '🔒 Locked';
+      }
+    }
+  });
+}
+
+function tryLaunchStage(stageNum) {
+  if (appState.unlockedStage >= stageNum) {
+    if (stageNum === 1) goToScreen('stage1');
+    else if (stageNum === 2) goToScreen('stage2');
+    else if (stageNum === 3) goToScreen('stage3');
+    else if (stageNum === 4) goToScreen('stage4');
+    else if (stageNum === 5) goToScreen('stage5');
+    else if (stageNum === 'final-pitch') goToScreen('finalpitch');
+  } else {
+    triggerSparkMascot(`This stage is locked! Complete Stage ${stageNum - 1} first. 🔒`, 3000);
+  }
+}
+
+// ------------------------------------------
+// Settings controls & Resets
+// ------------------------------------------
+
+function toggleDarkModeSetting(checkbox) {
+  const isDark = checkbox.checked;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  triggerSparkMascot(`Theme switched to ${isDark ? 'Dark Mode' : 'Light Mode'}!`, 3000);
+}
+
+function simFullReset() {
+  appState = {
+    xp: 450,
+    coins: 150,
+    streak: 3,
+    currentLevel: 2,
+    unlockedStage: 0,
+    selectedDomain: "",
+    selectedChallenge: "Smart Healthcare Assistant",
+    selectedIdea: "",
+    emotionCheckedIn: "",
+    canvasFilled: false,
+    mvpBudget: 100,
+    mvpImpactScore: 0,
+    selectedFeaturesCount: 0,
+    currentOnboardingSlide: 1
+  };
+  
+  // Reset settings checklist check
+  document.getElementById('settings-dark-mode').checked = false;
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  updateStateIndicators();
+  goToScreen('splash');
+  setSlide(1);
+  triggerSparkMascot("All student progress has been reset! Let's start fresh. 🚀", 5000);
+}
+
+// ------------------------------------------
+// Sparkles & Confetti Animations engine
+// ------------------------------------------
+
+function triggerSparkles(element) {
+  const rect = element.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  createSparkleExplosion(x, y);
+}
+
+function triggerSparklesAtCenter() {
+  const x = window.innerWidth / 2;
+  const y = window.innerHeight / 2;
+  createSparkleExplosion(x, y);
+}
+
+function createSparkleExplosion(x, y) {
+  for (let i = 0; i < 20; i++) {
     const sparkle = document.createElement('div');
     sparkle.className = 'sim-sparkle';
     
+    // Colorful sparkles
+    const colors = ['#FF7A00', '#3B82F6', '#22C55E', '#EC4899', '#F59E0B', '#A855F7'];
+    sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    
+    // Set coordinates relative to viewport
+    sparkle.style.left = `${x}px`;
+    sparkle.style.top = `${y}px`;
+    
+    // Spread angle
     const angle = Math.random() * Math.PI * 2;
-    const distance = 15 + Math.random() * 45;
+    const distance = 40 + Math.random() * 50;
     const dx = Math.cos(angle) * distance;
     const dy = Math.sin(angle) * distance;
     
     sparkle.style.setProperty('--dx', `${dx}px`);
     sparkle.style.setProperty('--dy', `${dy}px`);
-    sparkle.style.left = `${x}px`;
-    sparkle.style.top = `${y}px`;
-    sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
     
-    card.appendChild(sparkle);
+    document.body.appendChild(sparkle);
     
+    // Clean up
     setTimeout(() => {
       sparkle.remove();
     }, 750);
   }
 }
 
-// Select a learning domain (Frame 2 & 3)
-function simSelectDomain(cardElement, domainName) {
-  if (!cardElement) return;
+function triggerConfetti() {
+  if (!elements.confettiCanvas) return;
+  elements.confettiCanvas.innerHTML = '';
   
-  // Trigger sparkle effect at click position
-  const event = window.event;
-  if (event) {
-    triggerSparkles(event, cardElement);
-  }
-
-  // Remove selection from all cards
-  const grid = cardElement.closest('.sim-domain-grid');
-  if (grid) {
-    grid.querySelectorAll('.sim-domain-card').forEach(card => {
-      card.classList.remove('selected');
-    });
-  }
-
-  // Add selection to clicked card
-  cardElement.classList.add('selected');
-  simSelectedDomain = domainName;
-
-  // Enable continue button
-  const continueBtn = document.getElementById('sim-btn-domain-continue');
-  if (continueBtn) {
-    continueBtn.removeAttribute('disabled');
-  }
-}
-
-// Select a challenge (Frame 4)
-function simSelectChallenge(cardElement, challengeName) {
-  if (!cardElement) return;
-
-  // Trigger sparkle effect
-  const event = window.event;
-  if (event) {
-    triggerSparkles(event, cardElement);
-  }
-
-  // Remove selection from all challenge cards
-  const list = cardElement.closest('.sim-challenge-list');
-  if (list) {
-    list.querySelectorAll('.sim-challenge-card').forEach(card => {
-      card.classList.remove('selected');
-    });
-  }
-
-  // Add selection to clicked card
-  cardElement.classList.add('selected');
-  simSelectedChallenge = challengeName;
-
-  // Enable continue button
-  const continueBtn = document.getElementById('sim-btn-challenge-continue');
-  if (continueBtn) {
-    continueBtn.removeAttribute('disabled');
+  for (let i = 0; i < 60; i++) {
+    const conf = document.createElement('div');
+    conf.className = 'confetti-piece';
+    
+    const colors = ['#FF7A00', '#EC4899', '#3B82F6', '#22C55E', '#F59E0B', '#A855F7'];
+    conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    
+    conf.style.left = `${Math.random() * 100}%`;
+    conf.style.top = `-20px`;
+    conf.style.width = `${6 + Math.random() * 8}px`;
+    conf.style.height = `${12 + Math.random() * 12}px`;
+    
+    // Delay and drift speed
+    conf.style.animationDelay = `${Math.random() * 1.5}s`;
+    conf.style.setProperty('--drift-x', `${-50 + Math.random() * 100}px`);
+    
+    elements.confettiCanvas.appendChild(conf);
+    
+    // Clean up
+    setTimeout(() => {
+      conf.remove();
+    }, 4000);
   }
 }
-
-// Reset simulator to Frame 1 (Splash)
-function simReset() {
-  simSelectedDomain = null;
-  simSelectedChallenge = null;
-
-  // Clear selections
-  document.querySelectorAll('.sim-domain-card').forEach(card => card.classList.remove('selected'));
-  document.querySelectorAll('.sim-challenge-card').forEach(card => card.classList.remove('selected'));
-
-  // Disable buttons
-  const domainBtn = document.getElementById('sim-btn-domain-continue');
-  if (domainBtn) domainBtn.setAttribute('disabled', 'true');
-
-  const challengeBtn = document.getElementById('sim-btn-challenge-continue');
-  if (challengeBtn) challengeBtn.setAttribute('disabled', 'true');
-
-  // Go to Splash
-  simGoToFrame(1);
-}
-
-console.log("StartupSage Design System Catalog Loaded Successfully.");
