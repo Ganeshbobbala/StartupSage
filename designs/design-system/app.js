@@ -204,3 +204,88 @@ function setProgressBarValue(pct) {
     label.style.color = 'var(--primary)';
   }
 }
+
+// ==========================================
+// MOBILE ONBOARDING SIMULATOR LOGIC
+// ==========================================
+
+let simSelectedDomain = null;
+let simSelectedChallenge = null;
+
+// Navigate between simulator screens
+function simGoToFrame(frameNum) {
+  // Hide all screens
+  document.querySelectorAll('.sim-screen').forEach(screen => {
+    screen.classList.remove('active', 'slide-in');
+  });
+
+  // Show target screen
+  const targetScreen = document.getElementById(`sim-frame-${frameNum}`);
+  if (targetScreen) {
+    targetScreen.classList.add('active');
+    
+    // Add slide-in animation unless going back to splash
+    if (frameNum !== 1) {
+      targetScreen.classList.add('slide-in');
+    }
+  }
+}
+
+// Select a learning domain (Frame 2 & 3)
+function simSelectDomain(cardElement, domainName) {
+  // Remove selection from all cards
+  const grid = cardElement.closest('.sim-domain-grid');
+  grid.querySelectorAll('.sim-domain-card').forEach(card => {
+    card.classList.remove('selected');
+  });
+
+  // Add selection to clicked card
+  cardElement.classList.add('selected');
+  simSelectedDomain = domainName;
+
+  // Enable continue button
+  const continueBtn = document.getElementById('sim-btn-domain-continue');
+  if (continueBtn) {
+    continueBtn.removeAttribute('disabled');
+  }
+}
+
+// Select a challenge (Frame 4)
+function simSelectChallenge(cardElement, challengeName) {
+  // Remove selection from all challenge cards
+  const list = cardElement.closest('.sim-challenge-list');
+  list.querySelectorAll('.sim-challenge-card').forEach(card => {
+    card.classList.remove('selected');
+  });
+
+  // Add selection to clicked card
+  cardElement.classList.add('selected');
+  simSelectedChallenge = challengeName;
+
+  // Enable continue button
+  const continueBtn = document.getElementById('sim-btn-challenge-continue');
+  if (continueBtn) {
+    continueBtn.removeAttribute('disabled');
+  }
+}
+
+// Reset simulator to Frame 1 (Splash)
+function simReset() {
+  simSelectedDomain = null;
+  simSelectedChallenge = null;
+
+  // Clear selections
+  document.querySelectorAll('.sim-domain-card').forEach(card => card.classList.remove('selected'));
+  document.querySelectorAll('.sim-challenge-card').forEach(card => card.classList.remove('selected'));
+
+  // Disable buttons
+  const domainBtn = document.getElementById('sim-btn-domain-continue');
+  if (domainBtn) domainBtn.setAttribute('disabled', 'true');
+
+  const challengeBtn = document.getElementById('sim-btn-challenge-continue');
+  if (challengeBtn) challengeBtn.setAttribute('disabled', 'true');
+
+  // Go to Splash
+  simGoToFrame(1);
+}
+

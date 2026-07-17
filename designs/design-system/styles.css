@@ -953,14 +953,572 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 50%;
 }
 
-input:checked + .slider {
-  background-color: var(--primary);
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px var(--primary);
-}
-
 input:checked + .slider:before {
   transform: translateX(20px);
 }
+
+/* ==========================================
+   MOBILE SIMULATOR & ONBOARDING PROTOTYPE
+   ========================================== */
+
+/* Simulator Wrapper Container */
+.simulator-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-4) 0;
+  background-color: var(--neutral-50);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--neutral-300);
+}
+
+.mobile-device-simulator {
+  width: 390px;
+  height: 844px;
+  background-color: var(--bg-app);
+  border: 12px solid #1E293B; /* Matte dark bezel */
+  border-radius: 48px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+/* iPhone Notch / Dynamic Island */
+.simulator-notch {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 30px;
+  background-color: #1E293B;
+  border-radius: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+
+.notch-camera {
+  width: 12px;
+  height: 12px;
+  background-color: #0F172A;
+  border-radius: 50%;
+}
+
+.notch-speaker {
+  width: 40px;
+  height: 4px;
+  background-color: #334155;
+  border-radius: 2px;
+}
+
+/* Mock Status Bar */
+.simulator-status-bar {
+  height: 44px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--neutral-800);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  pointer-events: none;
+}
+
+.status-bar-icons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* Mobile Screen Container */
+.simulator-screen-container {
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-app);
+}
+
+.sim-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  padding: 54px 20px 24px 20px; /* Space for status bar & safe area */
+  transition: background-color var(--transition-normal);
+}
+
+.sim-screen.active {
+  display: flex;
+}
+
+/* Screen animations */
+.sim-screen.slide-in {
+  animation: slideInScreen 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInScreen {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Screen 1: Splash */
+.sim-screen-splash {
+  background: linear-gradient(135deg, #FF9E40 0%, #FF7A00 100%);
+  color: #FFFFFF;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.sim-splash-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sim-splash-logo {
+  width: 72px;
+  height: 72px;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-headings);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  box-shadow: 0 10px 25px rgba(255, 122, 0, 0.2);
+}
+
+.sim-splash-title {
+  font-family: var(--font-headings);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-top: 4px;
+}
+
+.sim-splash-illustration {
+  width: 180px;
+  height: 180px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: var(--space-2) 0;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.sim-splash-illustration svg {
+  width: 90px;
+  height: 90px;
+  color: white;
+}
+
+.sim-splash-desc {
+  font-family: var(--font-headings);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #FFFFFF;
+  margin-bottom: var(--space-3);
+  text-align: center;
+  max-width: 280px;
+}
+
+/* Header within Simulator */
+.sim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+  width: 100%;
+}
+
+.sim-back-btn {
+  background: none;
+  border: none;
+  color: var(--neutral-800);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color var(--transition-fast);
+}
+
+.sim-back-btn:hover {
+  background-color: var(--neutral-100);
+}
+
+.sim-back-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.sim-step-indicator {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--neutral-500);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Screen Title and Subtitle */
+.sim-title-section {
+  margin-bottom: var(--space-2);
+}
+
+.sim-title {
+  font-family: var(--font-headings);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--neutral-900);
+  line-height: 1.3;
+}
+
+.sim-subtitle {
+  font-size: 0.8125rem;
+  color: var(--neutral-600);
+  margin-top: 4px;
+}
+
+/* Screen 2 & 3: Domain Selection Grid */
+.sim-domain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-bottom: var(--space-2);
+  max-height: 520px;
+}
+
+/* Hide scrollbar for layout purity */
+.sim-domain-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.sim-domain-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  min-height: 106px;
+}
+
+.sim-domain-card:hover {
+  border-color: var(--neutral-300);
+  transform: translateY(-1px);
+}
+
+.sim-domain-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+}
+
+.sim-domain-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--neutral-800);
+  line-height: 1.3;
+}
+
+/* Selected state for domain card */
+.sim-domain-card.selected {
+  border-color: var(--primary) !important;
+  background-color: var(--primary-light);
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--primary);
+}
+
+.sim-domain-card.selected .sim-domain-name {
+  color: var(--primary-pressed);
+}
+
+.sim-checkmark {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.sim-checkmark svg {
+  width: 10px;
+  height: 10px;
+  stroke: white;
+  stroke-width: 3;
+}
+
+.sim-domain-card.selected .sim-checkmark {
+  display: flex;
+}
+
+/* Footer Section inside Simulator */
+.sim-footer {
+  margin-top: auto;
+  padding-top: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.sim-btn-primary {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background-color: var(--primary);
+  border: none;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.sim-btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.sim-btn-primary:active {
+  background-color: var(--primary-pressed);
+}
+
+.sim-btn-primary:disabled {
+  background-color: var(--neutral-300) !important;
+  color: var(--neutral-500) !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.sim-btn-secondary {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--neutral-700);
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: color var(--transition-fast);
+}
+
+.sim-btn-secondary:hover {
+  color: var(--neutral-900);
+}
+
+/* Screen 4: Challenges list */
+.sim-challenge-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-bottom: var(--space-2);
+  max-height: 520px;
+}
+
+.sim-challenge-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 12px var(--space-2);
+  display: flex;
+  gap: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.sim-challenge-card:hover {
+  border-color: var(--neutral-300);
+}
+
+.sim-challenge-card.selected {
+  border-color: var(--primary) !important;
+  background-color: var(--primary-light);
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--primary);
+}
+
+.sim-challenge-card.selected .sim-challenge-title {
+  color: var(--primary-pressed);
+}
+
+.sim-challenge-ill {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: var(--neutral-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.sim-challenge-card.selected .sim-challenge-ill {
+  background-color: rgba(255, 122, 0, 0.1);
+}
+
+.sim-challenge-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sim-challenge-title {
+  font-family: var(--font-headings);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--neutral-900);
+}
+
+.sim-challenge-desc {
+  font-size: 0.75rem;
+  color: var(--neutral-600);
+  line-height: 1.35;
+}
+
+.sim-challenge-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.sim-badge {
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.sim-badge.sim-beginner { background-color: var(--success-bg); color: var(--success-text); }
+.sim-badge.sim-intermediate { background-color: var(--warning-bg); color: var(--warning-text); }
+.sim-badge.sim-advanced { background-color: var(--error-bg); color: var(--error-text); }
+
+.sim-challenge-time {
+  font-size: 0.625rem;
+  color: var(--neutral-500);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sim-challenge-time svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Screen 5: Emotional Hook */
+.sim-screen-hook {
+  background: linear-gradient(135deg, #FFFCF9 0%, #FFF5EB 100%);
+  justify-content: space-between;
+}
+
+[data-theme="dark"] .sim-screen-hook {
+  background: linear-gradient(135deg, #11151E 0%, #1A191D 100%);
+}
+
+.sim-hook-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.sim-hook-illustration {
+  width: 200px;
+  height: 200px;
+  background-color: var(--primary-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(255, 122, 0, 0.1);
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); box-shadow: 0 10px 25px rgba(255, 122, 0, 0.1); }
+  50% { transform: scale(1.03); box-shadow: 0 15px 35px rgba(255, 122, 0, 0.2); }
+  100% { transform: scale(1); box-shadow: 0 10px 25px rgba(255, 122, 0, 0.1); }
+}
+
+.sim-hook-illustration svg {
+  width: 100px;
+  height: 100px;
+  color: var(--primary);
+}
+
+.sim-hook-headline {
+  font-family: var(--font-headings);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--neutral-900);
+  line-height: 1.3;
+  padding: 0 12px;
+}
+
+.sim-hook-body {
+  font-size: 0.875rem;
+  color: var(--neutral-600);
+  line-height: 1.45;
+  padding: 0 16px;
+}
+
