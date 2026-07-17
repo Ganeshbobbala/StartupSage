@@ -1,0 +1,206 @@
+// Navigation Switcher
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    // Remove active from all links and sections
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
+    
+    // Add active to current link and section
+    const targetSectionId = link.getAttribute('data-section');
+    link.classList.add('active');
+    
+    const targetSection = document.getElementById(targetSectionId);
+    if (targetSection) {
+      targetSection.classList.add('active');
+    }
+  });
+});
+
+// Theme Switcher (Light / Dark Mode)
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('change', () => {
+  if (themeToggle.checked) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+});
+
+// Clipboard Copy Helper for Color Cards
+document.querySelectorAll('.color-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const hex = card.getAttribute('data-color');
+    navigator.clipboard.writeText(hex).then(() => {
+      const hexEl = card.querySelector('.color-hex');
+      const originalText = hexEl.textContent;
+      hexEl.textContent = 'Copied!';
+      hexEl.style.color = 'var(--success)';
+      setTimeout(() => {
+        hexEl.textContent = originalText;
+        hexEl.style.color = '';
+      }, 1200);
+    });
+  });
+});
+
+// Clipboard Copy Helper for Code Snippets
+function copyCode(button) {
+  const codeBlock = button.nextElementSibling.querySelector('code');
+  navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+    const originalText = button.textContent;
+    button.textContent = 'Copied!';
+    setTimeout(() => {
+      button.textContent = originalText;
+    }, 1200);
+  });
+}
+
+// Clipboard Copy Helper for Textareas (Developer Tokens)
+function copyTextarea(id) {
+  const textarea = document.getElementById(id);
+  textarea.select();
+  document.execCommand('copy');
+  
+  // Visual feedback on the button
+  const button = textarea.previousElementSibling;
+  const originalText = button.textContent;
+  button.textContent = 'Copied!';
+  setTimeout(() => {
+    button.textContent = originalText;
+  }, 1200);
+}
+
+// 1 & 2. Interactive Button State Controller
+function setBtnState(type, state) {
+  const btn = document.getElementById(`${type}-btn-preview`);
+  const card = document.getElementById(`comp-${type}-btn`);
+  
+  // Reset all state controls highlights
+  card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+  
+  // Highlight clicked control button
+  const event = window.event;
+  if (event && event.target) {
+    event.target.classList.add('active');
+  }
+
+  // Remove existing mock state classes
+  btn.classList.remove('state-hover', 'state-pressed');
+  btn.removeAttribute('disabled');
+
+  // Apply new state
+  if (state === 'hover') {
+    btn.classList.add('state-hover');
+  } else if (state === 'pressed') {
+    btn.classList.add('state-pressed');
+  } else if (state === 'disabled') {
+    btn.setAttribute('disabled', 'true');
+  }
+}
+
+// 5. Interactive Content Card Progress Controller
+function setCardProgress(pct) {
+  const fill = document.getElementById('card-progress-fill');
+  const label = document.getElementById('card-pct-label');
+  const card = document.getElementById('comp-content-card');
+
+  // Reset controls active state
+  card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+  
+  // Highlight clicked control
+  if (window.event && window.event.target) {
+    window.event.target.classList.add('active');
+  } else {
+    // Fallback if triggered programmatically
+    const btn = document.getElementById(`btn-card-${pct}`);
+    if (btn) btn.classList.add('active');
+  }
+
+  // Update progress width and text label
+  fill.style.width = `${pct}%`;
+  label.textContent = `${pct}%`;
+}
+
+// 6. Interactive Bottom Nav Tab Switcher
+function switchNavTab(tabElement, screenName) {
+  const nav = tabElement.closest('.bottom-nav');
+  nav.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+  
+  tabElement.classList.add('active');
+  
+  const screenLabel = document.getElementById('nav-screen-label');
+  screenLabel.textContent = `${screenName} Screen`;
+}
+
+// 7. Interactive Input Field Variant Controller
+function setInputVariant(variant) {
+  const field = document.getElementById('input-field-preview');
+  const label = document.getElementById('input-preview-label');
+  const container = document.getElementById('input-container-preview');
+  const errorMsg = document.getElementById('input-error-msg');
+  const card = document.getElementById('comp-input-field');
+
+  // Reset controls
+  card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+  if (window.event && window.event.target) {
+    window.event.target.classList.add('active');
+  }
+
+  // Clear all states
+  field.classList.remove('state-focus', 'state-filled', 'state-error', 'state-disabled');
+  field.removeAttribute('disabled');
+  container.classList.remove('error');
+  errorMsg.style.display = 'none';
+  label.style.color = '';
+
+  if (variant === 'default') {
+    field.value = '';
+    field.placeholder = 'Enter your name';
+  } else if (variant === 'focus') {
+    field.value = 'Gani';
+    field.classList.add('state-focus');
+    field.focus();
+  } else if (variant === 'filled') {
+    field.value = 'Ganesh Bobbala';
+    field.classList.add('state-filled');
+  } else if (variant === 'error') {
+    field.value = 'G@nesh123';
+    field.classList.add('state-error');
+    container.classList.add('error');
+    errorMsg.style.display = 'flex';
+  } else if (variant === 'disabled') {
+    field.value = 'Ganesh Bobbala';
+    field.setAttribute('disabled', 'true');
+    field.classList.add('state-disabled');
+  }
+}
+
+// 8. Interactive Progress Bar Controller
+function setProgressBarValue(pct) {
+  const fill = document.getElementById('overall-progress-fill');
+  const label = document.getElementById('overall-pct-label');
+  const card = document.getElementById('comp-progress-bar');
+
+  // Reset controls
+  card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+  if (window.event && window.event.target) {
+    window.event.target.classList.add('active');
+  } else {
+    const btn = document.getElementById(`btn-overall-${pct}`);
+    if (btn) btn.classList.add('active');
+  }
+
+  // Update fill width and color based on completion
+  fill.style.width = `${pct}%`;
+  label.textContent = `${pct}%`;
+
+  if (pct === 100) {
+    fill.classList.add('success');
+    label.style.color = 'var(--success)';
+  } else {
+    fill.classList.remove('success');
+    label.style.color = 'var(--primary)';
+  }
+}

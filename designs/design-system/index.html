@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StartupSage Design System — Production Ready</title>
+  <meta name="description" content="Production-ready design system tokens, typography, and interactive components for the StartupSage entrepreneurship platform.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside>
+    <div class="brand-section">
+      <div class="brand-logo">S</div>
+      <div class="brand-name">StartupSage</div>
+    </div>
+    <ul class="nav-links">
+      <li><a class="nav-link active" data-section="overview">Overview</a></li>
+      <li><a class="nav-link" data-section="colors">Color System</a></li>
+      <li><a class="nav-link" data-section="typography">Typography</a></li>
+      <li><a class="nav-link" data-section="components">Components</a></li>
+      <li><a class="nav-link" data-section="tokens">Developer Tokens</a></li>
+    </ul>
+    
+    <!-- Theme Toggle Switch -->
+    <div class="theme-toggle-container">
+      <span class="theme-label">Dark Mode</span>
+      <label class="switch">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </aside>
+
+  <!-- Main Content Showcase -->
+  <main class="showcase-content">
+    
+    <!-- SECTION 1: OVERVIEW -->
+    <section id="overview" class="doc-section active">
+      <h1>Overview</h1>
+      <p class="section-desc">Welcome to the official StartupSage Design System. This document serves as the living source of truth for all designers and developers working on the platform.</p>
+      
+      <div class="sub-section">
+        <h2>Principles</h2>
+        <p>Our design system is built to reflect the core values of experiential learning: modern, clean, accessible, and fast. Spacing is governed by a strict <strong>8-point grid</strong>, corners are kept friendly with a <strong>8–12px radius</strong>, and colors are chosen to maintain a warm but professional tone.</p>
+      </div>
+
+      <div class="sub-section">
+        <h2>Inspiration</h2>
+        <p>This design system draws visual aesthetics from industry-leading platforms:</p>
+        <ul style="margin-left: 24px; margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
+          <li><strong>Duolingo:</strong> Friendly elements, thick borders, badges, and progress feedback.</li>
+          <li><strong>Coursera:</strong> Clean structured course grids, metadata lists, and cards.</li>
+          <li><strong>Linear:</strong> Gorgeous dark mode gradients, fine borders, and minimal accents.</li>
+          <li><strong>Notion:</strong> Simple grids, typography spacing, and functional inputs.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECTION 2: COLORS -->
+    <section id="colors" class="doc-section">
+      <h1>Color System</h1>
+      <p class="section-desc">A carefully curated color system to support high contrast, accessible reading, and distinct learning domains. Click any swatch to copy its Hex code.</p>
+
+      <div class="sub-section">
+        <h2>Primary Brand Color</h2>
+        <div class="color-grid">
+          <div class="color-card" data-color="#FF7A00">
+            <div class="color-swatch" style="background-color: var(--primary);"></div>
+            <div class="color-info">
+              <div class="color-name">BPT Orange (Primary)</div>
+              <div class="color-hex">#FF7A00</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#E06C00">
+            <div class="color-swatch" style="background-color: var(--primary-hover);"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Hover</div>
+              <div class="color-hex">#E06C00</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#C25E00">
+            <div class="color-swatch" style="background-color: var(--primary-pressed);"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Pressed</div>
+              <div class="color-hex">#C25E00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h2>Neutrals</h2>
+        <div class="color-grid">
+          <div class="color-card" data-color="#F8F9FA">
+            <div class="color-swatch" style="background-color: var(--neutral-50); border-bottom: 1px solid var(--border-color);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 50 (App Bg)</div>
+              <div class="color-hex">#F8F9FA</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#F1F3F5">
+            <div class="color-swatch" style="background-color: var(--neutral-100);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 100</div>
+              <div class="color-hex">#F1F3F5</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#E9ECEF">
+            <div class="color-swatch" style="background-color: var(--neutral-200);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 200 (Borders)</div>
+              <div class="color-hex">#E9ECEF</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#DEE2E6">
+            <div class="color-swatch" style="background-color: var(--neutral-300);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 300</div>
+              <div class="color-hex">#DEE2E6</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#CED4DA">
+            <div class="color-swatch" style="background-color: var(--neutral-400);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 400</div>
+              <div class="color-hex">#CED4DA</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#ADB5BD">
+            <div class="color-swatch" style="background-color: var(--neutral-500);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 500</div>
+              <div class="color-hex">#ADB5BD</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#868E96">
+            <div class="color-swatch" style="background-color: var(--neutral-600);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 600</div>
+              <div class="color-hex">#868E96</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#495057">
+            <div class="color-swatch" style="background-color: var(--neutral-700);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 700</div>
+              <div class="color-hex">#495057</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#343A40">
+            <div class="color-swatch" style="background-color: var(--neutral-800);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 800</div>
+              <div class="color-hex">#343A40</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#212529">
+            <div class="color-swatch" style="background-color: var(--neutral-900);"></div>
+            <div class="color-info">
+              <div class="color-name">Gray 900</div>
+              <div class="color-hex">#212529</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h2>Semantic Colors</h2>
+        <div class="color-grid">
+          <div class="color-card" data-color="#22C55E">
+            <div class="color-swatch" style="background-color: var(--success);"></div>
+            <div class="color-info">
+              <div class="color-name">Success</div>
+              <div class="color-hex">#22C55E</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#EF4444">
+            <div class="color-swatch" style="background-color: var(--error);"></div>
+            <div class="color-info">
+              <div class="color-name">Error</div>
+              <div class="color-hex">#EF4444</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#F59E0B">
+            <div class="color-swatch" style="background-color: var(--warning);"></div>
+            <div class="color-info">
+              <div class="color-name">Warning</div>
+              <div class="color-hex">#F59E0B</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#3B82F6">
+            <div class="color-swatch" style="background-color: var(--info);"></div>
+            <div class="color-info">
+              <div class="color-name">Info</div>
+              <div class="color-hex">#3B82F6</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h2>Domain Colors</h2>
+        <div class="color-grid">
+          <div class="color-card" data-color="#8B5CF6">
+            <div class="color-swatch" style="background-color: var(--domain-ai);"></div>
+            <div class="color-info">
+              <div class="color-name">AI & ML</div>
+              <div class="color-hex">#8B5CF6</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#3B82F6">
+            <div class="color-swatch" style="background-color: var(--domain-web);"></div>
+            <div class="color-info">
+              <div class="color-name">Web Development</div>
+              <div class="color-hex">#3B82F6</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#06B6D4">
+            <div class="color-swatch" style="background-color: var(--domain-data);"></div>
+            <div class="color-info">
+              <div class="color-name">Data Science</div>
+              <div class="color-hex">#06B6D4</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#0EA5E9">
+            <div class="color-swatch" style="background-color: var(--domain-cloud);"></div>
+            <div class="color-info">
+              <div class="color-name">Cloud Computing</div>
+              <div class="color-hex">#0EA5E9</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#F43F5E">
+            <div class="color-swatch" style="background-color: var(--domain-cyber);"></div>
+            <div class="color-info">
+              <div class="color-name">Cyber Security</div>
+              <div class="color-hex">#F43F5E</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#EC4899">
+            <div class="color-swatch" style="background-color: var(--domain-design);"></div>
+            <div class="color-info">
+              <div class="color-name">UI/UX Design</div>
+              <div class="color-hex">#EC4899</div>
+            </div>
+          </div>
+          <div class="color-card" data-color="#10B981">
+            <div class="color-swatch" style="background-color: var(--domain-mobile);"></div>
+            <div class="color-info">
+              <div class="color-name">Mobile Development</div>
+              <div class="color-hex">#10B981</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: TYPOGRAPHY -->
+    <section id="typography" class="doc-section">
+      <h1>Typography</h1>
+      <p class="section-desc">Our text sizes and hierarchy are built using **Plus Jakarta Sans** for headings to add personality, and **Inter** for body text to maximize readability.</p>
+
+      <div class="sub-section">
+        <h2>Typography Hierarchy</h2>
+        <table class="font-spec-table">
+          <thead>
+            <tr>
+              <th>Style Name</th>
+              <th>Preview</th>
+              <th>Font Family</th>
+              <th>Size / Line Height</th>
+              <th>Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>H1</td>
+              <td class="ts-h1">The Spark</td>
+              <td>Plus Jakarta Sans</td>
+              <td>2.25rem (36px) / 1.2</td>
+              <td>Extra Bold (800)</td>
+            </tr>
+            <tr>
+              <td>H2</td>
+              <td class="ts-h2">Choose Your Path</td>
+              <td>Plus Jakarta Sans</td>
+              <td>1.75rem (28px) / 1.25</td>
+              <td>Bold (700)</td>
+            </tr>
+            <tr>
+              <td>H3</td>
+              <td class="ts-h3">Business Canvas</td>
+              <td>Plus Jakarta Sans</td>
+              <td>1.5rem (24px) / 1.3</td>
+              <td>Bold (700)</td>
+            </tr>
+            <tr>
+              <td>H4</td>
+              <td class="ts-h4">Budgets & seed funding</td>
+              <td>Plus Jakarta Sans</td>
+              <td>1.25rem (20px) / 1.35</td>
+              <td>Semi Bold (600)</td>
+            </tr>
+            <tr>
+              <td>H5</td>
+              <td class="ts-h5">Stage 5: The Wall</td>
+              <td>Plus Jakarta Sans</td>
+              <td>1.125rem (18px) / 1.4</td>
+              <td>Semi Bold (600)</td>
+            </tr>
+            <tr>
+              <td>Body Large</td>
+              <td class="ts-body-lg">Pick a domain to start your entrepreneurship journey.</td>
+              <td>Inter</td>
+              <td>1.125rem (18px) / 1.5</td>
+              <td>Regular (400)</td>
+            </tr>
+            <tr>
+              <td>Body Medium</td>
+              <td class="ts-body-md">Learn by doing in real-world simulated startup scenarios.</td>
+              <td>Inter</td>
+              <td>1rem (16px) / 1.5</td>
+              <td>Regular (400)</td>
+            </tr>
+            <tr>
+              <td>Body Small</td>
+              <td class="ts-body-sm">Your seed budget is limited. Spend wisely across tech and ads.</td>
+              <td>Inter</td>
+              <td>0.875rem (14px) / 1.5</td>
+              <td>Regular (400)</td>
+            </tr>
+            <tr>
+              <td>Caption</td>
+              <td class="ts-caption">Updated 5 minutes ago</td>
+              <td>Inter</td>
+              <td>0.75rem (12px) / 1.4</td>
+              <td>Medium (500)</td>
+            </tr>
+            <tr>
+              <td>Button Text</td>
+              <td class="ts-btn-text">START PLAYING</td>
+              <td>Inter</td>
+              <td>0.875rem (14px) / 1.4</td>
+              <td>Semi Bold (600)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 4: COMPONENTS -->
+    <section id="components" class="doc-section">
+      <h1>Figma Reusable Components</h1>
+      <p class="section-desc">Interactive replicas of our 8 core components with variants, states, auto layout properties, and CSS code.</p>
+
+      <div class="component-demo-grid">
+        
+        <!-- 1. PRIMARY BUTTON -->
+        <div class="demo-card" id="comp-primary-btn">
+          <div class="demo-header">
+            <span class="demo-title">1. Primary Button</span>
+            <span class="badge-stage stage-advanced">Interactive</span>
+          </div>
+          <div class="demo-body">
+            <button class="btn-primary" id="primary-btn-preview">Start Simulation</button>
+          </div>
+          <div class="demo-controls">
+            <label>State Variant:</label>
+            <button class="control-btn active" onclick="setBtnState('primary', 'default')">Default</button>
+            <button class="control-btn" onclick="setBtnState('primary', 'hover')">Hover Mode</button>
+            <button class="control-btn" onclick="setBtnState('primary', 'pressed')">Pressed Mode</button>
+            <button class="control-btn" onclick="setBtnState('primary', 'disabled')">Disabled</button>
+          </div>
+          <div class="code-preview">
+            <button class="btn-copy-code" onclick="copyCode(this)">Copy CSS</button>
+            <pre><code class="language-css">/* Primary Button Tokens */
+.btn-primary {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background-color: var(--primary); /* #FF7A00 */
+  padding: 12px 24px;
+  border-radius: var(--radius-md); /* 8px */
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 2. SECONDARY BUTTON -->
+        <div class="demo-card" id="comp-secondary-btn">
+          <div class="demo-header">
+            <span class="demo-title">2. Secondary Button</span>
+            <span class="badge-stage stage-advanced">Interactive</span>
+          </div>
+          <div class="demo-body">
+            <button class="btn-secondary" id="secondary-btn-preview">Go Back</button>
+          </div>
+          <div class="demo-controls">
+            <label>State Variant:</label>
+            <button class="control-btn active" onclick="setBtnState('secondary', 'default')">Default</button>
+            <button class="control-btn" onclick="setBtnState('secondary', 'hover')">Hover Mode</button>
+            <button class="control-btn" onclick="setBtnState('secondary', 'pressed')">Pressed Mode</button>
+            <button class="control-btn" onclick="setBtnState('secondary', 'disabled')">Disabled</button>
+          </div>
+          <div class="code-preview">
+            <button class="btn-copy-code" onclick="copyCode(this)">Copy CSS</button>
+            <pre><code class="language-css">/* Secondary Button Tokens */
+.btn-secondary {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--neutral-800);
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  padding: 11px 23px;
+  border-radius: var(--radius-md); /* 8px */
+  box-shadow: var(--shadow-sm);
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 3. DOMAIN BADGE -->
+        <div class="demo-card" id="comp-domain-badge">
+          <div class="demo-header">
+            <span class="demo-title">3. Domain Badges</span>
+            <span class="badge-stage stage-beginner">Static Tokens</span>
+          </div>
+          <div class="demo-body" style="flex-direction: row; flex-wrap: wrap; gap: var(--space-2);">
+            <span class="badge-domain domain-ai">AI & Machine Learning</span>
+            <span class="badge-domain domain-web">Web Development</span>
+            <span class="badge-domain domain-data">Data Science</span>
+            <span class="badge-domain domain-cloud">Cloud Computing</span>
+            <span class="badge-domain domain-cyber">Cyber Security</span>
+            <span class="badge-domain domain-design">UI/UX Design</span>
+            <span class="badge-domain domain-mobile">Mobile Development</span>
+          </div>
+          <div class="code-preview">
+            <button class="btn-copy-code" onclick="copyCode(this)">Copy CSS</button>
+            <pre><code class="language-css">/* Domain Badge Base */
+.badge-domain {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill); /* 9999px */
+}
+/* Color variant example */
+.badge-domain.domain-ai {
+  background-color: var(--domain-ai-bg); /* #EDE9FE */
+  color: var(--domain-ai); /* #8B5CF6 */
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 4. STAGE BADGE -->
+        <div class="demo-card" id="comp-stage-badge">
+          <div class="demo-header">
+            <span class="demo-title">4. Stage Badges</span>
+            <span class="badge-stage stage-beginner">Static Tokens</span>
+          </div>
+          <div class="demo-body" style="flex-direction: row; gap: var(--space-2);">
+            <span class="badge-stage stage-beginner">Beginner</span>
+            <span class="badge-stage stage-intermediate">Intermediate</span>
+            <span class="badge-stage stage-advanced">Advanced</span>
+          </div>
+          <div class="code-preview">
+            <button class="btn-copy-code" onclick="copyCode(this)">Copy CSS</button>
+            <pre><code class="language-css">/* Stage Badge Base with Auto Layout Dot */
+.badge-stage {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm); /* 4px */
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.badge-stage::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 5. CONTENT CARD -->
+        <div class="demo-card" id="comp-content-card">
+          <div class="demo-header">
+            <span class="demo-title">5. Content Card</span>
+            <span class="badge-stage stage-intermediate">Composite Component</span>
+          </div>
+          <div class="demo-body" style="align-items: center; justify-content: center; width: 100%;">
+            <div class="card-content">
+              <img src="course_spark_thumbnail.png" alt="Startup Spark" class="card-thumbnail">
+              <div class="card-body">
+                <div class="card-meta">
+                  <span class="badge-domain domain-design">UI/UX Design</span>
+                  <span class="badge-stage stage-beginner">Beginner</span>
+                </div>
+                <h3 class="card-title">Foundations of Product Design</h3>
+                <p class="card-description">Learn to construct solid design systems, handle typography, colors, and layout constraints to craft beautiful interactive prototypes.</p>
+                
+                <div class="card-progress-section">
+                  <div class="card-progress-label">
+                    <span>Course Progress</span>
+                    <span class="card-progress-pct" id="card-pct-label">50%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="card-progress-fill" style="width: 50%;"></div>
+                  </div>
+                </div>
+
+                <button class="btn-primary" style="width: 100%; margin-top: var(--space-1);">Resume Learning</button>
+              </div>
+            </div>
+          </div>
+          <div class="demo-controls">
+            <label>Set Progress:</label>
+            <button class="control-btn" onclick="setCardProgress(0)">0%</button>
+            <button class="control-btn" onclick="setCardProgress(25)">25%</button>
+            <button class="control-btn active" id="btn-card-50" onclick="setCardProgress(50)">50%</button>
+            <button class="control-btn" onclick="setCardProgress(75)">75%</button>
+            <button class="control-btn" onclick="setCardProgress(100)">100%</button>
+          </div>
+          <div class="code-preview">
+            <button class="btn-copy-code" onclick="copyCode(this)">Copy HTML</button>
+            <pre><code class="language-html">&lt;div class="card-content"&gt;
+  &lt;img src="course_spark_thumbnail.png" class="card-thumbnail"&gt;
+  &lt;div class="card-body"&gt;
+    &lt;span class="badge-domain domain-design"&gt;UI/UX Design&lt;/span&gt;
+    &lt;h3 class="card-title"&gt;Foundations of Product Design&lt;/h3&gt;
+    &lt;p class="card-description"&gt;Learn to construct solid design systems...&lt;/p&gt;
+    &lt;div class="progress-bar"&gt;
+      &lt;div class="progress-fill" style="width: 50%;"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button class="btn-primary"&gt;Resume Learning&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- 6. BOTTOM NAVIGATION BAR -->
+        <div class="demo-card" id="comp-bottom-nav">
+          <div class="demo-header">
+            <span class="demo-title">6. Bottom Navigation Bar</span>
+            <span class="badge-stage stage-advanced">Interactive Tabs</span>
+          </div>
+          <div class="demo-body" style="align-items: center; justify-content: center; width: 100%;">
+            <!-- Mobile Preview Frame -->
+            <div class="mobile-nav-preview-frame">
+              <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; font-family: var(--font-headings); font-size: 1.25rem; font-weight: 700; color: var(--neutral-600);" id="nav-screen-label">
+                Home Screen
+              </div>
+              <nav class="bottom-nav">
+                <a class="nav-tab active" onclick="switchNavTab(this, 'Home')">
+                  <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                  <span>Home</span>
+                </a>
+                <a class="nav-tab" onclick="switchNavTab(this, 'Learn')">
+                  <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  <span>Learn</span>
+                </a>
+                <a class="nav-tab" onclick="switchNavTab(this, 'Explore')">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                  <span>Explore</span>
+                </a>
+                <a class="nav-tab" onclick="switchNavTab(this, 'Profile')">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <span>Profile</span>
+                </a>
+              </nav>
+            </div>
+          </div>
+          <div class="code-preview">
+            <button class="btn-copy-code" onclick="copyCode(this)">Copy HTML</button>
+            <pre><code class="language-html">&lt;nav class="bottom-nav"&gt;
+  &lt;a class="nav-tab active"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+    &lt;span&gt;Home&lt;/span&gt;
+  &lt;/a&gt;
+  &lt;a class="nav-tab"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+    &lt;span&gt;Learn&lt;/span&gt;
+  &lt;/a&gt;
+  ...
+&lt;/nav&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- 7. INPUT FIELD -->
+        <div class="demo-card" id="comp-input-field">
+          <div class="demo-header">
+            <span class="demo-title">7. Input Field</span>
+            <span class="badge-stage stage-advanced">Interactive</span>
+          </div>
+          <div class="demo-body" style="align-items: center; justify-content: center; width: 100%;">
+            <div class="input-group" id="input-preview-group">
+              <label class="input-label" id="input-preview-label">Full Name</label>
+              <div class="input-container" id="input-container-preview">
+                <input type="text" class="input-field" id="input-field-preview" placeholder="Enter your full name" value="Ganesh Bobbala">
+              </div>
+              <div class="input-error-msg" id="input-error-msg" style="display: none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Please enter a valid name
+              </div>
+            </div>
+          </div>
+          <div class="demo-controls">
+            <label>Variants:</label>
+            <button class="control-btn" onclick="setInputVariant('default')">Default (Blank)</button>
+            <button class="control-btn" onclick="setInputVariant('focus')">Focus</button>
+            <button class="control-btn active" onclick="setInputVariant('filled')">Filled</button>
+            <button class="control-btn" onclick="setInputVariant('error')">Error</button>
+            <button class="control-btn" onclick="setInputVariant('disabled')">Disabled</button>
+          </div>
+          <div class="code-preview">
+            <button class="btn-copy-code" onclick="copyCode(this)">Copy HTML</button>
+            <pre><code class="language-html">&lt;div class="input-group"&gt;
+  &lt;label class="input-label"&gt;Full Name&lt;/label&gt;
+  &lt;input type="text" class="input-field" placeholder="Enter your name"&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- 8. PROGRESS BAR -->
+        <div class="demo-card" id="comp-progress-bar">
+          <div class="demo-header">
+            <span class="demo-title">8. Progress Bar</span>
+            <span class="badge-stage stage-advanced">Animated</span>
+          </div>
+          <div class="demo-body" style="width: 100%;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; color: var(--neutral-700); margin-bottom: 6px; width: 100%;">
+              <span>Overall Completion</span>
+              <span id="overall-pct-label" style="color: var(--primary);">75%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="overall-progress-fill" style="width: 75%;"></div>
+            </div>
+          </div>
+          <div class="demo-controls">
+            <label>Progress Value:</label>
+            <button class="control-btn" onclick="setProgressBarValue(0)">0%</button>
+            <button class="control-btn" onclick="setProgressBarValue(25)">25%</button>
+            <button class="control-btn" onclick="setProgressBarValue(50)">50%</button>
+            <button class="control-btn active" id="btn-overall-75" onclick="setProgressBarValue(75)">75%</button>
+            <button class="control-btn" onclick="setProgressBarValue(100)">100%</button>
+          </div>
+          <div class="code-preview">
+            <button class="btn-copy-code" onclick="copyCode(this)">Copy CSS</button>
+            <pre><code class="language-css">/* Progress Bar Core Classes */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--neutral-200);
+  border-radius: var(--radius-pill);
+}
+.progress-fill {
+  height: 100%;
+  background-color: var(--primary); /* #FF7A00 */
+  border-radius: var(--radius-pill);
+  transition: width var(--transition-normal);
+}</code></pre>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: TOKENS -->
+    <section id="tokens" class="doc-section">
+      <h1>Developer Tokens</h1>
+      <p class="section-desc">Copy these variables directly into your Flutter, CSS, or JSON config files to maintain 100% consistency with the designs.</p>
+
+      <div class="sub-section">
+        <h2>CSS Custom Properties</h2>
+        <div class="code-preview">
+          <button class="btn-copy-code" onclick="copyTextarea('token-css-code')">Copy CSS variables</button>
+          <textarea id="token-css-code" style="width: 100%; height: 260px; background: transparent; border: none; color: inherit; font-family: inherit; font-size: inherit; resize: none; outline: none;" readonly>
+:root {
+  /* Fonts */
+  --font-headings: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Spacing Grid (8px base) */
+  --space-8px: 8px;
+  --space-16px: 16px;
+  --space-24px: 24px;
+  --space-32px: 32px;
+  --space-40px: 40px;
+
+  /* Radii */
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Colors */
+  --primary: #FF7A00;
+  --primary-hover: #E06C00;
+  --primary-pressed: #C25E00;
+
+  /* Neutrals */
+  --neutral-50: #F8F9FA;
+  --neutral-100: #F1F3F5;
+  --neutral-200: #E9ECEF;
+  --neutral-300: #DEE2E6;
+  --neutral-400: #CED4DA;
+  --neutral-800: #343A40;
+  --neutral-900: #212529;
+
+  /* Semantics */
+  --success: #22C55E;
+  --error: #EF4444;
+  --warning: #F59E0B;
+  --info: #3B82F6;
+}</textarea>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h2>JSON Design Tokens</h2>
+        <div class="code-preview">
+          <button class="btn-copy-code" onclick="copyTextarea('token-json-code')">Copy JSON</button>
+          <textarea id="token-json-code" style="width: 100%; height: 260px; background: transparent; border: none; color: inherit; font-family: inherit; font-size: inherit; resize: none; outline: none;" readonly>
+{
+  "global": {
+    "spacing": {
+      "base": { "value": "8px" },
+      "medium": { "value": "16px" },
+      "large": { "value": "24px" }
+    },
+    "radii": {
+      "standard": { "value": "8px" },
+      "card": { "value": "12px" }
+    }
+  },
+  "colors": {
+    "primary": { "value": "#FF7A00" },
+    "success": { "value": "#22C55E" },
+    "error": { "value": "#EF4444" },
+    "neutrals": {
+      "50": { "value": "#F8F9FA" },
+      "200": { "value": "#E9ECEF" },
+      "800": { "value": "#343A40" },
+      "900": { "value": "#212529" }
+    }
+  }
+}</textarea>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
