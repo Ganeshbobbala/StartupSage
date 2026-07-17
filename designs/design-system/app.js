@@ -253,10 +253,49 @@ function simGoToFrame(frameNum) {
   }
 }
 
+// Sparkle Particle Effect Generator (Duolingo Style)
+function triggerSparkles(event, card) {
+  if (!card || !event) return;
+  const rect = card.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  
+  const colors = ['#FF7A00', '#22C55E', '#3B82F6', '#F59E0B', '#EF4444', '#EC4899', '#8B5CF6'];
+  const particleCount = 14;
+  
+  for (let i = 0; i < particleCount; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sim-sparkle';
+    
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 15 + Math.random() * 45;
+    const dx = Math.cos(angle) * distance;
+    const dy = Math.sin(angle) * distance;
+    
+    sparkle.style.setProperty('--dx', `${dx}px`);
+    sparkle.style.setProperty('--dy', `${dy}px`);
+    sparkle.style.left = `${x}px`;
+    sparkle.style.top = `${y}px`;
+    sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    
+    card.appendChild(sparkle);
+    
+    setTimeout(() => {
+      sparkle.remove();
+    }, 750);
+  }
+}
+
 // Select a learning domain (Frame 2 & 3)
 function simSelectDomain(cardElement, domainName) {
   if (!cardElement) return;
   
+  // Trigger sparkle effect at click position
+  const event = window.event;
+  if (event) {
+    triggerSparkles(event, cardElement);
+  }
+
   // Remove selection from all cards
   const grid = cardElement.closest('.sim-domain-grid');
   if (grid) {
@@ -279,6 +318,12 @@ function simSelectDomain(cardElement, domainName) {
 // Select a challenge (Frame 4)
 function simSelectChallenge(cardElement, challengeName) {
   if (!cardElement) return;
+
+  // Trigger sparkle effect
+  const event = window.event;
+  if (event) {
+    triggerSparkles(event, cardElement);
+  }
 
   // Remove selection from all challenge cards
   const list = cardElement.closest('.sim-challenge-list');

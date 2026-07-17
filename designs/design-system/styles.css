@@ -1522,3 +1522,191 @@ input:checked + .slider:before {
   padding: 0 16px;
 }
 
+/* ==========================================
+   GAMIFIED EXTENSIONS (CLASS 6-12 REDESIGN)
+   ========================================== */
+
+/* Springy transitions on all simulator buttons and cards */
+.sim-domain-card, 
+.sim-challenge-card, 
+.sim-btn-primary, 
+.sim-btn-secondary, 
+.sim-back-btn {
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.35) !important;
+}
+
+/* Collectible card wiggle & hover */
+.sim-domain-card:hover {
+  transform: translateY(-4px) scale(1.05) rotate(1.5deg) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 12px 24px rgba(255, 122, 0, 0.2) !important;
+  background-color: var(--primary-light) !important;
+}
+
+.sim-domain-card:nth-child(even):hover {
+  transform: translateY(-4px) scale(1.05) rotate(-1.5deg) !important;
+}
+
+.sim-challenge-card:hover {
+  transform: translateY(-3px) scale(1.03) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Active select pop animation */
+.sim-domain-card.selected, 
+.sim-challenge-card.selected {
+  animation: cardSelectPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards;
+  background-color: var(--primary-light) !important;
+  border-color: var(--primary) !important;
+}
+
+@keyframes cardSelectPop {
+  0% { transform: scale(1) rotate(0deg); }
+  45% { transform: scale(1.12) rotate(-2deg); }
+  70% { transform: scale(0.97) rotate(1deg); }
+  100% { transform: scale(1.04) rotate(0deg); }
+}
+
+/* Satisfying physical button clicks */
+.sim-btn-primary:active {
+  transform: scale(0.92) translateY(2px) !important;
+}
+
+.sim-back-btn:active {
+  transform: scale(0.8) !important;
+}
+
+/* Floating Decorative Shapes in Background */
+.sim-bg-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.sim-shape {
+  position: absolute;
+  opacity: 0.12;
+  color: var(--primary);
+  fill: currentColor;
+}
+
+.sim-shape-1 {
+  top: 15%;
+  left: 10%;
+  width: 24px;
+  height: 24px;
+  animation: floatShape1 6s infinite ease-in-out;
+}
+
+.sim-shape-2 {
+  top: 25%;
+  right: 12%;
+  width: 18px;
+  height: 18px;
+  animation: floatShape2 8s infinite ease-in-out;
+}
+
+.sim-shape-3 {
+  bottom: 30%;
+  left: 8%;
+  width: 20px;
+  height: 20px;
+  animation: floatShape3 7s infinite ease-in-out;
+}
+
+.sim-shape-4 {
+  bottom: 15%;
+  right: 10%;
+  width: 26px;
+  height: 26px;
+  animation: floatShape1 9s infinite ease-in-out 1s;
+}
+
+@keyframes floatShape1 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(45deg) scale(1.1); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes floatShape2 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-24px) rotate(-90deg) scale(0.9); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes floatShape3 {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-12px) rotate(60deg) scale(1.2); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+/* Particle Sparkle Explosions */
+.sim-sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: sparklePop 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes sparklePop {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* XP Rewards Badge */
+.sim-badge-xp {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #D97706;
+  background-color: #FEF3C7;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid #FCD34D;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  box-shadow: 0 2px 4px rgba(217, 119, 6, 0.08);
+}
+
+[data-theme="dark"] .sim-badge-xp {
+  color: #FBBF24;
+  background-color: rgba(217, 119, 6, 0.15);
+  border-color: rgba(217, 119, 6, 0.3);
+}
+
+/* Make icons in card headers pop */
+.sim-challenge-ill {
+  font-size: 1.5rem !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sim-domain-icon {
+  font-size: 1.5rem !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Immersive background glow in dark mode */
+[data-theme="dark"] .sim-screen {
+  background-color: #0F172A;
+}
+
+[data-theme="dark"] .sim-screen-splash {
+  background: linear-gradient(135deg, #1E1B4B 0%, #0F0F1E 100%);
+}
+
+

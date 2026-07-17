@@ -802,6 +802,17 @@
 
           <!-- Screen Container -->
           <div class="simulator-screen-container">
+            <!-- Floating background decorative shapes -->
+            <div class="sim-bg-shapes">
+              <!-- Shape 1: Star -->
+              <svg class="sim-shape sim-shape-1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.21l8.2-1.192L12 .587z"/></svg>
+              <!-- Shape 2: Bubbles -->
+              <svg class="sim-shape sim-shape-2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+              <!-- Shape 3: Star -->
+              <svg class="sim-shape sim-shape-3" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.21l8.2-1.192L12 .587z"/></svg>
+              <!-- Shape 4: Triangle -->
+              <svg class="sim-shape sim-shape-4" viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22"/></svg>
+            </div>
             
             <!-- FRAME 1: SPLASH SCREEN -->
             <div class="sim-screen sim-screen-splash active" id="sim-frame-1">
@@ -826,7 +837,7 @@
               </div>
 
               <div class="sim-footer">
-                <button class="sim-btn-primary" onclick="simGoToFrame(2)" style="background-color: #FFFFFF; color: var(--primary);">Get Started</button>
+                <button class="sim-btn-primary" onclick="simGoToFrame(2)" style="background-color: #FFFFFF; color: var(--primary); font-size: 1rem; box-shadow: 0 4px 12px rgba(255,122,0,0.3);">Get Started</button>
               </div>
             </div>
 
@@ -914,7 +925,8 @@
                     <h3 class="sim-challenge-title">Smart Healthcare Assistant</h3>
                     <p class="sim-challenge-desc">AI helping rural clinics detect diseases faster.</p>
                     <div class="sim-challenge-meta">
-                      <span class="sim-badge sim-beginner">Beginner</span>
+                      <span class="sim-badge sim-beginner">⭐ Beginner</span>
+                      <span class="sim-badge-xp">+100 XP</span>
                       <span class="sim-challenge-time">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         20 mins
@@ -929,7 +941,8 @@
                     <h3 class="sim-challenge-title">Fake News Detector</h3>
                     <p class="sim-challenge-desc">Build AI to detect misinformation and clickbait.</p>
                     <div class="sim-challenge-meta">
-                      <span class="sim-badge sim-intermediate">Intermediate</span>
+                      <span class="sim-badge sim-intermediate">⭐⭐ Intermediate</span>
+                      <span class="sim-badge-xp">+250 XP</span>
                       <span class="sim-challenge-time">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         35 mins
@@ -944,7 +957,8 @@
                     <h3 class="sim-challenge-title">AI Study Planner</h3>
                     <p class="sim-challenge-desc">Personalized learning schedule for students.</p>
                     <div class="sim-challenge-meta">
-                      <span class="sim-badge sim-beginner">Beginner</span>
+                      <span class="sim-badge sim-beginner">⭐ Beginner</span>
+                      <span class="sim-badge-xp">+150 XP</span>
                       <span class="sim-challenge-time">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         25 mins
