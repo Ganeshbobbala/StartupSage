@@ -29,233 +29,244 @@
 </head>
 <body class="presentation-body">
 
-  <!-- Centered Simulator Container (Figma-Style Player on Desktop) -->
-  <div class="presentation-simulator-wrapper">
-    <!-- iPhone 15 Simulator -->
-    <div class="mobile-device-simulator">
-      <!-- Dynamic Island Notch (Desktop Only) -->
-      <div class="simulator-notch">
-        <div class="notch-camera"></div>
-        <div class="notch-speaker"></div>
-      </div>
-
-      <!-- Status Bar (Desktop Only) -->
-      <div class="simulator-status-bar">
-        <div class="status-bar-time">9:41</div>
-        <div class="status-bar-icons">
-          <!-- Network Icon -->
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="16" width="3" height="5" rx="1"></rect><rect x="7" y="12" width="3" height="9" rx="1"></rect><rect x="12" y="8" width="3" height="13" rx="1"></rect><rect x="17" y="3" width="3" height="18" rx="1"></rect></svg>
-          <!-- Wifi Icon -->
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
-          <!-- Battery Icon -->
-          <svg width="14" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2"></rect><line x1="23" y1="11" x2="23" y2="13"></line><line x1="4" y1="12" x2="16" y2="12" stroke-width="8"></line></svg>
+  <!-- Desktop/Tablet Device Showcase Wrapper -->
+  <div class="device-showcase-container">
+    
+    <!-- Simulated Screen Container (Laptop / Tablet Screen Frame) -->
+    <div class="presentation-simulator-wrapper">
+      
+      <!-- iPhone 15 Simulator -->
+      <div class="mobile-device-simulator">
+        <!-- Dynamic Island Notch -->
+        <div class="simulator-notch">
+          <div class="notch-camera"></div>
+          <div class="notch-speaker"></div>
         </div>
-      </div>
 
-      <!-- Screen Container -->
-      <div class="simulator-screen-container">
-        <!-- Floating background decorative shapes -->
-        <div class="sim-bg-shapes">
-          <!-- Shape 1: Star -->
-          <svg class="sim-shape sim-shape-1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.21l8.2-1.192L12 .587z"/></svg>
-          <!-- Shape 2: Bubbles -->
-          <svg class="sim-shape sim-shape-2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
-          <!-- Shape 3: Star -->
-          <svg class="sim-shape sim-shape-3" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.21l8.2-1.192L12 .587z"/></svg>
-          <!-- Shape 4: Triangle -->
-          <svg class="sim-shape sim-shape-4" viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22"/></svg>
+        <!-- Status Bar -->
+        <div class="simulator-status-bar">
+          <div class="status-bar-time">9:41</div>
+          <div class="status-bar-icons">
+            <!-- Network Icon -->
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="16" width="3" height="5" rx="1"></rect><rect x="7" y="12" width="3" height="9" rx="1"></rect><rect x="12" y="8" width="3" height="13" rx="1"></rect><rect x="17" y="3" width="3" height="18" rx="1"></rect></svg>
+            <!-- Wifi Icon -->
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+            <!-- Battery Icon -->
+            <svg width="14" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2"></rect><line x1="23" y1="11" x2="23" y2="13"></line><line x1="4" y1="12" x2="16" y2="12" stroke-width="8"></line></svg>
+          </div>
         </div>
-        
-        <!-- FRAME 1: SPLASH SCREEN -->
-        <div class="sim-screen sim-screen-splash active" id="sim-frame-1">
-          <div class="sim-splash-logo-container">
-            <div class="sim-splash-logo">S</div>
-            <div class="sim-splash-title">StartupSage</div>
+
+        <!-- Screen Container -->
+        <div class="simulator-screen-container">
+          <!-- Floating background decorative shapes -->
+          <div class="sim-bg-shapes">
+            <!-- Shape 1: Star -->
+            <svg class="sim-shape sim-shape-1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.21l8.2-1.192L12 .587z"/></svg>
+            <!-- Shape 2: Bubbles -->
+            <svg class="sim-shape sim-shape-2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+            <!-- Shape 3: Star -->
+            <svg class="sim-shape sim-shape-3" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.21l8.2-1.192L12 .587z"/></svg>
+            <!-- Shape 4: Triangle -->
+            <svg class="sim-shape sim-shape-4" viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22"/></svg>
           </div>
           
-          <!-- Abstract startup illustration -->
-          <div class="sim-splash-illustration">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-              <path d="M2 17l10 5 10-5"></path>
-              <path d="M2 12l10 5 10-5"></path>
-            </svg>
-          </div>
-
-          <div class="sim-splash-desc">
-            Build ideas.<br>
-            Solve real problems.<br>
-            Become industry ready.
-          </div>
-
-          <div class="sim-footer">
-            <button class="sim-btn-primary" onclick="simGoToFrame(2)" style="background-color: #FFFFFF; color: var(--primary); font-size: 1rem; box-shadow: 0 4px 12px rgba(255,122,0,0.3);">Get Started</button>
-          </div>
-        </div>
-
-        <!-- FRAME 2 & 3: DOMAIN SELECTION -->
-        <div class="sim-screen" id="sim-frame-2">
-          <div class="sim-header">
-            <button class="sim-back-btn" onclick="simGoToFrame(1)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            </button>
-            <span class="sim-step-indicator">Step 1 of 3</span>
-            <div style="width: 28px;"></div> <!-- Spacer to center title indicator -->
-          </div>
-          
-          <div class="sim-title-section">
-            <h2 class="sim-title">What excites you the most?</h2>
-            <p class="sim-subtitle">Choose a domain you'd love solving real-world problems in.</p>
-          </div>
-
-          <!-- 2-column Grid -->
-          <div class="sim-domain-grid">
-            <div class="sim-domain-card" onclick="simSelectDomain(this, 'Artificial Intelligence')">
-              <div class="sim-domain-icon" style="background-color: var(--domain-ai-bg); color: var(--domain-ai);">🤖</div>
-              <div class="sim-domain-name">Artificial Intelligence</div>
-              <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <!-- FRAME 1: SPLASH SCREEN -->
+          <div class="sim-screen sim-screen-splash active" id="sim-frame-1">
+            <div class="sim-splash-logo-container">
+              <div class="sim-splash-logo">S</div>
+              <div class="sim-splash-title">StartupSage</div>
             </div>
-            <div class="sim-domain-card" onclick="simSelectDomain(this, 'Web Development')">
-              <div class="sim-domain-icon" style="background-color: var(--domain-web-bg); color: var(--domain-web);">💻</div>
-              <div class="sim-domain-name">Web Development</div>
-              <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            </div>
-            <div class="sim-domain-card" onclick="simSelectDomain(this, 'Mobile Development')">
-              <div class="sim-domain-icon" style="background-color: var(--domain-mobile-bg); color: var(--domain-mobile);">📱</div>
-              <div class="sim-domain-name">Mobile Development</div>
-              <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            </div>
-            <div class="sim-domain-card" onclick="simSelectDomain(this, 'Data Science')">
-              <div class="sim-domain-icon" style="background-color: var(--domain-data-bg); color: var(--domain-data);">📊</div>
-              <div class="sim-domain-name">Data Science</div>
-              <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            </div>
-            <div class="sim-domain-card" onclick="simSelectDomain(this, 'Cloud Computing')">
-              <div class="sim-domain-icon" style="background-color: var(--domain-cloud-bg); color: var(--domain-cloud);">☁</div>
-              <div class="sim-domain-name">Cloud Computing</div>
-              <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            </div>
-            <div class="sim-domain-card" onclick="simSelectDomain(this, 'Cyber Security')">
-              <div class="sim-domain-icon" style="background-color: var(--domain-cyber-bg); color: var(--domain-cyber);">🔒</div>
-              <div class="sim-domain-name">Cyber Security</div>
-              <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            </div>
-            <div class="sim-domain-card" onclick="simSelectDomain(this, 'UI/UX Design')">
-              <div class="sim-domain-icon" style="background-color: var(--domain-design-bg); color: var(--domain-design);">🎨</div>
-              <div class="sim-domain-name">UI/UX Design</div>
-              <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            </div>
-          </div>
-
-          <div class="sim-footer">
-            <button class="sim-btn-primary" id="sim-btn-domain-continue" disabled onclick="simGoToFrame(4)">
-              Continue <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- FRAME 4: PROBLEM DISCOVERY -->
-        <div class="sim-screen" id="sim-frame-4">
-          <div class="sim-header">
-            <button class="sim-back-btn" onclick="simGoToFrame(2)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            </button>
-            <span class="sim-step-indicator">Step 2 of 3</span>
-            <div style="width: 28px;"></div>
-          </div>
-
-          <div class="sim-title-section">
-            <h2 class="sim-title">Choose a challenge to solve</h2>
-            <p class="sim-subtitle">Real startup problems waiting for your ideas.</p>
-          </div>
-
-          <!-- Challenge List -->
-          <div class="sim-challenge-list">
-            <div class="sim-challenge-card" onclick="simSelectChallenge(this, 'Smart Healthcare Assistant')">
-              <div class="sim-challenge-ill">🏥</div>
-              <div class="sim-challenge-details">
-                <h3 class="sim-challenge-title">Smart Healthcare Assistant</h3>
-                <p class="sim-challenge-desc">AI helping rural clinics detect diseases faster.</p>
-                <div class="sim-challenge-meta">
-                  <span class="sim-badge sim-beginner">⭐ Beginner</span>
-                  <span class="sim-badge-xp">+100 XP</span>
-                  <span class="sim-challenge-time">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    20 mins
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div class="sim-challenge-card" onclick="simSelectChallenge(this, 'Fake News Detector')">
-              <div class="sim-challenge-ill">📰</div>
-              <div class="sim-challenge-details">
-                <h3 class="sim-challenge-title">Fake News Detector</h3>
-                <p class="sim-challenge-desc">Build AI to detect misinformation and clickbait.</p>
-                <div class="sim-challenge-meta">
-                  <span class="sim-badge sim-intermediate">⭐⭐ Intermediate</span>
-                  <span class="sim-badge-xp">+250 XP</span>
-                  <span class="sim-challenge-time">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    35 mins
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div class="sim-challenge-card" onclick="simSelectChallenge(this, 'AI Study Planner')">
-              <div class="sim-challenge-ill">📅</div>
-              <div class="sim-challenge-details">
-                <h3 class="sim-challenge-title">AI Study Planner</h3>
-                <p class="sim-challenge-desc">Personalized learning schedule for students.</p>
-                <div class="sim-challenge-meta">
-                  <span class="sim-badge sim-beginner">⭐ Beginner</span>
-                  <span class="sim-badge-xp">+150 XP</span>
-                  <span class="sim-challenge-time">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    25 mins
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sim-footer">
-            <button class="sim-btn-primary" id="sim-btn-challenge-continue" disabled onclick="simGoToFrame(5)">
-              Continue <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- FRAME 5: EMOTIONAL HOOK -->
-        <div class="sim-screen sim-screen-hook" id="sim-frame-5">
-          <div class="sim-header">
-            <button class="sim-back-btn" onclick="simGoToFrame(4)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            </button>
-            <span class="sim-step-indicator">Step 3 of 3</span>
-            <div style="width: 28px;"></div>
-          </div>
-
-          <div class="sim-hook-top">
-            <div class="sim-hook-illustration">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                <polyline points="9 11 11 13 15 9"></polyline>
+            
+            <!-- Abstract startup illustration -->
+            <div class="sim-splash-illustration">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
               </svg>
             </div>
-            <h2 class="sim-hook-headline">You just chose a problem that affects thousands of people.</h2>
-            <p class="sim-hook-body">Every great startup begins with solving one meaningful problem.<br><br>Today, you're taking your first step.</p>
+
+            <div class="sim-splash-desc">
+              Build ideas.<br>
+              Solve real problems.<br>
+              Become industry ready.
+            </div>
+
+            <div class="sim-footer">
+              <button class="sim-btn-primary" onclick="simGoToFrame(2)" style="background-color: #FFFFFF; color: var(--primary); font-size: 1rem; box-shadow: 0 4px 12px rgba(255,122,0,0.3);">Get Started</button>
+            </div>
           </div>
 
-          <div class="sim-footer" style="padding-bottom: 24px;">
-            <button class="sim-btn-primary" onclick="simReset()">Start My Journey</button>
-            <button class="sim-btn-secondary" onclick="simGoToFrame(4)">Choose Another Problem</button>
+          <!-- FRAME 2 & 3: DOMAIN SELECTION -->
+          <div class="sim-screen" id="sim-frame-2">
+            <div class="sim-header">
+              <button class="sim-back-btn" onclick="simGoToFrame(1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              </button>
+              <span class="sim-step-indicator">Step 1 of 3</span>
+              <div style="width: 28px;"></div>
+            </div>
+            
+            <div class="sim-title-section">
+              <h2 class="sim-title">What excites you the most?</h2>
+              <p class="sim-subtitle">Choose a domain you'd love solving real-world problems in.</p>
+            </div>
+
+            <!-- Grid -->
+            <div class="sim-domain-grid">
+              <div class="sim-domain-card" onclick="simSelectDomain(this, 'Artificial Intelligence')">
+                <div class="sim-domain-icon" style="background-color: var(--domain-ai-bg); color: var(--domain-ai);">🤖</div>
+                <div class="sim-domain-name">Artificial Intelligence</div>
+                <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              </div>
+              <div class="sim-domain-card" onclick="simSelectDomain(this, 'Web Development')">
+                <div class="sim-domain-icon" style="background-color: var(--domain-web-bg); color: var(--domain-web);">💻</div>
+                <div class="sim-domain-name">Web Development</div>
+                <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              </div>
+              <div class="sim-domain-card" onclick="simSelectDomain(this, 'Mobile Development')">
+                <div class="sim-domain-icon" style="background-color: var(--domain-mobile-bg); color: var(--domain-mobile);">📱</div>
+                <div class="sim-domain-name">Mobile Development</div>
+                <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              </div>
+              <div class="sim-domain-card" onclick="simSelectDomain(this, 'Data Science')">
+                <div class="sim-domain-icon" style="background-color: var(--domain-data-bg); color: var(--domain-data);">📊</div>
+                <div class="sim-domain-name">Data Science</div>
+                <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              </div>
+              <div class="sim-domain-card" onclick="simSelectDomain(this, 'Cloud Computing')">
+                <div class="sim-domain-icon" style="background-color: var(--domain-cloud-bg); color: var(--domain-cloud);">☁</div>
+                <div class="sim-domain-name">Cloud Computing</div>
+                <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              </div>
+              <div class="sim-domain-card" onclick="simSelectDomain(this, 'Cyber Security')">
+                <div class="sim-domain-icon" style="background-color: var(--domain-cyber-bg); color: var(--domain-cyber);">🔒</div>
+                <div class="sim-domain-name">Cyber Security</div>
+                <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              </div>
+              <div class="sim-domain-card" onclick="simSelectDomain(this, 'UI/UX Design')">
+                <div class="sim-domain-icon" style="background-color: var(--domain-design-bg); color: var(--domain-design);">🎨</div>
+                <div class="sim-domain-name">UI/UX Design</div>
+                <div class="sim-checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              </div>
+            </div>
+
+            <div class="sim-footer">
+              <button class="sim-btn-primary" id="sim-btn-domain-continue" disabled onclick="simGoToFrame(4)">
+                Continue <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
+            </div>
           </div>
+
+          <!-- FRAME 4: PROBLEM DISCOVERY -->
+          <div class="sim-screen" id="sim-frame-4">
+            <div class="sim-header">
+              <button class="sim-back-btn" onclick="simGoToFrame(2)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              </button>
+              <span class="sim-step-indicator">Step 2 of 3</span>
+              <div style="width: 28px;"></div>
+            </div>
+
+            <div class="sim-title-section">
+              <h2 class="sim-title">Choose a challenge to solve</h2>
+              <p class="sim-subtitle">Real startup problems waiting for your ideas.</p>
+            </div>
+
+            <!-- Challenge List -->
+            <div class="sim-challenge-list">
+              <div class="sim-challenge-card" onclick="simSelectChallenge(this, 'Smart Healthcare Assistant')">
+                <div class="sim-challenge-ill">🏥</div>
+                <div class="sim-challenge-details">
+                  <h3 class="sim-challenge-title">Smart Healthcare Assistant</h3>
+                  <p class="sim-challenge-desc">AI helping rural clinics detect diseases faster.</p>
+                  <div class="sim-challenge-meta">
+                    <span class="sim-badge sim-beginner">⭐ Beginner</span>
+                    <span class="sim-badge-xp">+100 XP</span>
+                    <span class="sim-challenge-time">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      20 mins
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sim-challenge-card" onclick="simSelectChallenge(this, 'Fake News Detector')">
+                <div class="sim-challenge-ill">📰</div>
+                <div class="sim-challenge-details">
+                  <h3 class="sim-challenge-title">Fake News Detector</h3>
+                  <p class="sim-challenge-desc">Build AI to detect misinformation and clickbait.</p>
+                  <div class="sim-challenge-meta">
+                    <span class="sim-badge sim-intermediate">⭐⭐ Intermediate</span>
+                    <span class="sim-badge-xp">+250 XP</span>
+                    <span class="sim-challenge-time">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      35 mins
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sim-challenge-card" onclick="simSelectChallenge(this, 'AI Study Planner')">
+                <div class="sim-challenge-ill">📅</div>
+                <div class="sim-challenge-details">
+                  <h3 class="sim-challenge-title">AI Study Planner</h3>
+                  <p class="sim-challenge-desc">Personalized learning schedule for students.</p>
+                  <div class="sim-challenge-meta">
+                    <span class="sim-badge sim-beginner">⭐ Beginner</span>
+                    <span class="sim-badge-xp">+150 XP</span>
+                    <span class="sim-challenge-time">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      25 mins
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sim-footer">
+              <button class="sim-btn-primary" id="sim-btn-challenge-continue" disabled onclick="simGoToFrame(5)">
+                Continue <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- FRAME 5: EMOTIONAL HOOK -->
+          <div class="sim-screen sim-screen-hook" id="sim-frame-5">
+            <div class="sim-header">
+              <button class="sim-back-btn" onclick="simGoToFrame(4)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              </button>
+              <span class="sim-step-indicator">Step 3 of 3</span>
+              <div style="width: 28px;"></div>
+            </div>
+
+            <div class="sim-hook-top">
+              <div class="sim-hook-illustration">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  <polyline points="9 11 11 13 15 9"></polyline>
+                </svg>
+              </div>
+              <h2 class="sim-hook-headline">You just chose a problem that affects thousands of people.</h2>
+              <p class="sim-hook-body">Every great startup begins with solving one meaningful problem.<br><br>Today, you're taking your first step.</p>
+            </div>
+
+            <div class="sim-footer" style="padding-bottom: 24px;">
+              <button class="sim-btn-primary" onclick="simReset()">Start My Journey</button>
+              <button class="sim-btn-secondary" onclick="simGoToFrame(4)">Choose Another Problem</button>
+            </div>
+          </div>
+
         </div>
-
       </div>
     </div>
+    
+    <!-- Laptop Keyboard Base (Visible only on Laptop Layouts >= 1024px) -->
+    <div class="laptop-keyboard-base">
+      <div class="laptop-trackpad"></div>
+    </div>
+
   </div>
 
   <script src="app.js"></script>
