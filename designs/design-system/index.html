@@ -6,6 +6,26 @@
   <title>StartupSage Design System — Production Ready</title>
   <meta name="description" content="Production-ready design system tokens, typography, and interactive components for the StartupSage entrepreneurship platform.">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    window.addEventListener('error', function(e) {
+      var banner = document.getElementById('debug-error-banner');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'debug-error-banner';
+        banner.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; background: #EF4444; color: white; padding: 12px 20px; z-index: 10000; font-family: monospace; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;';
+        var text = document.createElement('span');
+        text.id = 'debug-error-text';
+        banner.appendChild(text);
+        var closeBtn = document.createElement('button');
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = 'background: none; border: none; color: white; cursor: pointer; font-size: 18px; padding: 0 8px;';
+        closeBtn.onclick = function() { banner.remove(); };
+        banner.appendChild(closeBtn);
+        document.body.appendChild(banner);
+      }
+      document.getElementById('debug-error-text').textContent = 'JS Error: ' + e.message + ' at ' + e.filename + ':' + e.lineno;
+    });
+  </script>
 </head>
 <body>
 

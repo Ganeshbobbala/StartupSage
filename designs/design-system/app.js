@@ -20,62 +20,77 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 // Theme Switcher (Light / Dark Mode)
 const themeToggle = document.getElementById('theme-toggle');
-themeToggle.addEventListener('change', () => {
-  if (themeToggle.checked) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  } else {
-    document.documentElement.setAttribute('data-theme', 'light');
-  }
-});
+if (themeToggle) {
+  themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  });
+}
 
 // Clipboard Copy Helper for Color Cards
 document.querySelectorAll('.color-card').forEach(card => {
   card.addEventListener('click', () => {
     const hex = card.getAttribute('data-color');
-    navigator.clipboard.writeText(hex).then(() => {
-      const hexEl = card.querySelector('.color-hex');
-      const originalText = hexEl.textContent;
-      hexEl.textContent = 'Copied!';
-      hexEl.style.color = 'var(--success)';
-      setTimeout(() => {
-        hexEl.textContent = originalText;
-        hexEl.style.color = '';
-      }, 1200);
-    });
+    if (hex && navigator.clipboard) {
+      navigator.clipboard.writeText(hex).then(() => {
+        const hexEl = card.querySelector('.color-hex');
+        if (hexEl) {
+          const originalText = hexEl.textContent;
+          hexEl.textContent = 'Copied!';
+          hexEl.style.color = 'var(--success)';
+          setTimeout(() => {
+            hexEl.textContent = originalText;
+            hexEl.style.color = '';
+          }, 1200);
+        }
+      }).catch(err => console.error('Clipboard copy failed:', err));
+    }
   });
 });
 
 // Clipboard Copy Helper for Code Snippets
 function copyCode(button) {
-  const codeBlock = button.nextElementSibling.querySelector('code');
+  if (!button || !navigator.clipboard) return;
+  const container = button.nextElementSibling;
+  if (!container) return;
+  const codeBlock = container.querySelector('code');
+  if (!codeBlock) return;
+  
   navigator.clipboard.writeText(codeBlock.textContent).then(() => {
     const originalText = button.textContent;
     button.textContent = 'Copied!';
     setTimeout(() => {
       button.textContent = originalText;
     }, 1200);
-  });
+  }).catch(err => console.error('Clipboard copy failed:', err));
 }
 
 // Clipboard Copy Helper for Textareas (Developer Tokens)
 function copyTextarea(id) {
   const textarea = document.getElementById(id);
+  if (!textarea) return;
   textarea.select();
   document.execCommand('copy');
   
   // Visual feedback on the button
   const button = textarea.previousElementSibling;
-  const originalText = button.textContent;
-  button.textContent = 'Copied!';
-  setTimeout(() => {
-    button.textContent = originalText;
-  }, 1200);
+  if (button) {
+    const originalText = button.textContent;
+    button.textContent = 'Copied!';
+    setTimeout(() => {
+      button.textContent = originalText;
+    }, 1200);
+  }
 }
 
 // 1 & 2. Interactive Button State Controller
 function setBtnState(type, state) {
   const btn = document.getElementById(`${type}-btn-preview`);
   const card = document.getElementById(`comp-${type}-btn`);
+  if (!btn || !card) return;
   
   // Reset all state controls highlights
   card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
@@ -105,6 +120,7 @@ function setCardProgress(pct) {
   const fill = document.getElementById('card-progress-fill');
   const label = document.getElementById('card-pct-label');
   const card = document.getElementById('comp-content-card');
+  if (!fill || !label || !card) return;
 
   // Reset controls active state
   card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
@@ -125,13 +141,17 @@ function setCardProgress(pct) {
 
 // 6. Interactive Bottom Nav Tab Switcher
 function switchNavTab(tabElement, screenName) {
+  if (!tabElement) return;
   const nav = tabElement.closest('.bottom-nav');
+  if (!nav) return;
   nav.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
   
   tabElement.classList.add('active');
   
   const screenLabel = document.getElementById('nav-screen-label');
-  screenLabel.textContent = `${screenName} Screen`;
+  if (screenLabel) {
+    screenLabel.textContent = `${screenName} Screen`;
+  }
 }
 
 // 7. Interactive Input Field Variant Controller
@@ -141,6 +161,7 @@ function setInputVariant(variant) {
   const container = document.getElementById('input-container-preview');
   const errorMsg = document.getElementById('input-error-msg');
   const card = document.getElementById('comp-input-field');
+  if (!field || !label || !container || !errorMsg || !card) return;
 
   // Reset controls
   card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
@@ -182,6 +203,7 @@ function setProgressBarValue(pct) {
   const fill = document.getElementById('overall-progress-fill');
   const label = document.getElementById('overall-pct-label');
   const card = document.getElementById('comp-progress-bar');
+  if (!fill || !label || !card) return;
 
   // Reset controls
   card.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
@@ -233,11 +255,15 @@ function simGoToFrame(frameNum) {
 
 // Select a learning domain (Frame 2 & 3)
 function simSelectDomain(cardElement, domainName) {
+  if (!cardElement) return;
+  
   // Remove selection from all cards
   const grid = cardElement.closest('.sim-domain-grid');
-  grid.querySelectorAll('.sim-domain-card').forEach(card => {
-    card.classList.remove('selected');
-  });
+  if (grid) {
+    grid.querySelectorAll('.sim-domain-card').forEach(card => {
+      card.classList.remove('selected');
+    });
+  }
 
   // Add selection to clicked card
   cardElement.classList.add('selected');
@@ -252,11 +278,15 @@ function simSelectDomain(cardElement, domainName) {
 
 // Select a challenge (Frame 4)
 function simSelectChallenge(cardElement, challengeName) {
+  if (!cardElement) return;
+
   // Remove selection from all challenge cards
   const list = cardElement.closest('.sim-challenge-list');
-  list.querySelectorAll('.sim-challenge-card').forEach(card => {
-    card.classList.remove('selected');
-  });
+  if (list) {
+    list.querySelectorAll('.sim-challenge-card').forEach(card => {
+      card.classList.remove('selected');
+    });
+  }
 
   // Add selection to clicked card
   cardElement.classList.add('selected');
@@ -289,3 +319,4 @@ function simReset() {
   simGoToFrame(1);
 }
 
+console.log("StartupSage Design System Catalog Loaded Successfully.");
