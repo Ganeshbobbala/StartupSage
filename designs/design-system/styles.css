@@ -3525,6 +3525,294 @@ input:checked + .slider:before {
   100% { transform: translateY(110vh) rotate(720deg) translateX(var(--drift-x)); opacity: 0; }
 }
 
+/* ==========================================
+   DECISION SHEET & EMOTIONAL CHECK-IN DESIGN
+   ========================================== */
+
+/* Overlays backdrop */
+.bottom-sheet-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: flex-end;
+  flex-direction: column;
+  z-index: 1050;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.bottom-sheet-overlay.active {
+  display: flex;
+}
+
+/* Bottom Sheet Container */
+.bottom-sheet {
+  background: white;
+  border-radius: 24px 24px 0 0;
+  padding: 18px 16px 24px 16px;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+  box-shadow: 0 -8px 24px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.bottom-sheet-overlay.active .bottom-sheet {
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .bottom-sheet {
+  background: #0F172A;
+  border-top: 1.5px solid rgba(255,255,255,0.08);
+}
+
+.bottom-sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+
+.bottom-sheet-header h4 {
+  font-family: var(--font-headings);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--neutral-900);
+  margin: 0;
+}
+
+.sheet-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--neutral-500);
+  padding: 4px;
+}
+
+/* Reusable Component 1: Decision Component */
+.decision-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.decision-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  cursor: pointer;
+  border: 2px solid;
+  transition: all var(--transition-fast);
+}
+
+.decision-card-icon {
+  font-size: 1.4rem;
+}
+
+.decision-card-info h6 {
+  font-family: var(--font-headings);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--neutral-900);
+}
+
+.decision-card-info p {
+  font-size: 0.65rem;
+  color: var(--neutral-500);
+  margin: 2px 0 0 0;
+  line-height: 1.25;
+}
+
+/* Variant 1: Default State */
+.decision-card.variant-default {
+  border-color: var(--neutral-200);
+  background: white;
+}
+
+.decision-card.variant-default:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* Variant 2: Hover State */
+.decision-card.variant-default:hover h6 {
+  color: var(--primary-pressed);
+}
+
+/* Variant 3: Pressed / Active State */
+.decision-card.variant-pressed {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.decision-card.variant-pressed h6 {
+  color: var(--primary-pressed);
+}
+
+/* Variant 4: Disabled State */
+.decision-card.variant-disabled {
+  border-color: var(--neutral-200);
+  background: var(--neutral-50);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.decision-card.variant-disabled h6 {
+  color: var(--neutral-400);
+}
+
+/* Reusable Component 2: Emotional Check-in */
+.emotional-emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.emoji-card-btn {
+  background: white;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 12px 6px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.emoji-card-btn:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.emoji-card-btn.selected {
+  border-color: var(--primary) !important;
+  background: var(--primary-light);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255,122,0,0.15);
+}
+
+.emoji-icon {
+  font-size: 1.5rem;
+}
+
+.emoji-text {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--neutral-800);
+}
+
+.emoji-checkmark {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  border-radius: 50%;
+  color: white;
+  font-size: 0.55rem;
+  font-weight: 900;
+  line-height: 14px;
+  text-align: center;
+  display: none;
+}
+
+.emoji-card-btn.selected .emoji-checkmark {
+  display: block;
+}
+
+.emotional-feedback-bubble {
+  background: #FAF5FF;
+  border: 1.5px solid #E9D5FF;
+  border-radius: var(--radius-lg);
+  padding: 8px 12px;
+  font-size: 0.72rem;
+  color: #7E22CE;
+  margin-top: 14px;
+  text-align: center;
+  line-height: 1.35;
+}
+
+[data-theme="dark"] .emotional-feedback-bubble {
+  background: #1E152A;
+  border-color: #581C87;
+  color: #C084FC;
+}
+
+.bottom-sheet-footer {
+  margin-top: 16px;
+  border-top: 1.5px solid var(--border-color);
+  padding-top: 14px;
+}
+
+/* Glow Border & Checkmark detail for Selected Card */
+.idea-card.expanded {
+  border-color: var(--primary) !important;
+  background-color: var(--primary-light);
+  box-shadow: 0 0 15px rgba(255, 122, 0, 0.22);
+  transform: scale(1.02);
+}
+
+.selected-glow-checkmark {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  color: white;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.idea-card.expanded .selected-glow-checkmark {
+  display: flex;
+}
+
+.card-reaction-quote {
+  font-size: 0.68rem;
+  font-style: italic;
+  color: var(--neutral-500);
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.reaction-success {
+  color: var(--success);
+  background-color: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] .reaction-success {
+  color: #4ADE80;
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+
 
 
 

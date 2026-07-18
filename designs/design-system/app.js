@@ -271,40 +271,102 @@ function completeStage0() {
 // Stage 1: The Idea
 // ------------------------------------------
 
-function selectIdeaCard(cardElement, ideaName) {
+function selectStage1Idea(cardElement, ideaName) {
   const cards = document.querySelectorAll('.idea-card');
   cards.forEach(c => c.classList.remove('expanded'));
 
   cardElement.classList.add('expanded');
   appState.selectedIdea = ideaName;
 
-  // Show decision panel & check-in
-  document.getElementById('stage1-decision-panel').style.display = 'block';
-  document.getElementById('stage1-emotional-checkin').style.display = 'block';
+  // Activate primary button
+  const chooseBtn = document.getElementById('btn-choose-idea');
+  if (chooseBtn) {
+    chooseBtn.removeAttribute('disabled');
+    chooseBtn.textContent = `Choose My Idea: ${ideaName} 🚀`;
+  }
 
   triggerSparkles(cardElement);
-  triggerSparkMascot(`Selected "${ideaName}". Do you want to build this or improve it?`, 4000);
+  triggerConfetti();
+  triggerSparkMascot("Excellent choice! 🌟 This idea has strong potential. Let's start building it.", 6000);
 }
 
-function chooseStartupIdea() {
-  document.getElementById('stage1-complete-actions').style.display = 'block';
-  triggerSparkMascot("Great choice! Now complete the emotional check-in to proceed.", 4000);
-  triggerSparklesAtCenter();
+function openDecisionSheet() {
+  const overlay = document.getElementById('stage1-decision-overlay');
+  if (overlay) overlay.classList.add('active');
 }
 
-function improveSelectedIdea() {
-  triggerSparkMascot("Spark AI: 'How about making the diagnostics offline and solar-powered?' Idea improved! +10 XP", 5000);
-  appState.xp += 10;
-  updateStateIndicators();
+function closeDecisionSheet() {
+  const overlay = document.getElementById('stage1-decision-overlay');
+  if (overlay) overlay.classList.remove('active');
 }
 
-function checkinEmotion(emotion) {
-  appState.emotionCheckedIn = emotion;
-  const buttons = document.querySelectorAll('.emoji-option-btn');
-  buttons.forEach(btn => {
-    btn.classList.toggle('selected', btn.querySelector('.emoji-lbl').textContent === emotion.split(' ')[1]);
+function selectDecisionOption(cardElement, option) {
+  const cards = document.querySelectorAll('#stage1-decision-overlay .decision-card');
+  cards.forEach(c => {
+    c.classList.remove('variant-pressed');
+    c.classList.add('variant-default');
   });
-  triggerSparkMascot(`Thanks for sharing! Feeling ${emotion} is a great step! Let's continue.`, 4000);
+
+  cardElement.classList.add('variant-pressed');
+  cardElement.classList.remove('variant-default');
+
+  triggerSparkles(cardElement);
+
+  if (option === 'continue') {
+    // Hide decision, wait for slide out, show emotional check-in
+    setTimeout(() => {
+      closeDecisionSheet();
+      setTimeout(() => {
+        const emoOverlay = document.getElementById('stage1-emotional-overlay');
+        if (emoOverlay) emoOverlay.classList.add('active');
+        triggerSparkMascot("How are you feeling? Your emotions help Spark personalize your learning.", 5000);
+      }, 350);
+    }, 400);
+  } else if (option === 'improve') {
+    appState.xp += 10;
+    updateStateIndicators();
+    triggerSparkMascot("Spark AI: 'We could make diagnostic offline queries support multilingual text search!' Improved concept! +10 XP", 6000);
+  }
+}
+
+function closeEmotionalSheet() {
+  const overlay = document.getElementById('stage1-emotional-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function selectCheckinEmotion(cardElement, emotion) {
+  const cards = document.querySelectorAll('.emoji-card-btn');
+  cards.forEach(c => c.classList.remove('selected'));
+
+  cardElement.classList.add('selected');
+  appState.emotionCheckedIn = emotion;
+
+  const bubble = document.getElementById('emotional-spark-bubble');
+  bubble.style.display = 'block';
+
+  const emotionWord = emotion.split(' ')[1];
+  let sparkResponse = "Great! You're ready for the next challenge.";
+  
+  if (emotionWord === 'Excited') {
+    sparkResponse = "Awesome! Let's build something amazing! 🚀";
+  } else if (emotionWord === 'Confused') {
+    sparkResponse = "No worries! I'll guide you step by step. 💡";
+  } else if (emotionWord === 'Confident') {
+    sparkResponse = "Great! You're ready for the next challenge. 🏆";
+  } else if (emotionWord === 'Happy') {
+    sparkResponse = "Fantastic! A happy mindset builds amazing solutions. 😊";
+  } else if (emotionWord === 'Curious') {
+    sparkResponse = "Curiosity is the fuel of entrepreneurship! Let's investigate. 🔍";
+  } else if (emotionWord === 'Nervous') {
+    sparkResponse = "It's normal to feel nervous! I've got your back. 🤝";
+  }
+
+  bubble.innerHTML = `🤖 <strong>Spark:</strong> "${sparkResponse}"`;
+  triggerSparkMascot(sparkResponse, 4000);
+  triggerSparkles(cardElement);
+
+  const contBtn = document.getElementById('btn-emotional-continue');
+  if (contBtn) contBtn.removeAttribute('disabled');
 }
 
 function completeStage1() {

@@ -629,131 +629,264 @@
 
             <div class="dashboard-scrollable" style="height: 690px; padding-bottom: 80px;">
               <div class="sim-title-section">
-                <h2 class="sim-title">Generate Startup Ideas</h2>
-                <p class="sim-subtitle">Tap on an idea card to review its solution impact.</p>
+                <h2 class="sim-title">💡 Choose Your Startup Idea</h2>
+                <p class="sim-subtitle">Our AI has generated three exciting startup ideas based on your selected problem. Which one inspires you the most?</p>
               </div>
 
-              <!-- 3 Idea Cards -->
+              <!-- 3 Idea Cards (Frame 1) -->
               <div class="idea-generation-list">
-                <!-- Card 1 -->
-                <div class="idea-card bouncy-card" onclick="selectIdeaCard(this, 'AI Clinical Assistant')">
+                
+                <!-- Card 1: Smart Healthcare Assistant -->
+                <div class="idea-card bouncy-card" onclick="selectStage1Idea(this, 'Smart Healthcare Assistant')">
                   <div class="idea-card-header">
                     <span class="idea-card-icon">🏥</span>
-                    <h4 class="idea-card-title">AI Clinical Assistant</h4>
+                    <div>
+                      <h4 class="idea-card-title">Smart Healthcare Assistant</h4>
+                      <div style="display: flex; gap: 4px; margin-top: 2px;">
+                        <span class="sim-badge sim-beginner">⭐ Beginner</span>
+                        <span class="sim-badge-xp">+150 XP</span>
+                        <span class="sim-challenge-time" style="font-size: 0.6rem;">⏱️ 20m</span>
+                      </div>
+                    </div>
                   </div>
-                  <p class="idea-card-summary">Help village clinics make faster diagnostics.</p>
                   
+                  <p class="idea-card-summary">Help rural clinics detect diseases faster using AI.</p>
+                  
+                  <!-- Expanded details visible in selected state (Frame 2) -->
                   <div class="idea-card-expanded-content">
                     <div class="expanded-field">
-                      <strong>Problem:</strong> Rural doctors have limited tools to detect diseases.
+                      <strong>AI Confidence Score:</strong>
+                      <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                        <div class="progress-bar-container" style="flex-grow: 1; height: 6px; margin: 0;">
+                          <div class="progress-bar-fill" style="width: 92%; background-color: var(--success);"></div>
+                        </div>
+                        <span style="font-weight: 800; color: var(--success); font-size: 0.68rem;">92%</span>
+                      </div>
+                    </div>
+                    <div class="expanded-field">
+                      <strong>Target Users:</strong> Village nurses & rural clinics.
                     </div>
                     <div class="expanded-field">
                       <strong>Solution:</strong> An offline AI bot guiding diagnosis pathways.
                     </div>
                     <div class="expanded-field">
-                      <strong>Impact:</strong> Better healthcare accessibility for rural villages.
+                      <strong>Expected Impact:</strong> Better healthcare accessibility for rural villages.
                     </div>
                   </div>
 
                   <div class="idea-card-footer-reaction">
-                    <span>Virtual User Reaction:</span>
-                    <span class="reaction-tag">😍 Interested</span>
-                  </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="idea-card bouncy-card" onclick="selectIdeaCard(this, 'AI Nurse Chatbot')">
-                  <div class="idea-card-header">
-                    <span class="idea-card-icon">🤖</span>
-                    <h4 class="idea-card-title">AI Nurse Chatbot</h4>
-                  </div>
-                  <p class="idea-card-summary">Automated health chatbot answering symptom FAQs.</p>
-                  
-                  <div class="idea-card-expanded-content">
-                    <div class="expanded-field">
-                      <strong>Problem:</strong> Patients queue for hours to ask simple health FAQs.
-                    </div>
-                    <div class="expanded-field">
-                      <strong>Solution:</strong> WhatsApp automated chatbot replying with clinical guidelines.
-                    </div>
-                    <div class="expanded-field">
-                      <strong>Impact:</strong> Reduces waiting room queues by 40%.
-                    </div>
-                  </div>
-
-                  <div class="idea-card-footer-reaction">
-                    <span>Virtual User Reaction:</span>
-                    <span class="reaction-tag reaction-neutral">🙂 Neutral</span>
-                  </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="idea-card bouncy-card" onclick="selectIdeaCard(this, 'AI Prescription Reader')">
-                  <div class="idea-card-header">
-                    <span class="idea-card-icon">📸</span>
-                    <h4 class="idea-card-title">AI Prescription Reader</h4>
-                  </div>
-                  <p class="idea-card-summary">Scan doctor prescription notes to read handwriting.</p>
-                  
-                  <div class="idea-card-expanded-content">
-                    <div class="expanded-field">
-                      <strong>Problem:</strong> Bad handwriting leads to pharmacist prescription errors.
-                    </div>
-                    <div class="expanded-field">
-                      <strong>Solution:</strong> Optical computer vision scanning note text.
-                    </div>
-                    <div class="expanded-field">
-                      <strong>Impact:</strong> Safer drug distribution, prevents human reading errors.
-                    </div>
-                  </div>
-
-                  <div class="idea-card-footer-reaction">
-                    <span>Virtual User Reaction:</span>
+                    <span>Customer Reaction:</span>
                     <span class="reaction-tag reaction-skeptical">🤔 Skeptical</span>
                   </div>
+                  
+                  <div class="card-reaction-quote">"Will doctors actually use this?"</div>
+                  <div class="selected-glow-checkmark">✓</div>
                 </div>
+
+                <!-- Card 2: AI Study Planner -->
+                <div class="idea-card bouncy-card" onclick="selectStage1Idea(this, 'AI Study Planner')">
+                  <div class="idea-card-header">
+                    <span class="idea-card-icon">📅</span>
+                    <div>
+                      <h4 class="idea-card-title">AI Study Planner</h4>
+                      <div style="display: flex; gap: 4px; margin-top: 2px;">
+                        <span class="sim-badge sim-beginner">⭐ Easy</span>
+                        <span class="sim-badge-xp">+120 XP</span>
+                        <span class="sim-challenge-time" style="font-size: 0.6rem;">⏱️ 25m</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <p class="idea-card-summary">Creates personalized study schedules for students.</p>
+                  
+                  <!-- Expanded details (Frame 2) -->
+                  <div class="idea-card-expanded-content">
+                    <div class="expanded-field">
+                      <strong>AI Confidence Score:</strong>
+                      <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                        <div class="progress-bar-container" style="flex-grow: 1; height: 6px; margin: 0;">
+                          <div class="progress-bar-fill" style="width: 85%; background-color: var(--primary);"></div>
+                        </div>
+                        <span style="font-weight: 800; color: var(--primary); font-size: 0.68rem;">85%</span>
+                      </div>
+                    </div>
+                    <div class="expanded-field">
+                      <strong>Target Users:</strong> Middle & High School students.
+                    </div>
+                    <div class="expanded-field">
+                      <strong>Solution:</strong> AI schedule tracker adapting to study speed.
+                    </div>
+                    <div class="expanded-field">
+                      <strong>Expected Impact:</strong> Helps students boost performance by 30%.
+                    </div>
+                  </div>
+
+                  <div class="idea-card-footer-reaction">
+                    <span>Customer Reaction:</span>
+                    <span class="reaction-tag reaction-neutral">🙂 Neutral</span>
+                  </div>
+                  
+                  <div class="card-reaction-quote">"This sounds useful, but what makes it different?"</div>
+                  <div class="selected-glow-checkmark">✓</div>
+                </div>
+
+                <!-- Card 3: Fake News Detector -->
+                <div class="idea-card bouncy-card" onclick="selectStage1Idea(this, 'Fake News Detector')">
+                  <div class="idea-card-header">
+                    <span class="idea-card-icon">📰</span>
+                    <div>
+                      <h4 class="idea-card-title">Fake News Detector</h4>
+                      <div style="display: flex; gap: 4px; margin-top: 2px;">
+                        <span class="sim-badge sim-intermediate">⭐⭐ Intermed.</span>
+                        <span class="sim-badge-xp">+180 XP</span>
+                        <span class="sim-challenge-time" style="font-size: 0.6rem;">⏱️ 35m</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <p class="idea-card-summary">Detects fake news using Artificial Intelligence.</p>
+                  
+                  <!-- Expanded details (Frame 2) -->
+                  <div class="idea-card-expanded-content">
+                    <div class="expanded-field">
+                      <strong>AI Confidence Score:</strong>
+                      <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                        <div class="progress-bar-container" style="flex-grow: 1; height: 6px; margin: 0;">
+                          <div class="progress-bar-fill" style="width: 88%; background-color: var(--primary);"></div>
+                        </div>
+                        <span style="font-weight: 800; color: var(--primary); font-size: 0.68rem;">88%</span>
+                      </div>
+                    </div>
+                    <div class="expanded-field">
+                      <strong>Target Users:</strong> Social media readers & journalists.
+                    </div>
+                    <div class="expanded-field">
+                      <strong>Solution:</strong> Browser addon checking source references.
+                    </div>
+                    <div class="expanded-field">
+                      <strong>Expected Impact:</strong> Prevents online disinformation spread.
+                    </div>
+                  </div>
+
+                  <div class="idea-card-footer-reaction">
+                    <span>Customer Reaction:</span>
+                    <span class="reaction-tag reaction-success">😍 Interested</span>
+                  </div>
+                  
+                  <div class="card-reaction-quote">"I would definitely use this!"</div>
+                  <div class="selected-glow-checkmark">✓</div>
+                </div>
+
               </div>
 
-              <!-- Reusable Decision Panel -->
-              <div class="decision-panel-widget" id="stage1-decision-panel" style="display: none;">
-                <h5>Decision Panel</h5>
-                <div class="decision-button-grid">
-                  <button class="sim-btn-primary bouncy-btn" onclick="chooseStartupIdea()">Choose This Idea</button>
-                  <button class="sim-btn-secondary bouncy-btn" style="padding: 8px;" onclick="improveSelectedIdea()">Improve Idea</button>
-                </div>
-              </div>
-
-              <!-- Emotional Check-in -->
-              <div class="emotional-checkin-widget" id="stage1-emotional-checkin" style="display: none;">
-                <h5>How do you feel about this quest?</h5>
-                <div class="emotional-options-row">
-                  <div class="emoji-option-btn bouncy-btn" onclick="checkinEmotion('😊 Excited')">
-                    <span class="emoji-face">😊</span>
-                    <span class="emoji-lbl">Excited</span>
-                  </div>
-                  <div class="emoji-option-btn bouncy-btn" onclick="checkinEmotion('🤔 Curious')">
-                    <span class="emoji-face">🤔</span>
-                    <span class="emoji-lbl">Curious</span>
-                  </div>
-                  <div class="emoji-option-btn bouncy-btn" onclick="checkinEmotion('😟 Confused')">
-                    <span class="emoji-face">😟</span>
-                    <span class="emoji-lbl">Confused</span>
-                  </div>
-                  <div class="emoji-option-btn bouncy-btn" onclick="checkinEmotion('😎 Confident')">
-                    <span class="emoji-face">😎</span>
-                    <span class="emoji-lbl">Confident</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Stage 1 Footer Actions -->
-              <div class="stage-complete-footer-panel" id="stage1-complete-actions" style="display: none; padding-top: 10px;">
-                <button class="sim-btn-primary bouncy-btn" onclick="completeStage1()" style="background-color: var(--success); border-color: var(--success);">
-                  Complete Stage 1 (+150 XP) 🏆
+              <!-- Frame 1 Choose Button -->
+              <div style="margin-top: 20px;">
+                <button class="sim-btn-primary bouncy-btn" id="btn-choose-idea" disabled onclick="openDecisionSheet()">
+                  Choose My Idea 🚀
                 </button>
               </div>
 
             </div>
+
+            <!-- REUSABLE COMPONENT 1: DECISION BOTTOM SHEET -->
+            <div class="bottom-sheet-overlay" id="stage1-decision-overlay" onclick="closeDecisionSheet()">
+              <div class="bottom-sheet" onclick="event.stopPropagation()">
+                <div class="bottom-sheet-header">
+                  <h4>What would you like to do?</h4>
+                  <button class="sheet-close-btn" onclick="closeDecisionSheet()">✕</button>
+                </div>
+                
+                <div class="decision-options-list">
+                  <!-- Variant 1: Pressed/Active state -->
+                  <div class="decision-card variant-pressed" onclick="selectDecisionOption(this, 'continue')">
+                    <span class="decision-card-icon">🚀</span>
+                    <div class="decision-card-info">
+                      <h6>Continue with this Idea</h6>
+                      <p>Validate and start building this concept.</p>
+                    </div>
+                  </div>
+
+                  <!-- Variant 2: Default state -->
+                  <div class="decision-card variant-default" onclick="selectDecisionOption(this, 'improve')">
+                    <span class="decision-card-icon">✏️</span>
+                    <div class="decision-card-info">
+                      <h6>Improve my Idea</h6>
+                      <p>Add custom refinements using AI suggestions.</p>
+                    </div>
+                  </div>
+
+                  <!-- Variant 3: Disabled state -->
+                  <div class="decision-card variant-disabled">
+                    <span class="decision-card-icon">🔄</span>
+                    <div class="decision-card-info">
+                      <h6>Generate Another Idea</h6>
+                      <p>Reroll list of concepts (Level 3 required).</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- REUSABLE COMPONENT 2: EMOTIONAL CHECK-IN BOTTOM SHEET -->
+            <div class="bottom-sheet-overlay" id="stage1-emotional-overlay">
+              <div class="bottom-sheet" onclick="event.stopPropagation()">
+                <div class="bottom-sheet-header">
+                  <div style="text-align: center; width: 100%;">
+                    <h4>How are you feeling?</h4>
+                    <p style="font-size: 0.68rem; color: var(--neutral-500); margin-top: 4px; line-height: 1.35;">Your emotions help Spark personalize your learning experience.</p>
+                  </div>
+                </div>
+
+                <!-- Emoji Grid (6 cards) -->
+                <div class="emotional-emoji-grid">
+                  <div class="emoji-card-btn" onclick="selectCheckinEmotion(this, '🤩 Excited')">
+                    <span class="emoji-icon">🤩</span>
+                    <span class="emoji-text">Excited</span>
+                    <div class="emoji-checkmark">✓</div>
+                  </div>
+                  <div class="emoji-card-btn" onclick="selectCheckinEmotion(this, '😊 Happy')">
+                    <span class="emoji-icon">😊</span>
+                    <span class="emoji-text">Happy</span>
+                    <div class="emoji-checkmark">✓</div>
+                  </div>
+                  <div class="emoji-card-btn" onclick="selectCheckinEmotion(this, '🤔 Curious')">
+                    <span class="emoji-icon">🤔</span>
+                    <span class="emoji-text">Curious</span>
+                    <div class="emoji-checkmark">✓</div>
+                  </div>
+                  <div class="emoji-card-btn" onclick="selectCheckinEmotion(this, '😎 Confident')">
+                    <span class="emoji-icon">😎</span>
+                    <span class="emoji-text">Confident</span>
+                    <div class="emoji-checkmark">✓</div>
+                  </div>
+                  <div class="emoji-card-btn" onclick="selectCheckinEmotion(this, '😕 Confused')">
+                    <span class="emoji-icon">😕</span>
+                    <span class="emoji-text">Confused</span>
+                    <div class="emoji-checkmark">✓</div>
+                  </div>
+                  <div class="emoji-card-btn" onclick="selectCheckinEmotion(this, '😟 Nervous')">
+                    <span class="emoji-icon">😟</span>
+                    <span class="emoji-text">Nervous</span>
+                    <div class="emoji-checkmark">✓</div>
+                  </div>
+                </div>
+
+                <!-- Dynamic Spark feedback message -->
+                <div class="emotional-feedback-bubble" id="emotional-spark-bubble">
+                  🤖 <strong>Spark:</strong> Tap an emotion above to check-in!
+                </div>
+
+                <div class="bottom-sheet-footer" style="padding-top: 14px; display: flex; gap: 8px;">
+                  <button class="sim-btn-primary bouncy-btn" id="btn-emotional-continue" disabled onclick="completeStage1()">
+                    Continue
+                  </button>
+                  <button class="sim-btn-secondary bouncy-btn" onclick="closeEmotionalSheet()" style="min-height: unset; width: auto; padding: 6px 12px; font-size: 0.72rem;">
+                    Choose Another Idea
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
 
 
