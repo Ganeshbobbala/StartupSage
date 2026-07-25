@@ -1,0 +1,434 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* BPT Orange Design System */
+    --primary: #F97316;
+    --primary-hover: #EA580C;
+    --primary-pressed: #C2410C;
+    --primary-light: #FFF7ED;
+    
+    --secondary: #06B6D4;
+    --accent: #FFB800;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --bg-light: #FAFAFA;
+    --bg-dark: #0B0F19;
+    --card-radius: 20px;
+
+    /* 7 Domain Accents */
+    --domain-healthtech: #06B6D4;
+    --domain-edtech: #3B82F6;
+    --domain-fintech: #10B981;
+    --domain-agritech: #84CC16;
+    --domain-d2c: #EC4899;
+    --domain-saas: #8B5CF6;
+    --domain-ai: #6366F1;
+  }
+
+  body {
+    background-color: #FAFAFA;
+    color: #0F172A;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Primary BPT Orange Button Component */
+.bpt-btn-primary {
+  background-color: #F97316;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  border-radius: 14px;
+  padding: 12px 24px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.bpt-btn-primary:hover {
+  background-color: #EA580C;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
+}
+
+.bpt-btn-primary:active {
+  background-color: #C2410C;
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25);
+}
+
+.bpt-btn-primary:disabled {
+  background-color: #CBD5E1;
+  color: #94A3B8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.bpt-btn-secondary {
+  background-color: #FFFFFF;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 12px 24px;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.bpt-btn-secondary:hover {
+  border-color: #F97316;
+  color: #F97316;
+  background-color: #FFF7ED;
+}
+
+/* Domain Accent Badge Classes */
+.badge-healthtech { background: #ECFEFF; color: #0891B2; border: 1px solid #A5F3FC; }
+.badge-edtech { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+.badge-fintech { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+.badge-agritech { background: #F7FEE7; color: #65A30D; border: 1px solid #D9F99D; }
+.badge-d2c { background: #FDF2F8; color: #DB2777; border: 1px solid #FBCFE8; }
+.badge-saas { background: #F5F3FF; color: #7C3AED; border: 1px solid #DDD6FE; }
+.badge-ai { background: #EEF2FF; color: #4F46E5; border: 1px solid #C7D2FE; }
+
+/* Studio & Depth Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05);
+  border-radius: var(--card-radius);
+}
+
+.glass-dark {
+  background: rgba(11, 15, 25, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  border-radius: var(--card-radius);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 50%, #FFB800 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-button {
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+  color: #FFFFFF;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+}
+
+.gradient-button:hover {
+  background: linear-gradient(135deg, #EA580C 0%, #C2410C 100%);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.45);
+  transform: translateY(-1px);
+}
+
+.accent-button:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
+}
+
+/* Handcrafted Organic & Studio Utilities */
+.corkboard-pattern {
+  background-color: #0d111a;
+  background-image: 
+    radial-gradient(rgba(255, 184, 0, 0.07) 1px, transparent 0),
+    radial-gradient(rgba(99, 102, 241, 0.07) 1px, transparent 0);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+}
+
+.sticky-note-yellow {
+  background: #FEF08A;
+  color: #1E293B;
+  box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(250, 204, 21, 0.6);
+  transform: rotate(-1deg);
+  transition: all 0.2s ease-in-out;
+}
+
+.sticky-note-yellow:hover {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 0 14px 30px -5px rgba(234, 179, 8, 0.35);
+}
+
+.sticky-note-pink {
+  background: #FBCFE8;
+  color: #831843;
+  box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(244, 114, 182, 0.6);
+  transform: rotate(1.5deg);
+  transition: all 0.2s ease-in-out;
+}
+
+.sticky-note-pink:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.sticky-note-cyan {
+  background: #CFFAFE;
+  color: #164E63;
+  box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(34, 211, 238, 0.6);
+  transform: rotate(-1.5deg);
+  transition: all 0.2s ease-in-out;
+}
+
+.sticky-note-cyan:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.sticky-note-green {
+  background: #DCFCE7;
+  color: #14532D;
+  box-shadow: 0 10px 25px -5px rgba(34, 197, 94, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(74, 222, 128, 0.6);
+  transform: rotate(1deg);
+  transition: all 0.2s ease-in-out;
+}
+
+.sticky-note-green:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.tape-header {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(4px);
+  border: 1px dashed rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.wax-seal {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #EF4444, #991B1B);
+  box-shadow: 0 6px 16px rgba(153, 27, 27, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FEF2F2;
+  font-weight: 900;
+  border: 2px solid #7F1D1D;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* ===================================================
+   HANDCRAFTED MICRO-INTERACTION TIMING TOKENS & UTILITIES
+   =================================================== */
+
+:root {
+  --time-button-press: 180ms;
+  --time-domain-select: 300ms;
+  --time-emotional-hook: 600ms;
+}
+
+/* 1. Splash Screen: Gentle logo fade & tagline rise */
+@keyframes gentleFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes taglineRise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.anim-gentle-fade {
+  animation: gentleFadeIn 0.4s ease-out forwards;
+}
+
+.anim-tagline-rise {
+  animation: taglineRise var(--time-emotional-hook) cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  opacity: 0;
+}
+
+/* 2. Tactile Button Press (150-200ms) */
+.bpt-btn-primary, .bpt-btn-secondary, .btn-tactile {
+  transition: transform var(--time-button-press) cubic-bezier(0.2, 0, 0, 1), background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.bpt-btn-primary:active, .bpt-btn-secondary:active, .btn-tactile:active {
+  transform: scale(0.97) !important;
+}
+
+/* 3. Domain Selection (250-350ms lift & checkmark) */
+.domain-card-select {
+  transition: transform var(--time-domain-select) cubic-bezier(0.2, 0, 0, 1), border-color var(--time-domain-select) ease, opacity var(--time-domain-select) ease;
+}
+
+/* 4. Domain-Specific Icon Reactions */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.icon-anim-healthtech:hover { animation: heartbeat 0.8s ease-in-out infinite; }
+
+@keyframes bookTilt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-6deg); }
+}
+.icon-anim-edtech:hover { animation: bookTilt 0.5s ease-in-out; }
+
+@keyframes coinShine {
+  0%, 100% { transform: rotateY(0deg); }
+  50% { transform: rotateY(180deg); }
+}
+.icon-anim-fintech:hover { animation: coinShine 0.8s ease-in-out; }
+
+@keyframes plantSway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
+}
+.icon-anim-agritech:hover { animation: plantSway 0.8s ease-in-out; }
+
+@keyframes bagBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+.icon-anim-d2c:hover { animation: bagBounce 0.4s ease-in-out; }
+
+@keyframes gearNotch {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(60deg); }
+}
+.icon-anim-saas:hover { animation: gearNotch 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@keyframes aiSparkle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1) translateY(-2px); }
+}
+.icon-anim-ai:hover { animation: aiSparkle 0.6s ease-in-out; }
+
+/* 5. Staggered Reading Flow for Problem Cards */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stagger-card {
+  opacity: 0;
+  animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 6. Selection Focus & Softening */
+.card-softened {
+  opacity: 0.45;
+  transform: scale(0.98);
+  transition: all var(--time-domain-select) cubic-bezier(0.2, 0, 0, 1);
+}
+
+.card-focused {
+  opacity: 1;
+  transform: scale(1.02);
+  transition: all var(--time-domain-select) cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* 7. Milestone Stamp Animation */
+@keyframes milestoneStamp {
+  0% { transform: scale(2) rotate(-12deg); opacity: 0; }
+  70% { transform: scale(0.95) rotate(1deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.milestone-stamp {
+  animation: milestoneStamp 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* 8. Organic Floating Student Background Animations */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(3deg); }
+}
+
+@keyframes floatMedium {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-22px) rotate(-4deg); }
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50% { opacity: 0.24; transform: scale(1.08); }
+}
+
+.animate-float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: floatMedium 6s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 10s ease-in-out infinite;
+}
