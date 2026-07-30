@@ -1,5 +1,6 @@
 # 🚀 StartupSage — Interactive Student Entrepreneurship Simulation Platform
 
+**Official Live Web Application**: **[https://startupsage.vercel.app/](https://startupsage.vercel.app/)**  
 **GitHub Repository**: [https://github.com/Ganeshbobbala/StartupSage](https://github.com/Ganeshbobbala/StartupSage)
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Ganeshbobbala/StartupSage)
