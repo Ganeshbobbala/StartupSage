@@ -109,32 +109,6 @@ export type FounderType =
   | '🤝 Team Champion'
   | '🌍 Community Hero';
 
-export interface FounderVoiceNote {
-  id: string;
-  founderName: string;
-  founderRole: string;
-  avatar: string;
-  topic: string;
-  duration: string;
-  audioUrl?: string;
-  transcript: string;
-}
-
-export interface WhatsAppMessage {
-  id: string;
-  sender: 'user' | 'contact';
-  text: string;
-  time: string;
-}
-
-export interface WhatsAppConversation {
-  id: string;
-  contactName: string;
-  contactRole: string;
-  contactAvatar: string;
-  messages: WhatsAppMessage[];
-}
-
 export interface GameState {
   // Navigation & User Status
   currentView: ViewState;
@@ -164,25 +138,22 @@ export interface GameState {
   ideaStatement: string;
   ideaScorecard: Scorecard | null;
   stage1Reflections: string;
-  whatsAppCompleted: boolean;
 
   // Stage 2
   canvasPlan: CanvasPlan;
   planReviewFeedback: string;
-  cacVsPricingResult: {
+  cacVsPricingAnalysis?: {
     cac: number;
     price: number;
-    ratio: number;
-    verdict: string;
-  } | null;
+    isViable: boolean;
+    feedback: string;
+  };
 
   // Stage 3
   selectedTeammates: Teammate[];
-  equitySplit: {
-    founderPct: number;
-    coFounderPct: number;
-  };
-  emotionalCheckin1: string | null;
+  teamConfidence: string;
+  equitySplitPercent: number; // Founder % (e.g. 60)
+  emotionalCheckIn1?: string;
 
   // Stage 4
   budgetAllocation: {
@@ -202,8 +173,8 @@ export interface GameState {
   } | null;
   crisisResponse: string | null;
   crisisReflection: string;
-  emotionalCheckin2: string | null;
-  activeVoiceNote: FounderVoiceNote | null;
+  emotionalCheckIn2?: string;
+  unlockedVoiceNotes: string[];
 
   // Stage 6
   currentMonth: number; // 1 to 6

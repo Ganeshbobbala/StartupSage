@@ -49,6 +49,9 @@ const COFOUNDER_OPTIONS: Teammate[] = [
   }
 ];
 
+import { MilestonePath } from '../common/MilestonePath';
+import { MilestoneStampModal } from '../common/MilestoneStampModal';
+
 const ROLES = ['👨‍💻 Builder', '🎨 Designer', '📢 Presenter', '📊 Planner', '🤝 Team Leader'];
 
 export const Stage3Team: React.FC = () => {
@@ -58,6 +61,8 @@ export const Stage3Team: React.FC = () => {
   const [roleAssignments, setRoleAssignments] = useState<Record<string, string>>({});
   const [challengeChoice, setChallengeChoice] = useState<string | null>(null);
   const [emotionalState, setEmotionalState] = useState<string | null>(null);
+  const [equityPercent, setEquityPercent] = useState<number>(60);
+  const [showStampModal, setShowStampModal] = useState<boolean>(false);
 
   const toggleSelectTeammate = (person: Teammate) => {
     if (selected.some(p => p.id === person.id)) {
@@ -89,6 +94,9 @@ export const Stage3Team: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       
+      {/* Milestone Journey Node Bar */}
+      <MilestonePath currentStage={3} />
+
       {/* Handcrafted Stage Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 glass-dark rounded-3xl p-6 border border-indigo-500/30 shadow-2xl">
         <div className="flex items-center gap-4">
@@ -249,7 +257,40 @@ export const Stage3Team: React.FC = () => {
         </div>
       )}
 
-      {/* 4. Emotional Check-in #1 */}
+      {/* 4. Equity Split Slider Negotiation */}
+      {challengeChoice && (
+        <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/80 shadow-lg space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-extrabold text-slate-900 font-display">
+              4. Equity Split Negotiation (%)
+            </h3>
+            <span className="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+              Founder: {equityPercent}% • Team: {100 - equityPercent}%
+            </span>
+          </div>
+
+          <p className="text-xs text-slate-600">
+            How much ownership equity will you keep as Lead Founder vs sharing with your co-founders?
+          </p>
+
+          <input
+            type="range"
+            min="40"
+            max="80"
+            value={equityPercent}
+            onChange={(e) => setEquityPercent(Number(e.target.value))}
+            className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+          />
+
+          <div className="flex justify-between text-[11px] font-bold text-slate-500">
+            <span>40% Founder / 60% Team</span>
+            <span>60% Founder / 40% Team (Standard)</span>
+            <span>80% Founder / 20% Team</span>
+          </div>
+        </div>
+      )}
+
+      {/* 5. Emotional Check-in #1 */}
       {challengeChoice && (
         <div className="bg-gradient-to-r from-indigo-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl border border-indigo-700 animate-in fade-in zoom-in duration-300">
           <div>
@@ -284,16 +325,29 @@ export const Stage3Team: React.FC = () => {
                 Sage: "It's totally normal to feel that way! Diverse teams learn and grow strongest together."
               </p>
               <button
-                onClick={handleCompleteTeamBuilding}
+                onClick={() => setShowStampModal(true)}
                 className="px-8 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm shadow-lg flex items-center gap-2"
               >
-                <span>Continue to Stage 4: The Build</span>
+                <span>Claim Stamp & Proceed to Stage 4</span>
                 <ArrowRight className="w-4 h-4 text-slate-950" />
               </button>
             </div>
           )}
         </div>
       )}
+
+      {/* Milestone Stamp Modal */}
+      <MilestoneStampModal
+        isOpen={showStampModal}
+        stageNumber={3}
+        stageTitle="The Team – Co-founder Equity & Chemistry"
+        xpReward={250}
+        coinReward={50}
+        onContinue={() => {
+          setShowStampModal(false);
+          handleCompleteTeamBuilding();
+        }}
+      />
 
     </div>
   );

@@ -115,7 +115,6 @@ const DEFAULT_STATE: GameState = {
   ideaStatement: '',
   ideaScorecard: null,
   stage1Reflections: '',
-  whatsAppCompleted: false,
   canvasPlan: {
     problem: '',
     solution: '',
@@ -125,10 +124,9 @@ const DEFAULT_STATE: GameState = {
     rewards: ''
   },
   planReviewFeedback: '',
-  cacVsPricingResult: null,
   selectedTeammates: [],
-  equitySplit: { founderPct: 60, coFounderPct: 40 },
-  emotionalCheckin1: null,
+  teamConfidence: '',
+  equitySplitPercent: 60,
   budgetAllocation: {
     product: 40,
     marketing: 20,
@@ -140,8 +138,7 @@ const DEFAULT_STATE: GameState = {
   activeCrisis: null,
   crisisResponse: null,
   crisisReflection: '',
-  emotionalCheckin2: null,
-  activeVoiceNote: null,
+  unlockedVoiceNotes: [],
   currentMonth: 1,
   monthlyDecisions: {},
   futurePath: null,

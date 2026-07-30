@@ -4,31 +4,32 @@ import {
   Volume2, Play, Pause, Heart, RefreshCw, AlertTriangle, ShieldCheck 
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { FreemiumUpgradeModal } from '../common/FreemiumUpgradeModal';
+import { MilestonePath } from '../common/MilestonePath';
+import { MilestoneStampModal } from '../common/MilestoneStampModal';
 import { FounderVoiceNotePlayer } from '../common/FounderVoiceNotePlayer';
-import type { FounderVoiceNote } from '../../types/game';
+import { FreemiumUpgradeModal } from '../common/FreemiumUpgradeModal';
 
 const CRISES = [
   {
-    id: 'prototype-broke',
-    title: '📦 Prototype Bux Error!',
-    description: 'Your app prototype crashed 15 minutes before student user testing begins in the computer lab!',
+    id: 'cto-quits',
+    title: '🚨 Crisis Alert: Lead CTO Quits 2 Weeks Before Launch!',
+    description: 'Your co-founder lead developer got overwhelmed with final exams and quit the team, leaving you with incomplete code 14 days before launch!',
     icon: '⚡️',
     options: [
-      { id: 'a', title: 'Option A: Stay Calm & Demo Paper Wireframes', detail: 'Explain the core idea clearly using poster drawings.' },
-      { id: 'b', title: 'Option B: Ask Teacher Mentor for Debug Guidance', detail: 'Get guidance to fix the line of code quickly.' },
-      { id: 'c', title: 'Option C: Simplify App to 1 Working Feature', detail: 'Remove complex parts and demo the single best feature.' }
+      { id: 'a', title: 'Option A: Simplify Product to No-Code MVP', detail: 'Cut non-essential features and launch a lightweight version.' },
+      { id: 'b', title: 'Option B: Recruit Computer Science Teacher', detail: 'Ask your CS teacher mentor for guidance to patch the code.' },
+      { id: 'c', title: 'Option C: Postpone Launch 2 Weeks', detail: 'Take time to recruit a new co-founder developer from Class 10.' }
     ]
   },
   {
-    id: 'teammate-absent',
-    title: '🎒 Key Teammate Absent!',
-    description: 'Your lead presenter Sara got sick today right before the school innovation fair!',
-    icon: '🤒',
+    id: 'competitor-launches',
+    title: '⚡️ Competitor Launches Copycat App!',
+    description: 'A well-funded rival team in Class 10 just copied your exact core feature and launched aggressive posters!',
+    icon: '🥊',
     options: [
-      { id: 'a', title: 'Option A: Step Up as Co-Presenter', detail: 'Take Sara’s notes and present with confidence.' },
-      { id: 'b', title: 'Option B: Share Presentation Roles Together', detail: 'Each remaining co-founder presents 1 slide.' },
-      { id: 'c', title: 'Option C: Play Sara’s Pre-recorded Voice Note', detail: 'Use technology to showcase Sara’s pitch.' }
+      { id: 'a', title: 'Option A: Double Down on Superior User Support', detail: 'Win customer loyalty with personalized peer onboarding.' },
+      { id: 'b', title: 'Option B: Pivot to Niche Market', detail: 'Focus exclusively on middle school students where competitors have zero reach.' },
+      { id: 'c', title: 'Option C: Form Strategic Partnership', detail: 'Propose a merger to build a combined powerhouse team.' }
     ]
   }
 ];
@@ -38,22 +39,16 @@ export const Stage5Wall: React.FC = () => {
 
   const [activeCrisis] = useState(CRISES[0]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
   const [reflectionText, setReflectionText] = useState<string>('');
   const [stageFinished, setStageFinished] = useState<boolean>(false);
-  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(!state.hasUnlockedPremium);
-
-  const bptVoiceNote: FounderVoiceNote = {
-    id: 'vn-1',
-    founderName: 'Srushti Rao',
-    founderRole: 'Co-Founder & Product Lead',
-    avatar: '👩‍💼',
-    topic: 'How I handled our CTO quitting 2 weeks before our major school launch',
-    duration: '0:42',
-    transcript: 'When our technical co-founder left 2 weeks before launch, we didn\'t panic. We stripped down the feature set to a simple working prototype, focused on our 1 core promise, and spoke directly with our first 50 student users. True founder resilience is staying focused under pressure!'
-  };
 
   const handleSelectOption = (optId: string) => {
     setSelectedOption(optId);
+  };
+
+  const handleToggleAudio = () => {
+    setIsPlayingAudio(prev => !prev);
   };
 
   const handleSubmitCrisisResponse = () => {
@@ -66,16 +61,15 @@ export const Stage5Wall: React.FC = () => {
     triggerConfetti();
   };
 
+  const [showUpgradeModal, setShowUpgradeModal] = useState<boolean>(!state.hasUnlockedPremium);
+  const [showStampModal, setShowStampModal] = useState<boolean>(false);
+
   return (
     <div className="bg-dark-gradient min-h-screen text-white p-4 sm:p-8 rounded-3xl space-y-8 relative overflow-hidden border border-slate-800">
       
-      {/* Freemium Gate Modal */}
-      <FreemiumUpgradeModal
-        isOpen={isUpgradeModalOpen}
-        onClose={() => setIsUpgradeModalOpen(false)}
-        onSuccess={() => setIsUpgradeModalOpen(false)}
-      />
-      
+      {/* Milestone Journey Node Bar */}
+      <MilestonePath currentStage={5} />
+
       {/* Rain / Atmospheric Glow Effect */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -93,7 +87,7 @@ export const Stage5Wall: React.FC = () => {
               <span className="text-xs font-semibold text-slate-400">Crisis Survival Engine</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-black text-white font-display mt-1">
-              The Wall of Reality – Crisis Management
+              The Wall of Reality – Something Has Gone Wrong!
             </h2>
           </div>
         </div>
@@ -102,6 +96,16 @@ export const Stage5Wall: React.FC = () => {
           <span>Reward: +400 XP • +150 Coins</span>
         </div>
       </div>
+
+      {/* Embedded Real BPT Founder Voice Note Player */}
+      <FounderVoiceNotePlayer
+        founderName="Srushti (BPT Founder & CEO)"
+        founderRole="BPT Founder Voice"
+        avatarEmoji="👩‍💼"
+        title="When Our Lead Developer Quit 2 Weeks Before Launch"
+        durationSeconds={42}
+        transcriptText="When our lead developer quit right before our deadline, panic set in. But we took a deep breath, simplified our core MVP to just 1 feature, and launched on schedule. The lesson? A simple working product beats a complex broken one every single time!"
+      />
 
       {/* Founder Resilience Playbook Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-950 text-white rounded-3xl p-6 border border-rose-500/30 shadow-xl flex items-start gap-4">
@@ -164,9 +168,34 @@ export const Stage5Wall: React.FC = () => {
         </div>
       </div>
 
-      {/* Real BPT Founder Voice Note Audio Player */}
+      {/* Real Founder Voice Note Component */}
       {selectedOption && (
-        <FounderVoiceNotePlayer voiceNote={bptVoiceNote} />
+        <div className="glass-dark rounded-3xl p-6 border border-slate-800 space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Volume2 className="w-5 h-5 text-cyan-400" />
+              <h4 className="font-bold text-white text-sm font-display">Real Founder Voice Note</h4>
+            </div>
+            <span className="text-xs font-bold text-cyan-400 bg-cyan-950 px-3 py-1 rounded-full border border-cyan-800">
+              0:35 Audio Lesson
+            </span>
+          </div>
+
+          <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex items-center gap-4">
+            <button
+              onClick={handleToggleAudio}
+              className="w-12 h-12 rounded-2xl bg-cyan-500 text-slate-950 font-black flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
+            >
+              {isPlayingAudio ? <Pause className="w-5 h-5 fill-slate-950" /> : <Play className="w-5 h-5 fill-slate-950" />}
+            </button>
+            <div className="flex-1">
+              <h5 className="font-bold text-white text-xs">Real Founder Insights</h5>
+              <p className="text-slate-400 text-[11px] italic">
+                "{isPlayingAudio ? 'Playing voice clip...' : 'Click play to hear how real founders handle product failures.'}"
+              </p>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Reflection & Submission */}
@@ -196,16 +225,36 @@ export const Stage5Wall: React.FC = () => {
           {stageFinished && (
             <div className="pt-4 flex justify-end">
               <button
-                onClick={() => completeStage(5)}
+                onClick={() => setShowStampModal(true)}
                 className="px-8 py-3.5 rounded-2xl bg-white text-slate-950 font-black text-sm shadow-xl flex items-center gap-2"
               >
-                <span>Continue to Stage 6: 6-Month Growth Grind</span>
+                <span>Claim Stamp & Proceed to Stage 6</span>
                 <ArrowRight className="w-4 h-4 text-slate-950" />
               </button>
             </div>
           )}
         </div>
       )}
+
+      {/* Freemium Upgrade Modal (Stage 5 Gate ₹299) */}
+      <FreemiumUpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        onUnlocked={() => setShowUpgradeModal(false)}
+      />
+
+      {/* Milestone Stamp Modal */}
+      <MilestoneStampModal
+        isOpen={showStampModal}
+        stageNumber={5}
+        stageTitle="The Wall of Reality – Crisis Solved!"
+        xpReward={400}
+        coinReward={150}
+        onContinue={() => {
+          setShowStampModal(false);
+          completeStage(5);
+        }}
+      />
 
     </div>
   );

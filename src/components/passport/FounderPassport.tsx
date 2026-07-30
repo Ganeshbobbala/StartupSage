@@ -178,31 +178,26 @@ export const FounderPassport: React.FC = () => {
         </div>
       </div>
 
-      {/* Bridge to BPT Founder Community */}
-      <div className="bg-gradient-to-r from-orange-500 to-amber-600 rounded-3xl p-6 text-white text-center shadow-xl space-y-4">
-        <div className="flex justify-center">
-          <div className="w-12 h-12 rounded-2xl bg-white/20 text-white flex items-center justify-center text-2xl font-bold">
-            🤝
-          </div>
-        </div>
-        <div>
-          <span className="text-xs font-black uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full text-white">
-            BPT Founder Network Bridge
+      {/* BPT Community Bridge Box */}
+      <div className="bg-gradient-to-r from-orange-500 to-amber-600 rounded-3xl p-6 sm:p-8 text-slate-950 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-1 text-center md:text-left">
+          <span className="text-xs font-black uppercase tracking-widest bg-slate-950 text-amber-400 px-3 py-1 rounded-full border border-amber-400/30">
+            Phase 1 Community Bridge
           </span>
-          <h3 className="text-xl font-black font-display mt-2">
-            Connect With Real BPT Founders & Mentors
+          <h3 className="text-2xl font-black font-display text-slate-950 mt-1">
+            Join 10,000+ BPT Student Founders!
           </h3>
-          <p className="text-xs text-orange-100 max-w-md mx-auto mt-1">
-            Congratulations on completing the simulation! You've unlocked lifetime access to the BPT Founder Discord & Incubator Cohort.
+          <p className="text-slate-900 text-xs font-bold leading-relaxed max-w-xl">
+            You've completed your simulation! Access weekly founder masterclasses, pitch competitions, and real mentor office hours in the BPT Student Founder Community.
           </p>
         </div>
 
         <button
-          onClick={() => alert("Redirecting to BPT Founder Community Discord & Student Founder Cohort!")}
-          className="px-8 py-3.5 bg-slate-900 hover:bg-slate-950 text-white font-extrabold text-sm rounded-2xl shadow-lg transition-transform active:scale-95 inline-flex items-center gap-2"
+          onClick={() => window.open('https://bpt.foundation', '_blank')}
+          className="px-8 py-4 rounded-2xl bg-slate-950 hover:bg-slate-900 text-amber-400 font-black text-sm shadow-xl flex items-center justify-center gap-2 flex-shrink-0"
         >
           <span>Join BPT Founder Community</span>
-          <Sparkles className="w-4 h-4 text-amber-400" />
+          <ArrowLeft className="w-4 h-4 rotate-180 text-amber-400" />
         </button>
       </div>
 
