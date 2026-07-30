@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import type { CanvasPlan } from '../../types/game';
+import { AuthModal } from '../auth/AuthModal';
 
 export const Stage2Plan: React.FC = () => {
   const { state, setCanvasPlan, completeStage, addXPCoins, unlockBadge, triggerConfetti } = useGame();
@@ -71,12 +72,52 @@ export const Stage2Plan: React.FC = () => {
     }, 1200);
   };
 
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+  const isGuest = state.studentProfile.isGuest || !state.isLoggedIn;
+
   const filledCount = Object.values(plan).filter(val => val.trim().length > 5).length;
   const completionPct = Math.round((filledCount / 6) * 100);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 corkboard-pattern min-h-screen rounded-3xl p-6 border border-slate-800">
       
+      {/* Stage 2 Guest Preview Hard Login Wall Banner */}
+      {isGuest && (
+        <div className="bg-slate-900 border-2 border-amber-500/80 rounded-3xl p-6 text-white shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 animate-pulse-slow">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center text-2xl font-black shadow-lg">
+              🔒
+            </div>
+            <div>
+              <span className="text-xs font-black text-amber-400 uppercase tracking-widest bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/30">
+                Phase 1 Guest Preview Wall
+              </span>
+              <h3 className="text-xl font-black font-display text-white mt-1">
+                Sign In to Save Your Business Model Canvas
+              </h3>
+              <p className="text-xs text-slate-300">
+                Stages 0 & 1 were free preview! Create an account or log in to unlock Stage 2: The Plan and save your founder profile.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setIsAuthOpen(true)}
+            className="px-8 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-sm rounded-2xl shadow-xl flex-shrink-0 btn-tactile"
+          >
+            <span>Create Free Account / Sign In</span>
+          </button>
+        </div>
+      )}
+
+      {/* Auth Modal Trigger */}
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        initialMode="signup"
+      />
+
       {/* Handcrafted Stage Header */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 glass-dark rounded-3xl p-6 border border-amber-500/30 shadow-2xl">
         <div className="flex items-center gap-4">

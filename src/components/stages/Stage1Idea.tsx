@@ -4,6 +4,8 @@ import {
   Zap, Send, Lock, UserCheck, CheckCheck, RefreshCw 
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
+import { WhatsAppChatSimulator } from '../common/WhatsAppChatSimulator';
+import type { WhatsAppConversation } from '../../types/game';
 
 interface ChatMessage {
   id: string;

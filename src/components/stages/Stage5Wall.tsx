@@ -4,6 +4,9 @@ import {
   Volume2, Play, Pause, Heart, RefreshCw, AlertTriangle, ShieldCheck 
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
+import { FreemiumUpgradeModal } from '../common/FreemiumUpgradeModal';
+import { FounderVoiceNotePlayer } from '../common/FounderVoiceNotePlayer';
+import type { FounderVoiceNote } from '../../types/game';
 
 const CRISES = [
   {
@@ -31,20 +34,26 @@ const CRISES = [
 ];
 
 export const Stage5Wall: React.FC = () => {
-  const { setCrisisResponse, completeStage, addXPCoins, unlockBadge, triggerConfetti } = useGame();
+  const { state, setCrisisResponse, completeStage, addXPCoins, unlockBadge, triggerConfetti } = useGame();
 
   const [activeCrisis] = useState(CRISES[0]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
   const [reflectionText, setReflectionText] = useState<string>('');
   const [stageFinished, setStageFinished] = useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(!state.hasUnlockedPremium);
+
+  const bptVoiceNote: FounderVoiceNote = {
+    id: 'vn-1',
+    founderName: 'Srushti Rao',
+    founderRole: 'Co-Founder & Product Lead',
+    avatar: '👩‍💼',
+    topic: 'How I handled our CTO quitting 2 weeks before our major school launch',
+    duration: '0:42',
+    transcript: 'When our technical co-founder left 2 weeks before launch, we didn\'t panic. We stripped down the feature set to a simple working prototype, focused on our 1 core promise, and spoke directly with our first 50 student users. True founder resilience is staying focused under pressure!'
+  };
 
   const handleSelectOption = (optId: string) => {
     setSelectedOption(optId);
-  };
-
-  const handleToggleAudio = () => {
-    setIsPlayingAudio(prev => !prev);
   };
 
   const handleSubmitCrisisResponse = () => {
@@ -59,6 +68,13 @@ export const Stage5Wall: React.FC = () => {
 
   return (
     <div className="bg-dark-gradient min-h-screen text-white p-4 sm:p-8 rounded-3xl space-y-8 relative overflow-hidden border border-slate-800">
+      
+      {/* Freemium Gate Modal */}
+      <FreemiumUpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        onSuccess={() => setIsUpgradeModalOpen(false)}
+      />
       
       {/* Rain / Atmospheric Glow Effect */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -148,34 +164,9 @@ export const Stage5Wall: React.FC = () => {
         </div>
       </div>
 
-      {/* Real Founder Voice Note Component */}
+      {/* Real BPT Founder Voice Note Audio Player */}
       {selectedOption && (
-        <div className="glass-dark rounded-3xl p-6 border border-slate-800 space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Volume2 className="w-5 h-5 text-cyan-400" />
-              <h4 className="font-bold text-white text-sm font-display">Real Founder Voice Note</h4>
-            </div>
-            <span className="text-xs font-bold text-cyan-400 bg-cyan-950 px-3 py-1 rounded-full border border-cyan-800">
-              0:35 Audio Lesson
-            </span>
-          </div>
-
-          <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex items-center gap-4">
-            <button
-              onClick={handleToggleAudio}
-              className="w-12 h-12 rounded-2xl bg-cyan-500 text-slate-950 font-black flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
-            >
-              {isPlayingAudio ? <Pause className="w-5 h-5 fill-slate-950" /> : <Play className="w-5 h-5 fill-slate-950" />}
-            </button>
-            <div className="flex-1">
-              <h5 className="font-bold text-white text-xs">Real Founder Insights</h5>
-              <p className="text-slate-400 text-[11px] italic">
-                "{isPlayingAudio ? 'Playing voice clip...' : 'Click play to hear how real founders handle product failures.'}"
-              </p>
-            </div>
-          </div>
-        </div>
+        <FounderVoiceNotePlayer voiceNote={bptVoiceNote} />
       )}
 
       {/* Reflection & Submission */}
