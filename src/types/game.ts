@@ -11,6 +11,8 @@ export type ViewState =
   | 'profile'
   | 'admin';
 
+export type ThemeMode = 'light' | 'dark';
+
 export interface StageSubmission {
   id: string;
   studentName: string;
@@ -110,6 +112,9 @@ export type FounderType =
   | '🌍 Community Hero';
 
 export interface GameState {
+  // Theme State
+  themeMode: ThemeMode;
+
   // Navigation & User Status
   currentView: ViewState;
   studentProfile: StudentProfile;

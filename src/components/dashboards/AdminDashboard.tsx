@@ -1,30 +1,89 @@
 import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { 
-  Users, 
-  BookOpen, 
-  Award, 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
-  Zap, 
-  Shield, 
-  Sliders, 
-  TrendingUp, 
-  School,
-  Search,
-  Filter,
-  Eye,
-  MessageSquare,
-  Sparkles
+  Users, BookOpen, Award, CheckCircle, XCircle, Clock, Zap, Shield, 
+  Sliders, TrendingUp, School, Search, Filter, Eye, MessageSquare, Sparkles, PieChart, BarChart3, GraduationCap, LogOut, ShieldCheck 
 } from 'lucide-react';
 import { StageSubmission, AdminCohort } from '../../types/game';
+import { MentorCard } from '../common/MentorCard';
+import { AuthModal } from '../auth/AuthModal';
 
 export const AdminDashboard: React.FC = () => {
-  const { state } = useGame();
-  const [activeTab, setActiveTab] = useState<'submissions' | 'cohorts' | 'settings'>('submissions');
+  const { state, setView, logoutUser } = useGame();
+  const [activeTab, setActiveTab] = useState<'funnel' | 'submissions' | 'cohorts' | 'domains'>('funnel');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState<StageSubmission | null>(null);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+  // Auth Guard: Admin access requires being logged in with role === 'admin'
+  if (!state.isLoggedIn || state.studentProfile.role !== 'admin') {
+    return (
+      <>
+        <div className="max-w-4xl mx-auto px-4 py-16 text-center space-y-6">
+          <div className="academy-card p-8 sm:p-12 space-y-6 border-slate-200 dark:border-slate-800">
+            <div className="w-16 h-16 rounded-2xl bg-orange-100 dark:bg-orange-950/80 text-orange-600 dark:text-orange-400 flex items-center justify-center mx-auto shadow-xs">
+              <ShieldCheck className="w-8 h-8" />
+            </div>
+
+            <div className="space-y-2">
+              <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white">
+                Admin Login Required
+              </h2>
+              <p className="text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
+                Access to the Academy Director Portal requires School Admin or Educator credentials. Please log in with your Admin details.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
+              <button
+                onClick={() => setIsAuthOpen(true)}
+                className="bpt-btn-primary py-3 px-6 text-xs sm:text-sm font-bold w-full sm:w-auto flex items-center justify-center gap-2"
+              >
+                <ShieldCheck className="w-4 h-4 text-white" />
+                <span>Log in as Admin</span>
+              </button>
+
+              <button
+                onClick={() => setView('landing')}
+                className="bpt-btn-secondary py-3 px-6 text-xs sm:text-sm font-bold w-full sm:w-auto flex items-center justify-center gap-2"
+              >
+                Back to Home
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <AuthModal
+          isOpen={isAuthOpen}
+          onClose={() => setIsAuthOpen(false)}
+          initialRole="admin"
+          initialMode="login"
+        />
+      </>
+    );
+  }
+
+  // Stage Completion Funnel Data (8 Missions)
+  const funnelData = [
+    { stage: 'Mission 1: Find a Problem', count: 1420, rate: '100%' },
+    { stage: 'Mission 2: Validate Idea', count: 1280, rate: '90%' },
+    { stage: 'Mission 3: Create Plan', count: 1110, rate: '78%' },
+    { stage: 'Mission 4: Build MVP', count: 940, rate: '66%' },
+    { stage: 'Mission 5: Launch & Wall', count: 820, rate: '58%' },
+    { stage: 'Mission 6: Grow Startup', count: 710, rate: '50%' },
+    { stage: 'Mission 7: Scale Crossroads', count: 620, rate: '44%' },
+    { stage: 'Mission 8: Founder Passport', count: 540, rate: '38%' }
+  ];
+
+  // Popular Startup Domains Stats
+  const domainStats = [
+    { name: 'EdTech', percent: 32, count: 454, color: 'bg-blue-500' },
+    { name: 'HealthTech', percent: 24, count: 340, color: 'bg-cyan-500' },
+    { name: 'AgriTech', percent: 18, count: 255, color: 'bg-lime-500' },
+    { name: 'FinTech', percent: 14, count: 198, color: 'bg-emerald-500' },
+    { name: 'D2C', percent: 8, count: 113, color: 'bg-pink-500' },
+    { name: 'AI & SaaS', percent: 4, count: 60, color: 'bg-purple-500' }
+  ];
 
   // Mock initial submissions data
   const [submissions, setSubmissions] = useState<StageSubmission[]>([
@@ -33,7 +92,7 @@ export const AdminDashboard: React.FC = () => {
       studentName: 'Aarav Sharma',
       grade: 'Class 8-A',
       stageNumber: 2,
-      stageTitle: 'Stage 2: Lean Canvas Plan',
+      stageTitle: 'Mission 3: Lean Canvas Strategy',
       submittedAt: '10 mins ago',
       status: 'pending',
       score: 85,
@@ -44,7 +103,7 @@ export const AdminDashboard: React.FC = () => {
       studentName: 'Priya Patel',
       grade: 'Class 9-C',
       stageNumber: 4,
-      stageTitle: 'Stage 4: Financial & Prototype Plan',
+      stageTitle: 'Mission 5: Launch & Prototype Plan',
       submittedAt: '35 mins ago',
       status: 'pending',
       score: 92,
@@ -55,27 +114,15 @@ export const AdminDashboard: React.FC = () => {
       studentName: 'Rohan Gupta',
       grade: 'Class 7-B',
       stageNumber: 1,
-      stageTitle: 'Stage 1: Idea Refinement',
+      stageTitle: 'Mission 2: Idea Validation',
       submittedAt: '2 hours ago',
       status: 'approved',
       score: 90,
-      feedback: 'Excellent problem framing and user persona empathy maps!',
+      feedback: 'Excellent customer interview insights!',
       contentSummary: 'Smart water leakage alert badge for school water coolers.'
-    },
-    {
-      id: 'sub-4',
-      studentName: 'Ananya Verma',
-      grade: 'Class 8-B',
-      stageNumber: 7,
-      stageTitle: 'Stage 7: Pitch Deck & Pivot Engine',
-      submittedAt: '5 hours ago',
-      status: 'pending',
-      score: 88,
-      contentSummary: 'Community book exchange app with gamified reading streaks.'
     }
   ]);
 
-  // Real partner cohorts data (1,340+ active student founders)
   const cohorts: AdminCohort[] = [
     {
       id: 'c-1',
@@ -103,374 +150,277 @@ export const AdminDashboard: React.FC = () => {
       avgStageCompleted: 3.4,
       teacherInCharge: 'Anil Kumar',
       status: 'Active'
-    },
-    {
-      id: 'c-4',
-      schoolName: 'National Public School',
-      grade: 'Class 10 Cohort',
-      totalStudents: 280,
-      avgStageCompleted: 6.2,
-      teacherInCharge: 'Dr. Meenakshi Sundaram',
-      status: 'Active'
-    },
-    {
-      id: 'c-5',
-      schoolName: 'DAV Public School',
-      grade: 'Class 8 & 9 Cohort',
-      totalStudents: 320,
-      avgStageCompleted: 5.1,
-      teacherInCharge: 'Vikramaditya Sen',
-      status: 'Active'
-    },
-    {
-      id: 'c-6',
-      schoolName: 'Modern School, Barakhamba',
-      grade: 'Class 11 Enterprise Cohort',
-      totalStudents: 195,
-      avgStageCompleted: 7.0,
-      teacherInCharge: 'Rashmi Kapoor',
-      status: 'Active'
     }
   ];
 
   const handleApprove = (subId: string) => {
-    setSubmissions(prev => prev.map(s => s.id === subId ? { ...s, status: 'approved', feedback: 'Approved by Admin! Great work founder.' } : s));
+    setSubmissions(prev => prev.map(s => s.id === subId ? { ...s, status: 'approved', feedback: 'Approved by Academy Director! Great work founder.' } : s));
     setSelectedSubmission(null);
   };
 
   const handleReject = (subId: string) => {
-    setSubmissions(prev => prev.map(s => s.id === subId ? { ...s, status: 'needs_revision', feedback: 'Please refine your target audience section before resubmitting.' } : s));
+    setSubmissions(prev => prev.map(s => s.id === subId ? { ...s, status: 'needs_revision', feedback: 'Please refine your customer interview section.' } : s));
     setSelectedSubmission(null);
   };
 
-  const filteredSubmissions = submissions.filter(s => 
-    s.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    s.stageTitle.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-6 md:p-10 font-sans">
-      <div className="max-w-7xl mx-auto space-y-8">
-        
-        {/* Admin Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-slate-900/80 p-6 rounded-3xl border border-slate-800 shadow-2xl backdrop-blur-xl">
-          <div className="flex items-center space-x-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <Shield className="w-8 h-8 text-white" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      
+      {/* Story Admin Header */}
+      <div className="academy-card p-6 bg-slate-900 text-white rounded-3xl border-slate-800 space-y-4">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-orange-500 text-white flex items-center justify-center font-black text-2xl shrink-0 shadow-md">
+              🏛️
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Admin & Director Portal</h1>
-                <span className="bg-amber-500/20 text-amber-300 text-xs font-semibold px-2.5 py-1 rounded-full border border-amber-500/30">
-                  SuperAdmin
+              <div className="flex items-center gap-2">
+                <h2 className="text-2xl font-black font-display text-white">Academy Director Portal</h2>
+                <span className="bg-orange-500/20 text-orange-400 text-xs font-bold px-2.5 py-0.5 rounded-full border border-orange-500/30">
+                  Simulation Analytics
                 </span>
               </div>
-              <p className="text-sm text-slate-400 mt-0.5">StartupSage National Incubator Management Dashboard</p>
+              <p className="text-xs text-slate-400 font-medium mt-1">
+                Overseeing 1,420 Student Founders in the Startup Academy Simulation
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2 bg-indigo-950/60 border border-indigo-800/50 px-4 py-2 rounded-xl text-indigo-300 text-xs font-medium">
-              <Zap className="w-4 h-4 text-amber-400 animate-pulse" />
-              <span>2x XP Multiplier Active</span>
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-xs font-bold text-orange-400 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-orange-400" />
+              <span>540 Passports Issued</span>
             </div>
-            <button className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm flex items-center space-x-2">
-              <Sparkles className="w-4 h-4" />
-              <span>Launch Cohort Challenge</span>
+            <button
+              onClick={logoutUser}
+              className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/40 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Log Out</span>
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Top Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl flex items-center space-x-4 hover:border-slate-700 transition">
-            <div className="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20">
-              <Users className="w-6 h-6" />
+      {/* Director Mentor Guidance */}
+      <MentorCard
+        mentorName="Sage"
+        role="Academy Director"
+        message="Director, here are your latest Academy analytics. Student founders are performing exceptionally well in EdTech and HealthTech missions!"
+        mood="welcoming"
+      />
+
+      {/* Top Simulation Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="academy-card p-5 border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400 flex items-center justify-center font-bold">
+              <Users className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-slate-400 font-medium">Total Student Founders</p>
-              <p className="text-2xl font-bold text-white mt-0.5">1,420</p>
-              <p className="text-xs text-emerald-400 font-semibold mt-0.5">↑ 18% this month</p>
-            </div>
-          </div>
-
-          <div className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl flex items-center space-x-4 hover:border-slate-700 transition">
-            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
-              <School className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Active School Cohorts</p>
-              <p className="text-2xl font-bold text-white mt-0.5">18 Schools</p>
-              <p className="text-xs text-cyan-400 font-semibold mt-0.5">3 Region Clusters</p>
-            </div>
-          </div>
-
-          <div className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl flex items-center space-x-4 hover:border-slate-700 transition">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
-              <Clock className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Pending Submissions</p>
-              <p className="text-2xl font-bold text-white mt-0.5">{submissions.filter(s => s.status === 'pending').length} Reviews</p>
-              <p className="text-xs text-amber-400 font-semibold mt-0.5">Requires Evaluation</p>
-            </div>
-          </div>
-
-          <div className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl flex items-center space-x-4 hover:border-slate-700 transition">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-              <TrendingUp className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Avg Innovation Index</p>
-              <p className="text-2xl font-bold text-white mt-0.5">4.8 / 5.0</p>
-              <p className="text-xs text-emerald-400 font-semibold mt-0.5">Top Tier Growth</p>
+              <span className="text-[11px] font-bold text-slate-400 uppercase">Active Founders</span>
+              <h4 className="text-xl font-black text-slate-900 dark:text-white font-display">1,420</h4>
             </div>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex border-b border-slate-800 space-x-8 text-sm font-medium">
-          <button
-            onClick={() => setActiveTab('submissions')}
-            className={`pb-4 transition relative flex items-center space-x-2 ${
-              activeTab === 'submissions'
-                ? 'text-amber-400 font-bold border-b-2 border-amber-400'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <BookOpen className="w-4 h-4" />
-            <span>Stage Submissions & Review</span>
-            <span className="bg-amber-500/20 text-amber-300 text-xs px-2 py-0.5 rounded-full ml-1">
-              {submissions.filter(s => s.status === 'pending').length}
-            </span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('cohorts')}
-            className={`pb-4 transition relative flex items-center space-x-2 ${
-              activeTab === 'cohorts'
-                ? 'text-amber-400 font-bold border-b-2 border-amber-400'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <School className="w-4 h-4" />
-            <span>School Cohorts</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('settings')}
-            className={`pb-4 transition relative flex items-center space-x-2 ${
-              activeTab === 'settings'
-                ? 'text-amber-400 font-bold border-b-2 border-amber-400'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Sliders className="w-4 h-4" />
-            <span>Incubator Settings</span>
-          </button>
-        </div>
-
-        {/* TAB 1: Stage Submissions */}
-        {activeTab === 'submissions' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
-              <div className="relative flex-1 max-w-md">
-                <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-500" />
-                <input
-                  type="text"
-                  placeholder="Search by student name or stage title..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition"
-                />
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <button className="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 text-xs font-semibold px-3 py-2.5 rounded-xl flex items-center space-x-2">
-                  <Filter className="w-3.5 h-3.5" />
-                  <span>Filter Pending Only</span>
-                </button>
-              </div>
+        <div className="academy-card p-5 border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold">
+              <GraduationCap className="w-5 h-5" />
             </div>
-
-            <div className="bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-slate-300">
-                  <thead className="bg-slate-900 border-b border-slate-800 text-xs text-slate-400 uppercase tracking-wider">
-                    <tr>
-                      <th className="p-4">Student & Grade</th>
-                      <th className="p-4">Stage Details</th>
-                      <th className="p-4">Submission Summary</th>
-                      <th className="p-4">Score</th>
-                      <th className="p-4">Status</th>
-                      <th className="p-4 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/60">
-                    {filteredSubmissions.map(sub => (
-                      <tr key={sub.id} className="hover:bg-slate-800/40 transition">
-                        <td className="p-4">
-                          <div className="font-semibold text-white">{sub.studentName}</div>
-                          <div className="text-xs text-slate-400">{sub.grade}</div>
-                        </td>
-                        <td className="p-4">
-                          <div className="font-medium text-amber-300">{sub.stageTitle}</div>
-                          <div className="text-xs text-slate-400">{sub.submittedAt}</div>
-                        </td>
-                        <td className="p-4 max-w-xs truncate text-xs text-slate-300">
-                          {sub.contentSummary}
-                        </td>
-                        <td className="p-4 font-bold text-emerald-400">
-                          {sub.score} / 100
-                        </td>
-                        <td className="p-4">
-                          {sub.status === 'pending' && (
-                            <span className="bg-amber-500/20 text-amber-300 text-xs px-2.5 py-1 rounded-full font-medium border border-amber-500/30">
-                              Pending Review
-                            </span>
-                          )}
-                          {sub.status === 'approved' && (
-                            <span className="bg-emerald-500/20 text-emerald-300 text-xs px-2.5 py-1 rounded-full font-medium border border-emerald-500/30">
-                              Approved
-                            </span>
-                          )}
-                          {sub.status === 'needs_revision' && (
-                            <span className="bg-rose-500/20 text-rose-300 text-xs px-2.5 py-1 rounded-full font-medium border border-rose-500/30">
-                              Needs Revision
-                            </span>
-                          )}
-                        </td>
-                        <td className="p-4 text-right space-x-2">
-                          <button
-                            onClick={() => setSelectedSubmission(sub)}
-                            className="bg-indigo-600/30 border border-indigo-500/40 hover:bg-indigo-600/50 text-indigo-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition"
-                          >
-                            Review
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+            <div>
+              <span className="text-[11px] font-bold text-slate-400 uppercase">Passports Issued</span>
+              <h4 className="text-xl font-black text-slate-900 dark:text-white font-display">540</h4>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* TAB 2: School Cohorts */}
-        {activeTab === 'cohorts' && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {cohorts.map(c => (
-              <div key={c.id} className="bg-slate-900/70 border border-slate-800 p-6 rounded-2xl space-y-4 hover:border-slate-700 transition">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-bold text-white text-base">{c.schoolName}</h3>
-                    <p className="text-xs text-amber-400 font-medium">{c.grade} • Teacher: {c.teacherInCharge}</p>
-                  </div>
-                  <span className="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2 py-1 rounded-md border border-emerald-500/30">
-                    {c.status}
-                  </span>
+        <div className="academy-card p-5 border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400 flex items-center justify-center font-bold">
+              <School className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-[11px] font-bold text-slate-400 uppercase">School Cohorts</span>
+              <h4 className="text-xl font-black text-slate-900 dark:text-white font-display">18 Schools</h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="academy-card p-5 border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-400 flex items-center justify-center font-bold">
+              <TrendingUp className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-[11px] font-bold text-slate-400 uppercase">Avg Innovation XP</span>
+              <h4 className="text-xl font-black text-slate-900 dark:text-white font-display">4,850 XP</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Tabs */}
+      <div className="flex border-b border-slate-200 dark:border-slate-800 gap-6 text-xs font-extrabold overflow-x-auto pb-1">
+        <button
+          onClick={() => setActiveTab('funnel')}
+          className={`pb-3 transition flex items-center gap-2 ${
+            activeTab === 'funnel'
+              ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+          }`}
+        >
+          <BarChart3 className="w-4 h-4" />
+          <span>Stage Completion Funnel</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('domains')}
+          className={`pb-3 transition flex items-center gap-2 ${
+            activeTab === 'domains'
+              ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+          }`}
+        >
+          <PieChart className="w-4 h-4" />
+          <span>Popular Startup Domains</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('submissions')}
+          className={`pb-3 transition flex items-center gap-2 ${
+            activeTab === 'submissions'
+              ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+          }`}
+        >
+          <BookOpen className="w-4 h-4" />
+          <span>Mission Submissions ({submissions.filter(s => s.status === 'pending').length})</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('cohorts')}
+          className={`pb-3 transition flex items-center gap-2 ${
+            activeTab === 'cohorts'
+              ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+          }`}
+        >
+          <School className="w-4 h-4" />
+          <span>School Cohorts</span>
+        </button>
+      </div>
+
+      {/* TAB 1: Stage Funnel */}
+      {activeTab === 'funnel' && (
+        <div className="academy-card p-6 space-y-6 border-slate-200 dark:border-slate-800">
+          <h3 className="font-extrabold text-slate-900 dark:text-white text-lg font-display">Founder Academy Mission Funnel</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Tracking student progression through all 8 Academy simulation rooms.</p>
+
+          <div className="space-y-4">
+            {funnelData.map((f, i) => (
+              <div key={i} className="space-y-1.5">
+                <div className="flex justify-between text-xs font-bold">
+                  <span className="text-slate-900 dark:text-white">{f.stage}</span>
+                  <span className="text-orange-600 dark:text-orange-400">{f.count} Founders ({f.rate})</span>
                 </div>
-
-                <div className="space-y-2 pt-2">
-                  <div className="flex justify-between text-xs text-slate-400">
-                    <span>Enrolled Founders:</span>
-                    <span className="font-bold text-slate-200">{c.totalStudents} Students</span>
-                  </div>
-                  <div className="flex justify-between text-xs text-slate-400">
-                    <span>Average Stage Progress:</span>
-                    <span className="font-bold text-indigo-400">Stage {c.avgStageCompleted} / 8</span>
-                  </div>
-
-                  <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-1">
-                    <div 
-                      className="bg-gradient-to-r from-indigo-500 to-amber-400 h-full rounded-full"
-                      style={{ width: `${(c.avgStageCompleted / 8) * 100}%` }}
-                    />
-                  </div>
+                <div className="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
+                  <div
+                    className="bg-orange-500 h-full rounded-full transition-all duration-500"
+                    style={{ width: f.rate }}
+                  />
                 </div>
-
-                <button className="w-full mt-4 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold py-2 rounded-xl transition">
-                  Manage Cohort & View Roster
-                </button>
               </div>
             ))}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* TAB 3: Incubator Settings */}
-        {activeTab === 'settings' && (
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl space-y-6 max-w-2xl">
-            <h3 className="text-lg font-bold text-white">Gamification & System Controls</h3>
-            
+      {/* TAB 2: Domains */}
+      {activeTab === 'domains' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="academy-card p-6 space-y-4 border-slate-200 dark:border-slate-800">
+            <h3 className="font-extrabold text-slate-900 dark:text-white text-lg font-display">Domain Breakdown</h3>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-slate-950 border border-slate-800 rounded-xl">
-                <div>
-                  <h4 className="font-bold text-slate-200 text-sm">2x Innovation XP Multiplier</h4>
-                  <p className="text-xs text-slate-400">Boost student XP rewards across all completed stage milestones.</p>
+              {domainStats.map((d, i) => (
+                <div key={i} className="space-y-1">
+                  <div className="flex justify-between text-xs font-bold">
+                    <span className="text-slate-900 dark:text-white">{d.name}</span>
+                    <span className="text-slate-600 dark:text-slate-400">{d.count} Startups ({d.percent}%)</span>
+                  </div>
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                    <div className={`${d.color} h-full rounded-full`} style={{ width: `${d.percent}%` }} />
+                  </div>
                 </div>
-                <input type="checkbox" defaultChecked className="w-5 h-5 accent-amber-500 rounded cursor-pointer" />
-              </div>
-
-              <div className="flex items-center justify-between p-4 bg-slate-950 border border-slate-800 rounded-xl">
-                <div>
-                  <h4 className="font-bold text-slate-200 text-sm">Auto-Approve Stage 1 & Stage 2 Drafts</h4>
-                  <p className="text-xs text-slate-400">Allow instant student advancement for foundational stages.</p>
-                </div>
-                <input type="checkbox" className="w-5 h-5 accent-amber-500 rounded cursor-pointer" />
-              </div>
+              ))}
             </div>
           </div>
-        )}
 
-        {/* Submission Review Modal */}
-        {selectedSubmission && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full space-y-6 shadow-2xl">
-              <div className="flex justify-between items-start">
-                <div>
-                  <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">{selectedSubmission.stageTitle}</span>
-                  <h3 className="text-xl font-bold text-white mt-1">{selectedSubmission.studentName}</h3>
-                  <p className="text-xs text-slate-400">{selectedSubmission.grade}</p>
-                </div>
-                <button onClick={() => setSelectedSubmission(null)} className="text-slate-400 hover:text-white font-bold text-lg">✕</button>
-              </div>
+          <div className="academy-card p-6 bg-orange-50 dark:bg-slate-800 border-orange-200 dark:border-slate-700 space-y-3">
+            <h4 className="font-extrabold text-orange-900 dark:text-orange-400 text-base font-display">Founder Insights</h4>
+            <p className="text-xs text-orange-800 dark:text-orange-200 leading-relaxed font-medium">
+              • <strong>EdTech & HealthTech</strong> remain the top choice for student founders (56% of total ideas).
+              <br />
+              • 38% of enrolled students successfully earn their <strong>Founder Passport</strong> within 4 weeks.
+            </p>
+          </div>
+        </div>
+      )}
 
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                <p className="text-xs font-semibold text-slate-400 uppercase">Student Canvas Summary</p>
-                <p className="text-sm text-slate-200 leading-relaxed">{selectedSubmission.contentSummary}</p>
-              </div>
+      {/* TAB 3: Submissions */}
+      {activeTab === 'submissions' && (
+        <div className="academy-card p-6 space-y-4 border-slate-200 dark:border-slate-800">
+          <h3 className="font-extrabold text-slate-900 dark:text-white text-lg font-display">Student Mission Submissions</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 uppercase font-bold border-b border-slate-200 dark:border-slate-700">
+                <tr>
+                  <th className="p-3">Student</th>
+                  <th className="p-3">Mission</th>
+                  <th className="p-3">Summary</th>
+                  <th className="p-3">Score</th>
+                  <th className="p-3">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-800 dark:text-slate-200">
+                {submissions.map(s => (
+                  <tr key={s.id}>
+                    <td className="p-3 font-bold">{s.studentName} ({s.grade})</td>
+                    <td className="p-3 text-orange-600 dark:text-orange-400 font-bold">{s.stageTitle}</td>
+                    <td className="p-3 text-slate-600 dark:text-slate-300">{s.contentSummary}</td>
+                    <td className="p-3 font-bold text-emerald-600 dark:text-emerald-400">{s.score}/100</td>
+                    <td className="p-3">
+                      <button
+                        onClick={() => handleApprove(s.id)}
+                        className="bpt-btn-primary py-1 px-3 text-[11px]"
+                      >
+                        Approve
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-slate-400">Feedback Notes for Founder:</label>
-                <textarea 
-                  placeholder="Add guidance or encouragement notes..." 
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500"
-                  rows={3}
-                />
-              </div>
-
-              <div className="flex space-x-3 pt-2">
-                <button
-                  onClick={() => handleReject(selectedSubmission.id)}
-                  className="flex-1 bg-rose-950/60 border border-rose-800 text-rose-300 hover:bg-rose-900/60 font-bold py-2.5 rounded-xl text-sm transition flex items-center justify-center space-x-2"
-                >
-                  <XCircle className="w-4 h-4" />
-                  <span>Request Revision</span>
-                </button>
-                <button
-                  onClick={() => handleApprove(selectedSubmission.id)}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-lg flex items-center justify-center space-x-2"
-                >
-                  <CheckCircle className="w-4 h-4" />
-                  <span>Approve Stage</span>
-                </button>
+      {/* TAB 4: Cohorts */}
+      {activeTab === 'cohorts' && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {cohorts.map(c => (
+            <div key={c.id} className="academy-card p-5 space-y-3 border-slate-200 dark:border-slate-800">
+              <h4 className="font-extrabold text-slate-900 dark:text-white text-base font-display">{c.schoolName}</h4>
+              <p className="text-xs text-orange-600 dark:text-orange-400 font-bold">{c.grade} • Teacher: {c.teacherInCharge}</p>
+              <div className="text-xs text-slate-600 dark:text-slate-300 font-medium">
+                Enrolled: {c.totalStudents} Founders | Avg Stage: {c.avgStageCompleted}/8
               </div>
             </div>
-          </div>
-        )}
+          ))}
+        </div>
+      )}
 
-      </div>
     </div>
   );
 };

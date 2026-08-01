@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Rocket, ShieldCheck, Trophy, Sparkles, UserCheck, BookOpen, User, LogIn, UserPlus } from 'lucide-react';
+import { Rocket, ShieldCheck, Trophy, Sparkles, User, LogIn, UserPlus, LogOut, GraduationCap, Sun, Moon } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { AuthModal } from '../auth/AuthModal';
 
 export const Navbar: React.FC = () => {
-  const { state, setView } = useGame();
+  const { state, setView, logoutUser, toggleTheme } = useGame();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authRole, setAuthRole] = useState<'student' | 'admin'>('student');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -15,102 +15,135 @@ export const Navbar: React.FC = () => {
     setIsAuthOpen(true);
   };
 
+  const isAdmin = state.isLoggedIn && state.studentProfile.role === 'admin';
+
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           
           {/* Brand Logo */}
           <button 
             onClick={() => setView('landing')} 
-            className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-xl p-1"
+            className="flex items-center gap-2.5 focus:outline-none rounded-xl p-1 cursor-pointer"
           >
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-orange-500/25 group-hover:scale-105 transition-transform">
-              <Rocket className="w-7 h-7" />
+            <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center text-white font-bold shadow-sm">
+              <Rocket className="w-6 h-6" />
             </div>
             <div className="text-left">
-              <span className="text-2xl font-black tracking-tight text-slate-900 font-display">
+              <span className="text-xl font-black text-slate-900 dark:text-white font-display">
                 Startup<span className="text-orange-500">Sage</span>
               </span>
-              <span className="block text-xs font-bold text-orange-600 tracking-wider uppercase">
-                Dream • Build • Learn • Lead
+              <span className="block text-[10px] font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider">
+                Virtual Startup Simulation
               </span>
             </div>
           </button>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-6">
             <button 
               onClick={() => setView('landing')} 
-              className="text-sm font-bold text-slate-700 hover:text-orange-600 transition-colors"
+              className={`text-sm font-bold transition-colors cursor-pointer ${state.currentView === 'landing' ? 'text-orange-600 dark:text-orange-400' : 'text-slate-700 dark:text-slate-300 hover:text-orange-600'}`}
             >
               Home
             </button>
+
+            {/* Role-Specific Portal Button */}
             <button 
-              onClick={() => setView('dashboard')} 
-              className="text-sm font-bold text-slate-700 hover:text-orange-600 transition-colors flex items-center gap-1.5"
+              onClick={() => {
+                if (state.isLoggedIn) {
+                  setView(isAdmin ? 'admin' : 'dashboard');
+                } else {
+                  openAuth('student', 'login');
+                }
+              }} 
+              className={`text-sm font-bold transition-colors flex items-center gap-1.5 cursor-pointer ${
+                (state.currentView === 'dashboard' || state.currentView === 'admin') 
+                  ? 'text-orange-600 dark:text-orange-400' 
+                  : 'text-slate-700 dark:text-slate-300 hover:text-orange-600'
+              }`}
             >
-              <Sparkles className="w-4 h-4 text-orange-500" />
-              Dashboard
+              {isAdmin ? (
+                <>
+                  <ShieldCheck className="w-4 h-4 text-orange-600" />
+                  <span>Admin Portal</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4 text-orange-500" />
+                  <span>Founder Journey</span>
+                </>
+              )}
             </button>
+
             <button 
               onClick={() => setView('leaderboard')} 
-              className="text-sm font-semibold text-slate-700 hover:text-orange-600 transition-colors flex items-center gap-1.5"
+              className={`text-sm font-bold transition-colors flex items-center gap-1.5 cursor-pointer ${state.currentView === 'leaderboard' ? 'text-orange-600 dark:text-orange-400' : 'text-slate-700 dark:text-slate-300 hover:text-orange-600'}`}
             >
               <Trophy className="w-4 h-4 text-amber-500" />
               Leaderboard
             </button>
-            <button 
-              onClick={() => setView('teacher')} 
-              className="text-sm font-semibold text-slate-700 hover:text-orange-600 transition-colors flex items-center gap-1.5"
-            >
-              <BookOpen className="w-4 h-4 text-blue-500" />
-              Teachers & Schools
-            </button>
-            <button 
-              onClick={() => setView('admin')} 
-              className="text-sm font-bold text-amber-700 hover:text-amber-800 transition-colors flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl shadow-xs"
-            >
-              <ShieldCheck className="w-4 h-4 text-amber-600" />
-              Admin Portal
-            </button>
           </nav>
 
-          {/* User / Auth Action Buttons */}
-          <div className="flex items-center gap-3">
+          {/* Action Controls: Theme Toggle & Login / Logout Pill */}
+          <div className="flex items-center gap-2">
+            
+            {/* Theme Toggle Switcher */}
+            <button
+              onClick={toggleTheme}
+              title={state.themeMode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-700 cursor-pointer"
+            >
+              {state.themeMode === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-400" />
+              ) : (
+                <Moon className="w-4 h-4 text-slate-700" />
+              )}
+            </button>
+
             {state.isLoggedIn ? (
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setView(state.studentProfile.role === 'admin' ? 'admin' : 'profile')}
-                  className="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-orange-50 hover:bg-orange-100 text-slate-900 font-bold text-sm border border-orange-200 transition-all shadow-sm"
+                  onClick={() => setView(isAdmin ? 'admin' : 'dashboard')}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-orange-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs border border-orange-200 dark:border-slate-700 cursor-pointer"
                 >
-                  <div className="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center font-extrabold text-xs">
-                    {state.studentProfile.role === 'admin' ? '⚙️' : state.studentProfile.name.charAt(0)}
+                  <div className="w-7 h-7 rounded-lg bg-orange-500 text-white flex items-center justify-center font-extrabold text-xs">
+                    {isAdmin ? '🛡️' : '🎓'}
                   </div>
-                  <div className="text-left">
+                  <div className="text-left hidden sm:block">
                     <span className="block text-xs font-black leading-none">{state.studentProfile.name}</span>
-                    <span className="text-[10px] font-bold text-orange-600 uppercase tracking-wider">
-                      {state.studentProfile.role === 'admin' ? 'School Admin' : state.studentProfile.classGrade}
+                    <span className="text-[9px] font-bold text-orange-600 dark:text-orange-400 uppercase">
+                      {isAdmin ? 'Admin Director' : state.studentProfile.classGrade}
                     </span>
                   </div>
+                </button>
+
+                <button
+                  onClick={logoutUser}
+                  title="Log Out"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/60 hover:bg-red-100 text-red-700 dark:text-red-300 font-bold text-xs border border-red-200 dark:border-red-800 transition-all cursor-pointer"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Logout</span>
                 </button>
               </div>
             ) : (
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => openAuth('student', 'login')}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-slate-700 hover:text-orange-600 font-bold text-sm hover:bg-slate-100 transition-all"
+                  className="bpt-btn-secondary text-xs py-1.5 px-3.5 flex items-center gap-1.5 cursor-pointer"
                 >
-                  <LogIn className="w-4 h-4 text-slate-500" />
-                  <span>Log In</span>
+                  <GraduationCap className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                  <span>Student Login</span>
                 </button>
 
                 <button
-                  onClick={() => openAuth('student', 'signup')}
-                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-sm shadow-md shadow-orange-500/25 flex items-center gap-2 transition"
+                  onClick={() => openAuth('admin', 'login')}
+                  className="bpt-btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5 cursor-pointer"
                 >
-                  <UserPlus className="w-4 h-4" />
-                  <span>Student & Admin Login</span>
+                  <ShieldCheck className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                  <span>Admin Login</span>
                 </button>
               </div>
             )}
@@ -119,7 +152,7 @@ export const Navbar: React.FC = () => {
         </div>
       </header>
 
-      {/* Unified Auth Modal (Student & Admin Login / Signup) */}
+      {/* Auth Modal */}
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}

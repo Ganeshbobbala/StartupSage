@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { 
   Sparkles, Brain, CheckCircle2, ArrowRight, Lightbulb, Zap, Coins, 
-  HelpCircle, ThumbsUp, RefreshCw, Send, Mic 
+  HelpCircle, ThumbsUp, RefreshCw, Send, Mic, Stethoscope, BookOpen, 
+  CreditCard, Sprout, ShoppingBag, Cpu, Bot, UserCheck, Heart, Award 
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import type { Persona } from '../../types/game';
@@ -12,7 +13,7 @@ import { MilestoneStampModal } from '../common/MilestoneStampModal';
 interface CategoryOption {
   id: string;
   name: string;
-  icon: string;
+  icon: React.ComponentType<{ className?: string }>;
   description: string;
   difficulty: 'Easy' | 'Medium' | 'Explorer';
   persona: Persona;
@@ -23,7 +24,7 @@ const CATEGORIES: CategoryOption[] = [
   {
     id: 'healthtech',
     name: 'HealthTech',
-    icon: '🏥',
+    icon: Stethoscope,
     description: 'Improve student posture, mental well-being, and daily active habits.',
     difficulty: 'Easy',
     persona: {
@@ -43,7 +44,7 @@ const CATEGORIES: CategoryOption[] = [
   {
     id: 'edtech',
     name: 'EdTech',
-    icon: '📚',
+    icon: BookOpen,
     description: 'Transform homework, study habits, and classroom collaboration.',
     difficulty: 'Easy',
     persona: {
@@ -63,7 +64,7 @@ const CATEGORIES: CategoryOption[] = [
   {
     id: 'fintech',
     name: 'FinTech',
-    icon: '💳',
+    icon: CreditCard,
     description: 'Teach financial literacy, pocket money management, and smart saving.',
     difficulty: 'Medium',
     persona: {
@@ -83,7 +84,7 @@ const CATEGORIES: CategoryOption[] = [
   {
     id: 'agritech',
     name: 'AgriTech',
-    icon: '🚜',
+    icon: Sprout,
     description: 'Help community gardens and local farms monitor soil and reduce crop waste.',
     difficulty: 'Explorer',
     persona: {
@@ -103,7 +104,7 @@ const CATEGORIES: CategoryOption[] = [
   {
     id: 'd2c',
     name: 'D2C (Direct to Consumer)',
-    icon: '🛍️',
+    icon: ShoppingBag,
     description: 'Create custom handcrafted products, eco-merch, and student brands.',
     difficulty: 'Easy',
     persona: {
@@ -123,7 +124,7 @@ const CATEGORIES: CategoryOption[] = [
   {
     id: 'saas',
     name: 'SaaS (Software as a Service)',
-    icon: '⚙️',
+    icon: Cpu,
     description: 'Build digital productivity tools for school clubs, events, and teams.',
     difficulty: 'Medium',
     persona: {
@@ -143,7 +144,7 @@ const CATEGORIES: CategoryOption[] = [
   {
     id: 'ai_tech',
     name: 'AI / Technology',
-    icon: '🤖',
+    icon: Bot,
     description: 'Leverage smart automation, vision AI, and bite-sized tech helpers.',
     difficulty: 'Medium',
     persona: {
@@ -205,89 +206,74 @@ export const Stage0Spark: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       
-      {/* Handcrafted Milestone Journey Path Node Bar */}
+      {/* Milestone Journey Path Node Bar */}
       <MilestonePath currentStage={0} />
 
-      {/* Handcrafted Stage Header */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 glass-dark rounded-3xl p-6 border border-amber-500/30 shadow-2xl">
+      {/* Stage Header */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 academy-card p-6 border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center text-3xl font-black shadow-lg">
-            ⚡
+          <div className="w-12 h-12 rounded-xl bg-orange-500 text-white flex items-center justify-center text-2xl font-black shrink-0 shadow-xs">
+            <Zap className="w-6 h-6 text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-amber-400 uppercase tracking-widest bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/30">
-                Stage 0 of 8
+              <span className="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-widest bg-orange-100 dark:bg-orange-950/80 px-2.5 py-0.5 rounded-full border border-orange-200 dark:border-orange-800">
+                Mission 1 of 8
               </span>
-              <span className="text-xs font-semibold text-slate-400">Problem Discovery</span>
             </div>
-            <h2 className="text-2xl font-black text-white font-display mt-1">
-              The Spark – Uncovering Real User Problems
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white font-display tracking-tight mt-1">
+              Spark Discovery Lab
             </h2>
           </div>
         </div>
-        <div className="flex items-center gap-2 bg-amber-500/10 text-amber-300 px-4 py-2 rounded-2xl border border-amber-500/30 font-bold text-xs">
-          <Zap className="w-4 h-4 fill-amber-400 text-amber-400" />
-          <span>Reward: +100 XP • +20 Founder Coins</span>
+
+        <div className="flex items-center gap-3">
+          <span className="bg-orange-100 dark:bg-slate-800 text-orange-800 dark:text-orange-300 text-xs font-bold px-3 py-1.5 rounded-full border border-orange-200 dark:border-slate-700 flex items-center gap-1">
+            <Coins className="w-3.5 h-3.5 text-amber-500" /> Reward: +100 XP
+          </span>
         </div>
       </div>
 
-      {/* Founder Inspiration Banner */}
-      <div className="bg-gradient-to-r from-amber-950/80 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden flex items-start gap-4 border border-amber-500/30">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center text-3xl flex-shrink-0 shadow-lg font-black">
-          💡
-        </div>
-        <div>
-          <h4 className="text-lg font-bold text-amber-300 font-display mb-1">Young Founder Inspiration Note:</h4>
-          <p className="text-slate-200 text-sm leading-relaxed max-w-3xl">
-            "At age 16, Boyan Slat noticed more plastic bags than fish while diving in Greece and founded The Ocean Cleanup. Gitanjali Rao invented Tethys at 11 to detect lead in drinking water. Every great startup begins by noticing a real problem!"
-          </p>
-        </div>
-      </div>
-
-      {/* STEP 1: Select Category */}
+      {/* STEP 1: Select Problem Category */}
       <div className="space-y-4">
-        <h3 className="text-xl font-extrabold text-slate-900 font-display flex items-center gap-2">
+        <h3 className="text-xl font-extrabold text-slate-900 dark:text-white font-display flex items-center gap-2">
           <span>1. Pick a Problem Category</span>
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CATEGORIES.map((cat, idx) => {
             const isSelected = selectedCategory?.id === cat.id;
-            const isAnySelected = selectedCategory !== null;
+            const IconComp = cat.icon;
 
             return (
               <div
                 key={cat.id}
                 onClick={() => handleSelectCategory(cat)}
-                style={{ animationDelay: `${idx * 80}ms` }}
-                className={`glass-card rounded-3xl p-6 border transition-all cursor-pointer stagger-card btn-tactile ${
+                className={`academy-card p-6 border transition-all cursor-pointer ${
                   isSelected
-                    ? 'card-focused border-orange-500 ring-2 ring-orange-500/30 bg-orange-50/90 shadow-xl'
-                    : isAnySelected
-                    ? 'card-softened border-slate-200 hover:border-orange-300'
-                    : 'border-slate-200 hover:border-orange-400 hover:-translate-y-1'
+                    ? 'border-orange-500 ring-2 ring-orange-500/30 bg-orange-50/90 dark:bg-orange-950/40 shadow-md'
+                    : 'border-slate-200 dark:border-slate-800 hover:border-orange-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`text-4xl inline-block transition-transform duration-300 icon-anim-${cat.id}`}>
-                    {cat.icon}
-                  </span>
+                  <div className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-slate-800 text-orange-600 dark:text-orange-400 flex items-center justify-center border border-orange-200 dark:border-slate-700 shrink-0">
+                    <IconComp className="w-5 h-5" />
+                  </div>
                   <span className={`text-xs font-bold px-3 py-1 rounded-full ${
                     cat.difficulty === 'Easy' 
-                      ? 'bg-emerald-100 text-emerald-700' 
+                      ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800' 
                       : cat.difficulty === 'Medium' 
-                      ? 'bg-amber-100 text-amber-700' 
-                      : 'bg-purple-100 text-purple-700'
+                      ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800' 
+                      : 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800'
                   }`}>
                     {cat.difficulty}
                   </span>
                 </div>
 
-                <h4 className="text-lg font-extrabold text-slate-900 mb-1 font-display">{cat.name}</h4>
-                <p className="text-xs text-slate-600 leading-relaxed mb-4">{cat.description}</p>
+                <h4 className="text-lg font-extrabold text-slate-900 dark:text-white mb-1 font-display">{cat.name}</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">{cat.description}</p>
 
-                <div className="flex items-center justify-between text-xs font-bold text-orange-600 pt-2 border-t border-slate-200/60">
+                <div className="flex items-center justify-between text-xs font-bold text-orange-600 dark:text-orange-400 pt-2 border-t border-slate-200/60 dark:border-slate-800">
                   <span>Persona: {cat.persona.name} ({cat.persona.age})</span>
                   <span>{isSelected ? 'Selected ✓' : 'Choose →'}</span>
                 </div>
@@ -301,146 +287,138 @@ export const Stage0Spark: React.FC = () => {
       {selectedCategory && (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
           
-          {/* Generated Persona Card */}
-          <div className="bg-gradient-to-br from-indigo-50 to-cyan-50 rounded-3xl p-6 border border-indigo-200 shadow-md flex flex-col md:flex-row items-center gap-6">
-            <div className="w-20 h-20 rounded-full bg-white border-4 border-indigo-300 shadow-lg flex items-center justify-center text-4xl flex-shrink-0">
-              {selectedCategory.persona.avatar}
+          {/* Persona Info Card */}
+          <div className="academy-card p-6 border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center gap-6">
+            <div className="w-16 h-16 rounded-2xl bg-orange-500 text-white flex items-center justify-center text-2xl font-black shrink-0 shadow-xs">
+              <UserCheck className="w-8 h-8 text-white" />
             </div>
 
             <div className="space-y-2 text-center md:text-left">
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                <h4 className="text-xl font-black text-slate-900 font-display">{selectedCategory.persona.name}</h4>
-                <span className="bg-indigo-600 text-white text-xs font-extrabold px-3 py-0.5 rounded-full">
+                <h4 className="text-xl font-black text-slate-900 dark:text-white font-display">{selectedCategory.persona.name}</h4>
+                <span className="bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-300 text-xs font-extrabold px-3 py-0.5 rounded-full border border-orange-200 dark:border-orange-800">
                   Age {selectedCategory.persona.age}
                 </span>
               </div>
-              <p className="text-sm font-semibold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-xl border border-rose-200">
-                💬 Challenge: "{selectedCategory.persona.challenge}"
+              <p className="text-xs sm:text-sm font-semibold text-orange-800 dark:text-orange-200 bg-orange-50 dark:bg-slate-900 px-3 py-2 rounded-xl border border-orange-200 dark:border-slate-800">
+                Challenge: "{selectedCategory.persona.challenge}"
               </p>
-              <div className="flex flex-wrap gap-2 text-xs text-slate-600">
-                <span className="font-bold">Goals:</span> {selectedCategory.persona.goals}
+              <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
+                <span className="font-bold text-slate-900 dark:text-white">Goals:</span> {selectedCategory.persona.goals}
               </div>
             </div>
           </div>
 
-            {/* Customer Reaction Widget */}
-            <CustomerReactionWidget initialState="thinking" />
+          {/* Customer Reaction Widget (SVG Vector Icons, No Emoji Boxes) */}
+          <CustomerReactionWidget initialState="thinking" />
 
-            {/* Problem Input & Suggestions */}
-          <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/80 shadow-lg space-y-6">
+          {/* Problem Input & Suggestions */}
+          <div className="academy-card p-6 sm:p-8 border border-slate-200 dark:border-slate-800 space-y-6">
             <div>
-              <h3 className="text-xl font-extrabold text-slate-900 font-display mb-1">
+              <h3 className="text-xl font-extrabold text-slate-900 dark:text-white font-display mb-1">
                 2. What problem would you like to solve for {selectedCategory.persona.name}?
               </h3>
-              <p className="text-slate-500 text-xs">
+              <p className="text-slate-500 dark:text-slate-400 text-xs">
                 Write your own idea or click one of our AI-generated suggestions below.
               </p>
             </div>
 
             {/* AI Suggestions */}
             <div className="space-y-2">
-              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block">Suggested Ideas:</span>
+              <span className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block">Suggested Ideas:</span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {selectedCategory.suggestions.map((sug, i) => {
                   const isChosen = problemInput === sug;
-                  const isAnyChosen = problemInput.trim().length > 0;
                   return (
                     <button
                       key={i}
                       onClick={() => handleApplySuggestion(sug)}
-                      style={{ animationDelay: `${i * 120}ms` }}
-                      className={`p-3.5 rounded-2xl text-left text-xs font-semibold shadow-sm transition-all stagger-card btn-tactile ${
+                      className={`p-3.5 rounded-xl border text-left text-xs font-medium transition-all cursor-pointer ${
                         isChosen
-                          ? 'card-focused bg-orange-500 text-white border-orange-600 font-bold'
-                          : isAnyChosen
-                          ? 'card-softened bg-white text-slate-700 border-slate-200 hover:border-orange-300'
-                          : 'bg-white hover:bg-orange-50 text-slate-700 border-slate-200 hover:border-orange-300'
+                          ? 'bg-orange-500 text-white border-orange-600 font-bold shadow-xs'
+                          : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:border-orange-300'
                       }`}
                     >
-                      💡 {sug}
+                      "{sug}"
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Input Box */}
-            <div className="space-y-3">
-              <div className="relative">
-                <textarea
-                  rows={3}
-                  value={problemInput}
-                  onChange={e => setProblemInput(e.target.value)}
-                  placeholder={`Describe how your startup idea will solve ${selectedCategory.persona.name}'s problem...`}
-                  className="w-full p-4 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 font-medium text-sm text-slate-800 bg-white"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleApplySuggestion(selectedCategory.suggestions[0])}
-                  className="absolute bottom-3 right-3 text-xs text-indigo-600 font-bold bg-indigo-50 hover:bg-indigo-100 px-3 py-1 rounded-lg border border-indigo-200"
-                >
-                  Auto-fill Example
-                </button>
-              </div>
+            {/* Problem Input Box */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                Your Problem Statement:
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Describe the real-world problem you want to solve..."
+                value={problemInput}
+                onChange={e => setProblemInput(e.target.value)}
+                className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm font-medium text-slate-900 dark:text-white focus:outline-none focus:border-orange-500"
+              />
+            </div>
 
+            {/* Submit Problem Statement Button */}
+            <div className="flex justify-end pt-2">
               <button
                 onClick={handleSubmitProblem}
                 disabled={!problemInput.trim() || isEvaluating}
-                className="w-full py-4 rounded-2xl gradient-button text-white font-extrabold text-base shadow-xl flex items-center justify-center gap-2 disabled:opacity-50"
+                className={`bpt-btn-primary px-6 py-3 text-xs sm:text-sm font-extrabold flex items-center gap-2 ${
+                  !problemInput.trim() || isEvaluating ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                }`}
               >
                 {isEvaluating ? (
                   <>
-                    <RefreshCw className="w-5 h-5 animate-spin" />
-                    <span>AI Mentor Sage is reviewing...</span>
+                    <RefreshCw className="w-4 h-4 animate-spin text-white" />
+                    <span>Analyzing Problem...</span>
                   </>
                 ) : (
                   <>
-                    <Send className="w-5 h-5" />
-                    <span>Submit Problem & Get AI Review</span>
+                    <span>Submit Problem Statement</span>
+                    <Send className="w-4 h-4 text-white" />
                   </>
                 )}
               </button>
             </div>
+          </div>
 
-            {/* AI Review Result */}
-            {aiFeedback && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 space-y-4 milestone-stamp">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold milestone-stamp">
-                    ✓
-                  </div>
-                  <div>
-                    <h4 className="font-extrabold text-slate-900 text-base">Stage 0 Milestone Stamp Unlocked!</h4>
-                    <span className="text-xs font-bold text-emerald-700">+100 XP • +20 Coins Earned ✓</span>
-                  </div>
-                </div>
-
-                <p className="text-slate-800 text-sm leading-relaxed font-medium bg-white p-4 rounded-2xl border border-emerald-100">
-                  "{aiFeedback}"
-                </p>
-
-                <div className="flex justify-end pt-2">
-                  <button
-                    onClick={handleAdvanceStage}
-                    className="px-8 py-3.5 rounded-2xl bpt-btn-primary text-white font-extrabold text-sm shadow-lg flex items-center gap-2"
-                  >
-                    <span>Claim Stamp & Proceed</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+          {/* AI Feedback Box */}
+          {aiFeedback && (
+            <div className="academy-card p-6 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 rounded-3xl space-y-4 animate-in fade-in">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-base font-extrabold text-emerald-950 dark:text-emerald-100 font-display">
+                    Virtual Mentor Validation Passed!
+                  </h4>
+                  <p className="text-xs text-emerald-900 dark:text-emerald-200 leading-relaxed font-medium mt-1">
+                    {aiFeedback}
+                  </p>
                 </div>
               </div>
-            )}
 
-          </div>
+              <div className="flex justify-end pt-2 border-t border-emerald-200 dark:border-emerald-800">
+                <button
+                  onClick={handleAdvanceStage}
+                  className="bpt-btn-primary px-6 py-3 text-xs sm:text-sm font-extrabold flex items-center gap-2 cursor-pointer"
+                >
+                  <span>Advance to Mission 2: Customer Validation</span>
+                  <ArrowRight className="w-4 h-4 text-white" />
+                </button>
+              </div>
+            </div>
+          )}
 
         </div>
       )}
 
-      {/* Physical Milestone Stamp Completion Overlay */}
+      {/* Stamp Completion Modal */}
       <MilestoneStampModal
         isOpen={showStampModal}
         stageNumber={0}
-        stageTitle="The Spark – Problem Discovery"
+        stageTitle="Spark Discovery Lab"
         xpReward={100}
         coinReward={20}
         onContinue={() => {

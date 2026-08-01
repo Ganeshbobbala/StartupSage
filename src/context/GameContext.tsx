@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import type { GameState, ViewState, StudentProfile, Badge, FounderType } from '../types/game';
+import type { GameState, ViewState, StudentProfile, Badge, FounderType, ThemeMode } from '../types/game';
 
 const INITIAL_BADGES: Badge[] = [
   {
@@ -94,6 +94,7 @@ const DEFAULT_PROFILE: StudentProfile = {
 };
 
 const DEFAULT_STATE: GameState = {
+  themeMode: 'light',
   currentView: 'landing',
   studentProfile: DEFAULT_PROFILE,
   isLoggedIn: false,
@@ -151,6 +152,7 @@ const DEFAULT_STATE: GameState = {
 
 interface GameContextType {
   state: GameState;
+  toggleTheme: () => void;
   setView: (view: ViewState) => void;
   updateProfile: (profile: Partial<StudentProfile>) => void;
   addXPCoins: (xp: number, coins: number) => void;
@@ -169,6 +171,7 @@ interface GameContextType {
   triggerConfetti: () => void;
   unlockPremium: () => void;
   loginUser: (name?: string, email?: string, role?: 'student' | 'admin', school?: string, grade?: string) => void;
+  logoutUser: () => void;
   completeDailyChallenge: () => void;
   resetGame: () => void;
 }
@@ -179,7 +182,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [state, setState] = useState<GameState>(() => {
     try {
       const saved = localStorage.getItem('startupsage_state');
-      return saved ? JSON.parse(saved) : DEFAULT_STATE;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return { ...DEFAULT_STATE, ...parsed };
+      }
+      return DEFAULT_STATE;
     } catch {
       return DEFAULT_STATE;
     }
@@ -191,7 +198,21 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (err) {
       console.error('Failed to save game state', err);
     }
+
+    // Apply dark / light class to root element
+    if (state.themeMode === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [state]);
+
+  const toggleTheme = () => {
+    setState(prev => ({
+      ...prev,
+      themeMode: prev.themeMode === 'light' ? 'dark' : 'light'
+    }));
+  };
 
   const triggerConfetti = () => {
     try {
@@ -378,6 +399,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     triggerConfetti();
   };
 
+  const logoutUser = () => {
+    setState(prev => ({
+      ...prev,
+      isLoggedIn: false,
+      currentView: 'landing',
+      studentProfile: DEFAULT_PROFILE
+    }));
+  };
+
   const completeDailyChallenge = () => {
     if (!state.dailyChallengeCompleted) {
       setState(prev => ({
@@ -400,6 +430,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <GameContext.Provider
       value={{
         state,
+        toggleTheme,
         setView,
         updateProfile,
         addXPCoins,
@@ -418,6 +449,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         triggerConfetti,
         unlockPremium,
         loginUser,
+        logoutUser,
         completeDailyChallenge,
         resetGame
       }}
