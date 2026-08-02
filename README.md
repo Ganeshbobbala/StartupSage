@@ -34,6 +34,11 @@ StartupSage is an interactive entrepreneurship simulation and startup-learning p
 
 ## 🌐 Live Deployment Links & Guides
 
+### 🚀 Live App
+**[https://startupsage.vercel.app/](https://startupsage.vercel.app/)** — The official live deployment of StartupSage is hosted on **Vercel**.
+
+---
+
 ### ⚡ 1-Click Netlify Deployment
 Click the badge below to deploy directly from your GitHub repository:
 
