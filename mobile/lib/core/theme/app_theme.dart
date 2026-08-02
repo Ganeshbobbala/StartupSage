@@ -5,12 +5,23 @@ class AppTheme {
   static const Color bptOrange = Color(0xFFFF6B00);
   static const Color bptOrangeHover = Color(0xFFE05D00);
   static const Color bptOrangeLight = Color(0xFFFFF4EC);
+  static const Color coralFire = Color(0xFFFF6B00);
 
   static const Color bgLight = Color(0xFFFAF9F6);
+  static const Color bgDark = Color(0xFF0F172A);
+  static const Color surfaceDark = Color(0xFF1E293B);
   static const Color cardLight = Colors.white;
+  static const Color cardDark = Color(0xFF1E293B);
   static const Color textDark = Color(0xFF1E293B);
+  static const Color textLight = Color(0xFFF8FAFC);
   static const Color textMuted = Color(0xFF64748B);
   static const Color borderLight = Color(0xFFE2E8F0);
+
+  static const Color primaryViolet = Color(0xFF8B5CF6);
+  static const Color electricCyan = Color(0xFF0EA5E9);
+  static const Color amberSpark = Color(0xFFF59E0B);
+  static const Color successGreen = Color(0xFF10B981);
+  static const Color warningAmber = Color(0xFFF59E0B);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -19,7 +30,7 @@ class AppTheme {
       scaffoldBackgroundColor: bgLight,
       colorScheme: const ColorScheme.light(
         primary: bptOrange,
-        secondary: Color(0xFF0EA5E9),
+        secondary: electricCyan,
         surface: cardLight,
       ),
       textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
@@ -49,11 +60,51 @@ class AppTheme {
         color: borderAccent ?? borderLight,
         width: 1.5,
       ),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(
-          color: Colors.black.withOpacity(0.04),
+          color: Color(0x0A000000),
           blurRadius: 12,
-          offset: const Offset(0, 4),
+          offset: Offset(0, 4),
+        )
+      ],
+    );
+  }
+
+  static BoxDecoration cardDecoration({Color? borderAccent}) {
+    return academyCardDecoration(borderAccent: borderAccent);
+  }
+
+  static BoxDecoration glassCardDecoration({Color? borderAccent}) {
+    return academyCardDecoration(borderAccent: borderAccent);
+  }
+
+  static BoxDecoration bptButtonDecoration() {
+    return BoxDecoration(
+      color: bptOrange,
+      borderRadius: BorderRadius.circular(14),
+      boxShadow: const [
+        BoxShadow(
+          color: Color(0x4DFF6B00),
+          blurRadius: 12,
+          offset: Offset(0, 4),
+        )
+      ],
+    );
+  }
+
+  static BoxDecoration gradientButtonDecoration() {
+    return bptButtonDecoration();
+  }
+
+  static BoxDecoration amberButtonDecoration() {
+    return BoxDecoration(
+      color: amberSpark,
+      borderRadius: BorderRadius.circular(14),
+      boxShadow: const [
+        BoxShadow(
+          color: Color(0x4DF59E0B),
+          blurRadius: 12,
+          offset: Offset(0, 4),
         )
       ],
     );
