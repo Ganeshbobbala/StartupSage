@@ -79,7 +79,7 @@ const INITIAL_BADGES: Badge[] = [
 ];
 
 const DEFAULT_PROFILE: StudentProfile = {
-  name: 'Rohan Sharma',
+  name: 'Aarav Sharma',
   classGrade: 'Class 8',
   school: 'Delhi Public School',
   avatar: {
@@ -129,9 +129,9 @@ const DEFAULT_STATE: GameState = {
   teamConfidence: '',
   equitySplitPercent: 60,
   budgetAllocation: {
-    product: 40,
-    marketing: 20,
-    team: 15,
+    product: 45,
+    marketing: 30,
+    team: 0,
     tools: 15,
     learning: 10
   },
@@ -196,39 +196,24 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       localStorage.setItem('startupsage_state', JSON.stringify(state));
     } catch (err) {
-      console.error('Failed to save game state', err);
-    }
-
-    // Apply dark / light class to root element
-    if (state.themeMode === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+      console.error('Failed to persist state:', err);
     }
   }, [state]);
 
   const toggleTheme = () => {
-    setState(prev => ({
-      ...prev,
-      themeMode: prev.themeMode === 'light' ? 'dark' : 'light'
-    }));
-  };
-
-  const triggerConfetti = () => {
-    try {
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    } catch (e) {
-      console.log('Confetti effect');
-    }
+    setState(prev => {
+      const nextMode: ThemeMode = prev.themeMode === 'light' ? 'dark' : 'light';
+      if (nextMode === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      return { ...prev, themeMode: nextMode };
+    });
   };
 
   const setView = (view: ViewState) => {
     setState(prev => ({ ...prev, currentView: view }));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const updateProfile = (profileUpdate: Partial<StudentProfile>) => {
@@ -238,59 +223,45 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }));
   };
 
-  const addXPCoins = (earnedXP: number, earnedCoins: number) => {
+  const addXPCoins = (xp: number, coins: number) => {
     setState(prev => {
-      const newXP = prev.xp + earnedXP;
-      const newCoins = prev.coins + earnedCoins;
-      const newLevel = Math.floor(newXP / 200) + 1;
+      const newXP = prev.xp + xp;
+      const newCoins = prev.coins + coins;
+      const newLevel = Math.floor(newXP / 300) + 1;
       return {
         ...prev,
         xp: newXP,
         coins: newCoins,
-        level: Math.max(prev.level, newLevel)
+        level: newLevel
       };
     });
   };
 
   const unlockBadge = (badgeId: string) => {
-    setState(prev => {
-      let newlyUnlockedXP = 0;
-      const updatedBadges = prev.badges.map(badge => {
-        if (badge.id === badgeId && !badge.isUnlocked) {
-          newlyUnlockedXP = badge.xpReward;
-          return { ...badge, isUnlocked: true, earnedDate: new Date().toLocaleDateString() };
-        }
-        return badge;
-      });
-
-      if (newlyUnlockedXP > 0) {
-        triggerConfetti();
-      }
-
-      return {
-        ...prev,
-        badges: updatedBadges,
-        xp: prev.xp + newlyUnlockedXP
-      };
-    });
+    const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    setState(prev => ({
+      ...prev,
+      badges: prev.badges.map(b => 
+        b.id === badgeId ? { ...b, isUnlocked: true, earnedDate: today } : b
+      )
+    }));
   };
 
   const setStage = (stage: number) => {
     setState(prev => ({
       ...prev,
       currentStage: stage,
-      currentView: 'stage'
+      currentView: 'dashboard'
     }));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const completeStage = (stageNum: number) => {
     setState(prev => {
-      const completed = Array.from(new Set([...prev.completedStages, stageNum]));
-      const nextStage = stageNum + 1 <= 8 ? stageNum + 1 : 8;
+      const nextCompleted = Array.from(new Set([...prev.completedStages, stageNum]));
+      const nextStage = Math.min(stageNum + 1, 8);
       return {
         ...prev,
-        completedStages: completed,
+        completedStages: nextCompleted,
         currentStage: nextStage
       };
     });
@@ -315,10 +286,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }));
   };
 
-  const setCanvasPlan = (planUpdate: Partial<GameState['canvasPlan']>) => {
+  const setCanvasPlan = (plan: Partial<GameState['canvasPlan']>) => {
     setState(prev => ({
       ...prev,
-      canvasPlan: { ...prev.canvasPlan, ...planUpdate }
+      canvasPlan: { ...prev.canvasPlan, ...plan }
     }));
   };
 
@@ -382,20 +353,29 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const loginUser = (name?: string, email?: string, role: 'student' | 'admin' = 'student', school?: string, grade?: string) => {
+    const updatedProfile: StudentProfile = {
+      name: name || (role === 'admin' ? 'Dr. Sunita Rao' : 'Student Founder'),
+      email: email || (role === 'admin' ? 'admin@school.edu.in' : 'student@school.edu'),
+      school: school || 'StartupSage Virtual Academy',
+      classGrade: grade || (role === 'admin' ? 'Director' : 'Class 8'),
+      avatar: {
+        type: role === 'admin' ? 'girl' : 'boy',
+        hairColor: '#4F46E5',
+        skinTone: '#FCD34D',
+        outfitColor: '#06B6D4',
+        accessory: 'Glasses'
+      },
+      role: role,
+      isGuest: false
+    };
+
     setState(prev => ({
       ...prev,
       isLoggedIn: true,
       currentView: role === 'admin' ? 'admin' : 'dashboard',
-      studentProfile: {
-        ...prev.studentProfile,
-        name: name || (role === 'admin' ? 'Dr. Sunita Rao (Admin)' : prev.studentProfile.name),
-        email: email || (role === 'admin' ? 'admin@startupsage.edu' : 'student@school.edu'),
-        school: school || prev.studentProfile.school,
-        classGrade: grade || prev.studentProfile.classGrade,
-        role: role,
-        isGuest: false
-      }
+      studentProfile: updatedProfile
     }));
+
     triggerConfetti();
   };
 
@@ -422,38 +402,48 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const resetGame = () => {
-    localStorage.removeItem('startupsage_state');
     setState(DEFAULT_STATE);
+    localStorage.removeItem('startupsage_state');
+  };
+
+  const triggerConfetti = () => {
+    try {
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.7 }
+      });
+    } catch {
+      // Ignore if canvas confetti fails
+    }
   };
 
   return (
-    <GameContext.Provider
-      value={{
-        state,
-        toggleTheme,
-        setView,
-        updateProfile,
-        addXPCoins,
-        unlockBadge,
-        setStage,
-        completeStage,
-        setProblemData,
-        setIdeaData,
-        setCanvasPlan,
-        setSelectedTeammates,
-        setBudgetAllocation,
-        setCrisisResponse,
-        setMonthlyDecision,
-        setFuturePath,
-        completeSimulation,
-        triggerConfetti,
-        unlockPremium,
-        loginUser,
-        logoutUser,
-        completeDailyChallenge,
-        resetGame
-      }}
-    >
+    <GameContext.Provider value={{
+      state,
+      toggleTheme,
+      setView,
+      updateProfile,
+      addXPCoins,
+      unlockBadge,
+      setStage,
+      completeStage,
+      setProblemData,
+      setIdeaData,
+      setCanvasPlan,
+      setSelectedTeammates,
+      setBudgetAllocation,
+      setCrisisResponse,
+      setMonthlyDecision,
+      setFuturePath,
+      completeSimulation,
+      triggerConfetti,
+      unlockPremium,
+      loginUser,
+      logoutUser,
+      completeDailyChallenge,
+      resetGame
+    }}>
       {children}
     </GameContext.Provider>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  X, Rocket, ShieldCheck, User, Mail, Lock, Key, ArrowRight, Sparkles, GraduationCap, School 
+  X, Rocket, ShieldCheck, User, Mail, Lock, Key, ArrowRight, Sparkles, GraduationCap, School, CheckCircle2, AlertCircle 
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 
@@ -9,6 +9,16 @@ interface AuthModalProps {
   onClose: () => void;
   initialRole?: 'student' | 'admin';
   initialMode?: 'login' | 'signup';
+}
+
+export interface RegisteredUser {
+  name: string;
+  email: string;
+  password?: string;
+  role: 'student' | 'admin';
+  school: string;
+  classGrade: string;
+  createdAt: string;
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -21,40 +31,164 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [role, setRole] = useState<'student' | 'admin'>(initialRole);
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
 
+  // Form Fields
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [school, setSchool] = useState('');
+  const [grade, setGrade] = useState('');
+  const [adminCode, setAdminCode] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
   // Synchronize internal state when modal opens
   useEffect(() => {
     if (isOpen) {
       setRole(initialRole);
       setMode(initialMode);
       setError(null);
+      setSuccessMsg(null);
+      setName('');
+      setEmail('');
+      setPassword('');
+      setSchool('');
+      setGrade('');
+      setAdminCode('');
     }
   }, [isOpen, initialRole, initialMode]);
 
-  // Form Fields
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [school, setSchool] = useState('Delhi Public School');
-  const [grade, setGrade] = useState('Class 8');
-  const [adminCode, setAdminCode] = useState('');
-  const [error, setError] = useState<string | null>(null);
-
   if (!isOpen) return null;
+
+  // Helper to retrieve registered users from localStorage
+  const getRegisteredUsers = (): RegisteredUser[] => {
+    try {
+      const stored = localStorage.getItem('startupsage_registered_users');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  };
+
+  // Helper to save a registered user to localStorage
+  const saveRegisteredUser = (newUser: RegisteredUser) => {
+    try {
+      const users = getRegisteredUsers();
+      // Remove existing matching email if any
+      const filtered = users.filter(u => u.email.toLowerCase() !== newUser.email.toLowerCase());
+      filtered.push(newUser);
+      localStorage.setItem('startupsage_registered_users', JSON.stringify(filtered));
+    } catch (err) {
+      console.error('Error saving user to localStorage:', err);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSuccessMsg(null);
 
-    if (role === 'admin' && mode === 'signup' && adminCode && adminCode.trim().toUpperCase() !== 'SAGE-ADMIN-2026') {
-      setError('Invalid School Admin Code. Use SAGE-ADMIN-2026 for demo access.');
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail) {
+      setError('Please enter your email address.');
       return;
     }
 
-    const userName = name.trim() || (role === 'admin' ? 'Dr. Sunita Rao (School Admin)' : 'Aarav Sharma');
-    const userEmail = email.trim() || (role === 'admin' ? 'admin@dps.edu.in' : 'aarav@student.edu');
+    if (!trimmedPassword) {
+      setError('Please enter your password.');
+      return;
+    }
 
-    loginUser(userName, userEmail, role, school, grade);
-    onClose();
+    // SIGN UP FLOW (Creation of new Student / Admin)
+    if (mode === 'signup') {
+      const trimmedName = name.trim();
+      const trimmedSchool = school.trim() || 'StartupSage Virtual Academy';
+      const trimmedGrade = grade.trim() || (role === 'admin' ? 'Director' : 'Class 8');
+
+      if (!trimmedName) {
+        setError('Please enter your full name.');
+        return;
+      }
+
+      if (role === 'admin' && adminCode.trim().toUpperCase() !== 'SAGE-ADMIN-2026') {
+        setError('Invalid School Access Code. Enter SAGE-ADMIN-2026 for Educator Access.');
+        return;
+      }
+
+      // Check if user already exists
+      const existingUsers = getRegisteredUsers();
+      const userExists = existingUsers.some(u => u.email.toLowerCase() === trimmedEmail);
+
+      if (userExists) {
+        setError('An account with this email address already exists. Please click Login.');
+        return;
+      }
+
+      // Register new user account
+      const newUser: RegisteredUser = {
+        name: trimmedName,
+        email: trimmedEmail,
+        password: trimmedPassword,
+        role: role,
+        school: trimmedSchool,
+        classGrade: trimmedGrade,
+        createdAt: new Date().toISOString()
+      };
+
+      saveRegisteredUser(newUser);
+
+      setSuccessMsg(`Account created for ${trimmedName}! Logging in...`);
+
+      setTimeout(() => {
+        loginUser(trimmedName, trimmedEmail, role, trimmedSchool, trimmedGrade);
+        onClose();
+      }, 500);
+      return;
+    }
+
+    // LOGIN FLOW
+    if (mode === 'login') {
+      const registeredUsers = getRegisteredUsers();
+      const matchedUser = registeredUsers.find(u => u.email.toLowerCase() === trimmedEmail);
+
+      if (matchedUser) {
+        if (matchedUser.password && matchedUser.password !== trimmedPassword) {
+          setError('Incorrect password. Please try again.');
+          return;
+        }
+
+        loginUser(
+          matchedUser.name,
+          matchedUser.email,
+          matchedUser.role,
+          matchedUser.school,
+          matchedUser.classGrade
+        );
+        onClose();
+        return;
+      }
+
+      // If user is logging in with a new email, create session with custom or derived credentials
+      const derivedName = name.trim() || (role === 'admin' ? 'School Director' : 'Student Founder');
+      const derivedSchool = school.trim() || 'StartupSage Academy';
+      const derivedGrade = grade.trim() || (role === 'admin' ? 'Admin Director' : 'Class 8');
+
+      const newUser: RegisteredUser = {
+        name: derivedName,
+        email: trimmedEmail,
+        password: trimmedPassword,
+        role: role,
+        school: derivedSchool,
+        classGrade: derivedGrade,
+        createdAt: new Date().toISOString()
+      };
+
+      saveRegisteredUser(newUser);
+
+      loginUser(derivedName, trimmedEmail, role, derivedSchool, derivedGrade);
+      onClose();
+    }
   };
 
   const handleQuickDemoLogin = () => {
@@ -98,9 +232,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           
           {error && (
-            <div className="bg-red-50 text-red-600 text-xs p-3 rounded-xl border border-red-200 font-semibold flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-500" />
+            <div className="bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-300 text-xs p-3 rounded-xl border border-red-200 dark:border-red-800 font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
               <span>{error}</span>
+            </div>
+          )}
+
+          {successMsg && (
+            <div className="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs p-3 rounded-xl border border-emerald-200 dark:border-emerald-800 font-semibold flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+              <span>{successMsg}</span>
             </div>
           )}
 
@@ -109,13 +250,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               {role === 'admin'
                 ? (mode === 'login' ? 'Admin Login' : 'Admin Registration')
-                : (mode === 'login' ? 'Student Login' : 'Student Registration')
+                : (mode === 'login' ? 'Student Login' : 'Create Student Account')
               }
             </span>
             <div className="flex gap-1.5 text-xs font-bold">
               <button
                 type="button"
-                onClick={() => setMode('login')}
+                onClick={() => { setMode('login'); setError(null); }}
                 className={`px-3 py-1 rounded-lg transition cursor-pointer ${
                   mode === 'login'
                     ? 'bg-orange-500 text-white font-bold'
@@ -126,7 +267,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => setMode('signup')}
+                onClick={() => { setMode('signup'); setError(null); }}
                 className={`px-3 py-1 rounded-lg transition cursor-pointer ${
                   mode === 'signup'
                     ? 'bg-orange-500 text-white font-bold'
@@ -142,13 +283,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {mode === 'signup' && (
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                {role === 'admin' ? 'Educator Full Name' : 'Student Full Name'}
+                {role === 'admin' ? 'Educator Full Name *' : 'Student Full Name *'}
               </label>
               <div className="relative">
                 <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                 <input
                   type="text"
-                  placeholder={role === 'admin' ? 'Dr. Sunita Rao' : 'Aarav Sharma'}
+                  required
+                  placeholder={role === 'admin' ? 'Dr. Sunita Rao' : 'Enter your name (e.g. Priya Sharma)'}
                   value={name}
                   onChange={e => setName(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white focus:outline-none focus:border-orange-500"
@@ -161,12 +303,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {mode === 'signup' && (
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">School</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">School Name</label>
                 <div className="relative">
                   <School className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                   <input
                     type="text"
-                    placeholder="Delhi Public School"
+                    placeholder="e.g. Delhi Public School"
                     value={school}
                     onChange={e => setSchool(e.target.value)}
                     className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white focus:outline-none focus:border-orange-500"
@@ -205,19 +347,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white focus:outline-none focus:border-orange-500 uppercase"
                 />
               </div>
-              <span className="text-[10px] text-slate-400 font-medium mt-0.5 block">Use demo code: SAGE-ADMIN-2026</span>
+              <span className="text-[10px] text-slate-400 font-medium mt-0.5 block">Use access code: SAGE-ADMIN-2026</span>
             </div>
           )}
 
           {/* Email Address */}
           <div>
             <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-              {role === 'admin' ? 'Institutional Email' : 'Student Email / ID'}
+              {role === 'admin' ? 'Institutional Email *' : 'Student Email / ID *'}
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
               <input
                 type="email"
+                required
                 placeholder={role === 'admin' ? 'admin@school.edu.in' : 'student@school.edu'}
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -228,11 +371,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           {/* Password */}
           <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Password</label>
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Password *</label>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
               <input
                 type="password"
+                required
                 placeholder="••••••••"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -249,22 +393,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <span>
               {mode === 'login'
                 ? `Login as ${role === 'admin' ? 'Admin' : 'Student'}`
-                : `Register ${role === 'admin' ? 'Admin' : 'Student'} Account`
+                : `Create ${role === 'admin' ? 'Admin' : 'Student'} Account`
               }
             </span>
             <ArrowRight className="w-4 h-4 text-white" />
           </button>
 
-          {/* Quick Instant Demo Access */}
+          {/* Quick Demo Option */}
           <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
-            <span className="text-[11px] text-center font-bold text-slate-400 uppercase tracking-wider">Instant Demo Access</span>
+            <span className="text-[11px] text-center font-bold text-slate-400 uppercase tracking-wider">Demo Quick Test</span>
             <button
               type="button"
               onClick={handleQuickDemoLogin}
-              className="w-full py-2.5 px-3 bg-orange-50 dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 text-orange-700 dark:text-orange-400 rounded-xl text-xs font-extrabold transition flex items-center justify-center gap-2 border border-orange-200 dark:border-slate-700 cursor-pointer"
+              className="w-full py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 cursor-pointer"
             >
-              <Sparkles className="w-4 h-4 text-orange-500" />
-              <span>Click for Instant Demo {role === 'admin' ? 'Admin' : 'Student'} Login</span>
+              <Sparkles className="w-3.5 h-3.5 text-orange-500" />
+              <span>Use Sample Demo {role === 'admin' ? 'Admin' : 'Student'} Account</span>
             </button>
           </div>
 
