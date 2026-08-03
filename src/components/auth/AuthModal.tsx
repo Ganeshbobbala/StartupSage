@@ -30,6 +30,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const { loginUser } = useGame();
   const [role, setRole] = useState<'student' | 'admin'>(initialRole);
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
+  const [rememberMe, setRememberMe] = useState(true);
 
   // Form Fields
   const [name, setName] = useState('');
@@ -41,24 +42,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  // Synchronize internal state when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      setRole(initialRole);
-      setMode(initialMode);
-      setError(null);
-      setSuccessMsg(null);
-      setName('');
-      setEmail('');
-      setPassword('');
-      setSchool('');
-      setGrade('');
-      setAdminCode('');
-    }
-  }, [isOpen, initialRole, initialMode]);
-
-  if (!isOpen) return null;
-
   // Helper to retrieve registered users from localStorage
   const getRegisteredUsers = (): RegisteredUser[] => {
     try {
@@ -69,17 +52,95 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   };
 
+  // Helper to retrieve last remembered account
+  const getRememberedAccount = (): RegisteredUser | null => {
+    try {
+      const saved = localStorage.getItem('startupsage_remembered_account');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  };
+
   // Helper to save a registered user to localStorage
   const saveRegisteredUser = (newUser: RegisteredUser) => {
     try {
       const users = getRegisteredUsers();
-      // Remove existing matching email if any
       const filtered = users.filter(u => u.email.toLowerCase() !== newUser.email.toLowerCase());
       filtered.push(newUser);
       localStorage.setItem('startupsage_registered_users', JSON.stringify(filtered));
     } catch (err) {
       console.error('Error saving user to localStorage:', err);
     }
+  };
+
+  // Helper to save remembered account
+  const saveRememberedAccount = (user: RegisteredUser) => {
+    try {
+      localStorage.setItem('startupsage_remembered_account', JSON.stringify(user));
+    } catch (err) {
+      console.error('Error saving remembered account:', err);
+    }
+  };
+
+  // Auto-load remembered credentials on open or mode/role change
+  useEffect(() => {
+    if (isOpen) {
+      const activeRole = initialRole;
+      setRole(activeRole);
+      setMode(initialMode);
+      setError(null);
+      setSuccessMsg(null);
+
+      const users = getRegisteredUsers().filter(u => u.role === activeRole);
+      const lastAccount = getRememberedAccount();
+
+      // Find best matching candidate of target role
+      const candidate = (lastAccount && lastAccount.role === activeRole) ? lastAccount : users[0];
+
+      if (candidate) {
+        setEmail(candidate.email || '');
+        setPassword(candidate.password || '');
+        setName(candidate.name || '');
+        setSchool(candidate.school || '');
+        setGrade(candidate.classGrade || '');
+      } else {
+        setName('');
+        setEmail('');
+        setPassword('');
+        setSchool('');
+        setGrade('');
+      }
+    }
+  }, [isOpen, initialRole, initialMode]);
+
+  if (!isOpen) return null;
+
+  const handleEmailChange = (val: string) => {
+    setEmail(val);
+    setError(null);
+    const users = getRegisteredUsers().filter(u => u.role === role);
+    const matched = users.find(u => u.email.toLowerCase() === val.trim().toLowerCase());
+    if (matched) {
+      if (matched.password) setPassword(matched.password);
+      if (matched.name) setName(matched.name);
+      if (matched.school) setSchool(matched.school);
+      if (matched.classGrade) setGrade(matched.classGrade);
+    }
+  };
+
+  const handleSelectSavedUser = (user: RegisteredUser) => {
+    setRole(user.role);
+    setEmail(user.email);
+    setPassword(user.password || '');
+    setName(user.name);
+    setSchool(user.school);
+    setGrade(user.classGrade);
+    setError(null);
+
+    saveRememberedAccount(user);
+    loginUser(user.name, user.email, user.role, user.school, user.classGrade);
+    onClose();
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -100,7 +161,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
-    // SIGN UP FLOW (Creation of new Student / Admin)
+    // SIGN UP FLOW
     if (mode === 'signup') {
       const trimmedName = name.trim();
       const trimmedSchool = school.trim() || 'StartupSage Virtual Academy';
@@ -121,7 +182,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       const userExists = existingUsers.some(u => u.email.toLowerCase() === trimmedEmail);
 
       if (userExists) {
-        setError('An account with this email address already exists. Please click Login.');
+        // If account exists, update password and log in automatically!
+        const existingUser = existingUsers.find(u => u.email.toLowerCase() === trimmedEmail)!;
+        const updatedUser: RegisteredUser = {
+          ...existingUser,
+          name: trimmedName || existingUser.name,
+          password: trimmedPassword,
+          role: role,
+          school: trimmedSchool,
+          classGrade: trimmedGrade
+        };
+        saveRegisteredUser(updatedUser);
+        if (rememberMe) {
+          saveRememberedAccount(updatedUser);
+        }
+
+        setSuccessMsg(`Welcome back, ${trimmedName}! Logging in...`);
+        setTimeout(() => {
+          loginUser(trimmedName, trimmedEmail, role, trimmedSchool, trimmedGrade);
+          onClose();
+        }, 500);
         return;
       }
 
@@ -137,6 +217,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       };
 
       saveRegisteredUser(newUser);
+      if (rememberMe) {
+        saveRememberedAccount(newUser);
+      }
 
       setSuccessMsg(`Account created for ${trimmedName}! Logging in...`);
 
@@ -158,6 +241,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           return;
         }
 
+        const updatedUser: RegisteredUser = {
+          ...matchedUser,
+          password: trimmedPassword || matchedUser.password
+        };
+        saveRegisteredUser(updatedUser);
+        if (rememberMe) {
+          saveRememberedAccount(updatedUser);
+        }
+
         loginUser(
           matchedUser.name,
           matchedUser.email,
@@ -169,7 +261,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         return;
       }
 
-      // If user is logging in with a new email, create session with custom or derived credentials
+      // If user is logging in with a new email, auto-register & save account credentials
       const derivedName = name.trim() || (role === 'admin' ? 'School Director' : 'Student Founder');
       const derivedSchool = school.trim() || 'StartupSage Academy';
       const derivedGrade = grade.trim() || (role === 'admin' ? 'Admin Director' : 'Class 8');
@@ -185,6 +277,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       };
 
       saveRegisteredUser(newUser);
+      if (rememberMe) {
+        saveRememberedAccount(newUser);
+      }
 
       loginUser(derivedName, trimmedEmail, role, derivedSchool, derivedGrade);
       onClose();
@@ -192,13 +287,33 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   const handleQuickDemoLogin = () => {
-    if (role === 'admin') {
-      loginUser('Dr. Sunita Rao', 'admin@dps.edu.in', 'admin', 'Delhi Public School', 'Admin Director');
-    } else {
-      loginUser('Aarav Sharma', 'aarav.student@school.edu', 'student', 'Delhi Public School', 'Class 8');
-    }
+    const demoUser: RegisteredUser = role === 'admin'
+      ? {
+          name: 'Dr. Sunita Rao',
+          email: 'admin@dps.edu.in',
+          password: 'password123',
+          role: 'admin',
+          school: 'Delhi Public School',
+          classGrade: 'Admin Director',
+          createdAt: new Date().toISOString()
+        }
+      : {
+          name: 'Aarav Sharma',
+          email: 'aarav.student@school.edu',
+          password: 'password123',
+          role: 'student',
+          school: 'Delhi Public School',
+          classGrade: 'Class 8',
+          createdAt: new Date().toISOString()
+        };
+
+    saveRegisteredUser(demoUser);
+    saveRememberedAccount(demoUser);
+    loginUser(demoUser.name, demoUser.email, demoUser.role, demoUser.school, demoUser.classGrade);
     onClose();
   };
+
+  const savedUsersList = getRegisteredUsers().filter(u => u.role === role);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
@@ -231,6 +346,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* Modal Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           
+
+
           {error && (
             <div className="bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-300 text-xs p-3 rounded-xl border border-red-200 dark:border-red-800 font-semibold flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
@@ -363,7 +480,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 required
                 placeholder={role === 'admin' ? 'admin@school.edu.in' : 'student@school.edu'}
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => handleEmailChange(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white focus:outline-none focus:border-orange-500"
               />
             </div>
@@ -383,6 +500,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white focus:outline-none focus:border-orange-500"
               />
             </div>
+          </div>
+
+          {/* Remember Credentials Checkbox */}
+          <div className="flex items-center justify-between text-xs py-0.5">
+            <label className="flex items-center gap-2 cursor-pointer font-bold text-slate-700 dark:text-slate-300">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={e => setRememberMe(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300 text-orange-500 focus:ring-orange-500 cursor-pointer"
+              />
+              <span>Save Gmail & Password on this device</span>
+            </label>
           </div>
 
           {/* Submit Button */}
@@ -418,3 +548,5 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     </div>
   );
 };
+
+

@@ -178,6 +178,68 @@ html.dark .speech-bubble-orange {
   color: #FFFFFF !important;
 }
 
+/* Custom Utility & Design System Component Classes */
+.gradient-button {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF8800 100%) !important;
+  color: #FFFFFF !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.3);
+}
+
+.gradient-button:hover {
+  background: linear-gradient(135deg, #E05D00 0%, #FF6B00 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 0, 0.45);
+}
+
+.gradient-button:active {
+  transform: translateY(0);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #FF6B00 0%, #F59E0B 50%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #FF6B00;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+}
+
+html.dark .glass-card {
+  background: rgba(30, 41, 59, 0.95) !important;
+  border-color: rgba(51, 65, 85, 0.8) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4) !important;
+  color: #F8FAFC !important;
+}
+
+.bg-hero-gradient {
+  background: radial-gradient(circle at 50% 0%, #FFF4EC 0%, #FAF9F6 70%, #F1F5F9 100%);
+}
+
+html.dark .bg-hero-gradient {
+  background: radial-gradient(circle at 50% 0%, #1E1B4B 0%, #0F172A 70%, #020617 100%);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.8);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
 /* Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
@@ -200,3 +262,4 @@ html.dark ::-webkit-scrollbar-track {
 html.dark ::-webkit-scrollbar-thumb {
   background: #475569;
 }
+
