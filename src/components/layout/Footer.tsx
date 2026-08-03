@@ -78,9 +78,20 @@ export const Footer: React.FC = () => {
 
         </div>
 
-        {/* Bottom Bar */}
+{/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} StartupSage. All rights reserved. Dream. Build. Learn. Lead.</p>
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <p>© {new Date().getFullYear()} StartupSage. All rights reserved. Dream. Build. Learn. Lead.</p>
+            <a
+              href="https://startupsage.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
+            >
+              <Rocket className="w-3.5 h-3.5" />
+              Live App: startupsage.vercel.app
+            </a>
+          </div>
           <div className="flex items-center gap-1.5 text-slate-400">
             <span>Crafted with</span>
             <Heart className="w-4 h-4 text-rose-500 fill-rose-500" />
