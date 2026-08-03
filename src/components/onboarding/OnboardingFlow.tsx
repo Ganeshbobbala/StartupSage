@@ -12,14 +12,14 @@ export const OnboardingFlow: React.FC = () => {
   const [countdown, setCountdown] = useState<number | null>(null);
 
   // Local state for avatar customization
-  const [name, setName] = useState(state.studentProfile.name);
-  const [classGrade, setClassGrade] = useState(state.studentProfile.classGrade || 'Class 8');
-  const [school, setSchool] = useState(state.studentProfile.school || 'Delhi Public School');
-  const [avatarType, setAvatarType] = useState<GenderAvatar>(state.studentProfile.avatar.type || 'boy');
-  const [hairColor, setHairColor] = useState(state.studentProfile.avatar.hairColor || '#4F46E5');
-  const [skinTone, setSkinTone] = useState(state.studentProfile.avatar.skinTone || '#FCD34D');
-  const [outfitColor, setOutfitColor] = useState(state.studentProfile.avatar.outfitColor || '#06B6D4');
-  const [accessory, setAccessory] = useState(state.studentProfile.avatar.accessory || 'Glasses');
+  const [name, setName] = useState(state.studentProfile?.name || 'Student Founder');
+  const [classGrade, setClassGrade] = useState(state.studentProfile?.classGrade || 'Class 8');
+  const [school, setSchool] = useState(state.studentProfile?.school || 'Delhi Public School');
+  const [avatarType, setAvatarType] = useState<GenderAvatar>(state.studentProfile?.avatar?.type || 'boy');
+  const [hairColor, setHairColor] = useState(state.studentProfile?.avatar?.hairColor || '#4F46E5');
+  const [skinTone, setSkinTone] = useState(state.studentProfile?.avatar?.skinTone || '#FCD34D');
+  const [outfitColor, setOutfitColor] = useState(state.studentProfile?.avatar?.outfitColor || '#06B6D4');
+  const [accessory, setAccessory] = useState(state.studentProfile?.avatar?.accessory || 'Glasses');
 
   const handleNext = () => {
     if (screen < 5) {

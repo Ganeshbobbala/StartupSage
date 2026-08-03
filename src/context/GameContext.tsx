@@ -184,7 +184,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const saved = localStorage.getItem('startupsage_state');
       if (saved) {
         const parsed = JSON.parse(saved);
-        return { ...DEFAULT_STATE, ...parsed };
+        return {
+          ...DEFAULT_STATE,
+          ...parsed,
+          studentProfile: {
+            ...DEFAULT_PROFILE,
+            ...(parsed.studentProfile || {}),
+            avatar: {
+              ...DEFAULT_PROFILE.avatar,
+              ...(parsed.studentProfile?.avatar || {})
+            }
+          }
+        };
       }
       return DEFAULT_STATE;
     } catch {
